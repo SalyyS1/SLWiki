@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi" data-lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — SLMMOEnchant Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="i18n.js"></script>
+</head>
+<body>
+<div class="lang-switch"><button class="lang-btn" data-lang="vi">VI</button><button class="lang-btn" data-lang="en">EN</button></div>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.7</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span><span class="lang-vi">Tổng Quan</span><span class="lang-en">Overview</span></a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span><span class="lang-vi">Cấu Hình</span><span class="lang-en">Configuration</span></a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span><span class="lang-vi">Tính Năng</span><span class="lang-en">Features</span></a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items & Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands & API</a>
+    <a href="changelog.html" class="nav-link active"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+
+<div class="content">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Changelog</span>
+    <h1 class="hero-title">Changelog</h1>
+    <p class="hero-subtitle lang-vi">Lịch sử cập nhật SLMMOEnchant &mdash; từ v1.0.0 đến v1.2.7. Mọi thay đổi đều được ghi nhận theo chuẩn <a href="https://keepachangelog.com/" target="_blank">Keep a Changelog</a>.</p>
+    <p class="hero-subtitle lang-en">Update history for SLMMOEnchant &mdash; from v1.0.0 to v1.2.7. All changes tracked following <a href="https://keepachangelog.com/" target="_blank">Keep a Changelog</a> format.</p>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div class="cl-timeline">
+    <h3>Version Timeline</h3>
+    <div class="cl-timeline-grid">
+      <a href="#v1-2-7" class="cl-timeline-item"><strong>v1.2.7</strong> — Anvil Merge, Dust GUI, Rarity Fix, Telekinesis Fix</a>
+      <a href="#v1-2-6" class="cl-timeline-item"><strong>v1.2.6</strong> — Extraction Scroll, Enchant Preview, 35+ Configs</a>
+      <a href="#v1-2-5" class="cl-timeline-item"><strong>v1.2.5</strong> — Broadcast, Soul System, Auto-Update, Stats Fix</a>
+      <a href="#v1-2-4" class="cl-timeline-item"><strong>v1.2.4</strong> — Mechanic Pipeline Fix, Durability, Blast Filter</a>
+      <a href="#v1-2-3" class="cl-timeline-item"><strong>v1.2.3</strong> — Rates Fix, EXP Mode, Placeholders</a>
+      <a href="#v1-2-2" class="cl-timeline-item"><strong>v1.2.2</strong> — Mechanic Engine, Conditions, Browser GUI</a>
+      <a href="#v1-2-1" class="cl-timeline-item"><strong>v1.2.1</strong> — Protection Stone, Random Rates</a>
+      <a href="#v1-2-0" class="cl-timeline-item"><strong>v1.2.0</strong> — Enchant Table, Grindstone, Failure Rate</a>
+      <a href="#v1-1-5" class="cl-timeline-item"><strong>v1.1.5</strong> — Stat Stacking Fix, Perm Effects</a>
+      <a href="#v1-1-4" class="cl-timeline-item"><strong>v1.1.4</strong> — New YAML Format, 8 Abilities</a>
+      <a href="#v1-1-3" class="cl-timeline-item"><strong>v1.1.3</strong> — Souls, Sets, Trak, Slots</a>
+      <a href="#v1-1-2" class="cl-timeline-item"><strong>v1.1.2</strong> — Lucky Dust on Books, /sle giveall</a>
+      <a href="#v1-1-1" class="cl-timeline-item"><strong>v1.1.1</strong> — Lore Position, Enchant Upgrade</a>
+      <a href="#v1-1-0" class="cl-timeline-item"><strong>v1.1.0</strong> — Custom Rates, Messages, Skills</a>
+      <a href="#v1-0-8" class="cl-timeline-item"><strong>v1.0.8</strong> — Code Review, DRY Refactoring</a>
+      <a href="#v1-0-7" class="cl-timeline-item"><strong>v1.0.7</strong> — Per-file Enchants, Better CLI</a>
+      <a href="#v1-0-6" class="cl-timeline-item"><strong>v1.0.6</strong> — Memory Leak Fix, Async I/O</a>
+      <a href="#v1-0-5" class="cl-timeline-item"><strong>v1.0.5</strong> — Thread Safety, Security</a>
+      <a href="#v1-0-4" class="cl-timeline-item"><strong>v1.0.4</strong> — Activity/Achievement System</a>
+      <a href="#v1-0-3" class="cl-timeline-item"><strong>v1.0.3</strong> — Color Codes, Debug Logging</a>
+      <a href="#v1-0-2" class="cl-timeline-item"><strong>v1.0.2</strong> — Paper Command Registration</a>
+      <a href="#v1-0-1" class="cl-timeline-item"><strong>v1.0.1</strong> — FoliaLib ClassNotFound Fix</a>
+      <a href="#v1-0-0" class="cl-timeline-item"><strong>v1.0.0</strong> — Initial Release</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== v1.2.7 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.7</span><span class="cl-latest">LATEST</span><span class="cl-date">2026-03-05</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Dust Crafting GUI</strong> &mdash; <span class="lang-vi"><code>/sle dust</code> mở GUI ép sách enchant thành Dust. Mỗi tier có tỷ lệ boost riêng (Common 1-5%, Legendary 12-25%). Dust dùng để tăng tỷ lệ apply enchant</span><span class="lang-en"><code>/sle dust</code> opens GUI to craft enchant books into Dust. Per-tier boost rates (Common 1-5%, Legendary 12-25%). Dust increases enchant apply success rate</span></li>
+      <li><strong>Anvil Combining</strong> &mdash; <span class="lang-vi">Đặt 2 item vào đe → gộp enchant (same level → level+1, khác level → level cao thắng), kiểm tra conflict, full durability</span><span class="lang-en">Put 2 items in anvil → merge enchants (same level → level+1, different → higher wins), conflict check, full durability</span></li>
+      <li><strong>Trigger Enchants</strong> &mdash; <span class="lang-vi">Enchant dạng trigger (ON_DEFEND, HEALTH_BELOW) với duration/cooldown: Regeneration (hồi HP 5s, cd 50s), Absorption (+HP/ARM 10s, cd 30s), Battle Hardened (+ATK/ARM 5s, cd 20s)</span><span class="lang-en">Trigger-based enchants (ON_DEFEND, HEALTH_BELOW) with duration/cooldown: Regeneration (heal 5s, cd 50s), Absorption (+HP/ARM 10s, cd 30s), Battle Hardened (+ATK/ARM 5s, cd 20s)</span></li>
+      <li><strong>DeluxeMenus-style GUI Config</strong> &mdash; <span class="lang-vi">Tất cả GUI (dust, tier-shop, fusion, enchant-browser) giờ dùng config YAML tùy chỉnh: slots, materials, names, lore, background</span><span class="lang-en">All GUIs (dust, tier-shop, fusion, enchant-browser) now use customizable YAML config: slots, materials, names, lore, background</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>[CRITICAL] Rarity Distribution</strong> &mdash; <span class="lang-vi"><code>rollTier()</code> có bug: duplicate LEGENDARY (phải là EPIC), thiếu UNCOMMON hoàn toàn. Giờ đúng 5 tier với % per cost bracket</span><span class="lang-en"><code>rollTier()</code> had bug: duplicate LEGENDARY (should be EPIC), UNCOMMON missing entirely. Now correct 5-tier distribution per cost bracket</span></li>
+      <li><strong>[CRITICAL] Telekinesis Chest Bug</strong> &mdash; <span class="lang-vi">Telekinesis + rương/barrel/shulker → đồ trong container bị mất. Giờ container items được move vào inventory trước khi phá block</span><span class="lang-en">Telekinesis + chest/barrel/shulker → container items destroyed. Now container items moved to inventory before block break</span></li>
+      <li><strong>Telekinesis Cross-Mode</strong> &mdash; <span class="lang-vi">BREAK_BLOCK telekinesis cũng kích hoạt khi giết mob. Giờ TELEKINESIS chỉ hoạt động theo mode đã config</span><span class="lang-en">BREAK_BLOCK telekinesis also triggered on mob kills. Now TELEKINESIS only activates per configured mode</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Tier Shop GUI dùng config-driven background/info/per-tier slots thay vì hardcode</span><span class="lang-en">Tier Shop GUI uses config-driven background/info/per-tier slots instead of hardcoded layout</span></li>
+      <li><span class="lang-vi">Fusion GUI thêm filler-name, recipe-start-slot, 3 fusion recipes mới (lightning, arcane, soul)</span><span class="lang-en">Fusion GUI adds filler-name, recipe-start-slot, 3 new fusion recipes (lightning, arcane, soul)</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.6 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.6</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Extraction Scroll (3-Outcome)</strong> &mdash; <span class="lang-vi">Cuộn tách enchant với 3 kết quả: Thành công (gỡ enchant), Thất bại (không gỡ), Phá hủy (mất cả enchant và sách). <code>/sle givescroll</code> với rate tùy chỉnh hoặc random</span><span class="lang-en">Extraction scroll with 3 outcomes: Success (remove enchant), Fail (keep), Destroy (lose both). <code>/sle givescroll</code> with custom or random rates</span></li>
+      <li><strong>Enchant Preview Rewrite</strong> &mdash; <span class="lang-vi">Enchant browser hiện max level trong tên (<code>✦ Executioner IV</code>), hiện chỉ số theo cấp tối đa, layout mới đẹp hơn</span><span class="lang-en">Enchant browser shows max level in title (<code>✦ Executioner IV</code>), stats at max level, beautiful new layout</span></li>
+      <li><strong>Decimal Format (MythicLib)</strong> &mdash; <span class="lang-vi">Đọc decimal format trực tiếp từ MythicLib API. Không còn hardcode <code>0.0</code></span><span class="lang-en">Reads decimal format directly from MythicLib API. No more hardcoded <code>0.0</code></span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><span class="lang-vi">35+ enchant configs được rewrite: thêm <code>conflicts-with</code>, <code>chance</code> kích hoạt, <code>cooldown</code>/<code>duration</code> cho trigger enchants, rarity-based rates</span><span class="lang-en">35+ enchant configs rewritten: added <code>conflicts-with</code>, activation <code>chance</code>, <code>cooldown</code>/<code>duration</code> for trigger enchants, rarity-based rates</span></li>
+      <li><span class="lang-vi">Memory leak fix — dọn <code>lastConditionRecalc</code> map khi player quit</span><span class="lang-en">Memory leak fix — cleanup <code>lastConditionRecalc</code> map on player quit</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.5 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.5</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>/sle broadcast</strong> &mdash; <span class="lang-vi">Phát enchant book cho toàn bộ server: <code>/sle broadcast &lt;enchant_id&gt; [level] [amount]</code>. Random rate, thông báo + sound</span><span class="lang-en">Distribute enchant books to all online players: <code>/sle broadcast &lt;enchant_id&gt; [level] [amount]</code>. Randomized rates, server announcement + sound</span></li>
+      <li><strong>Protection Stone Stacking</strong> &mdash; <span class="lang-vi">Đá bảo vệ giờ stack charges (integer). Sử dụng nhiều đá → cộng dồn (🛡 Bảo Vệ: 3 lần). Mỗi lần thất bại trừ 1 charge</span><span class="lang-en">Protection stones now stack charges (integer counter). Multiple stones add up (🛡 Protection: 3 charges). Each failure consumes 1 charge</span></li>
+      <li><strong>Extra Slot Limit</strong> &mdash; <span class="lang-vi">Config <code>extra-slot-limit</code> trong application.yml. Đặt = 20 → tối đa +20 slot enchant. 0 = vô hạn (mặc định)</span><span class="lang-en">Config <code>extra-slot-limit</code> in application.yml. Set to 20 → max +20 enchant slots. 0 = infinite (default)</span></li>
+      <li><strong>Soul Cost in Mechanics</strong> &mdash; <span class="lang-vi">SLEMechanicEngine giờ check và trừ <code>soul-cost</code> trước khi kích hoạt mechanic (break_block). Thiếu soul → mechanic bỏ qua</span><span class="lang-en">SLEMechanicEngine now checks and consumes <code>soul-cost</code> before mechanic activation (break_block). Not enough souls → mechanic skipped</span></li>
+      <li><strong>Config Auto-Updater</strong> &mdash; <span class="lang-vi">Plugin tự cập nhật configs khi nâng version. Track version trong <code>.config-version</code>. Backup config cũ → overwrite mới. Không cần xóa folder nữa!</span><span class="lang-en">Plugin auto-updates configs on version upgrade. Tracks version in <code>.config-version</code>. Backs up old configs → overwrites with new defaults. No more manual folder deletion!</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>Stats Not Working</strong> &mdash; <span class="lang-vi">Stats có <code>mode:</code> (ATTACK, DAMAGED) hoàn toàn không hoạt động vì PassiveSkill handler lỗi. Stats giờ luôn <strong>permanent</strong> (always-on khi equipped). <code>mode:</code> trên stats bị bỏ qua</span><span class="lang-en">Stats with <code>mode:</code> (ATTACK, DAMAGED) were completely broken due to PassiveSkill handler failure. Stats are now always <strong>permanent</strong> (always-on when equipped). <code>mode:</code> on stats ignored</span></li>
+      <li><strong>Soul Stone vs Booster</strong> &mdash; <span class="lang-vi">Soul stones giờ chỉ bật tracking (1 lần). Soul boosters cần tracking được bật trước mới add soul được</span><span class="lang-en">Soul stones now only enable tracking (one-time). Soul boosters require tracking to be enabled first before adding souls</span></li>
+      <li><strong>Protection Lore</strong> &mdash; <span class="lang-vi">Lore giờ hiện đúng số charges: 🛡 Bảo Vệ: 3 lần thay vì luôn 1 lần</span><span class="lang-en">Lore now shows correct charge count: 🛡 Protection: 3 charges instead of always 1</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><span class="lang-vi">11 enchant configs dọn dẹp: xóa <code>mode:</code>/<code>duration:</code>/<code>cooldown:</code> khỏi stats. Stats giờ chỉ dùng <code>formula:</code>, <code>key:</code>, <code>type:</code> (FLAT/RELATIVE)</span><span class="lang-en">11 enchant configs cleaned: removed <code>mode:</code>/<code>duration:</code>/<code>cooldown:</code> from stats. Stats now only use <code>formula:</code>, <code>key:</code>, <code>type:</code> (FLAT/RELATIVE)</span></li>
+      <li><span class="lang-vi">Soul boosters yêu cầu bật soul tracking trước (phải dùng Soul Stone → rồi Soul Booster)</span><span class="lang-en">Soul boosters require soul tracking to be enabled first (must apply Soul Stone → then Soul Booster)</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.4 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.4</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>Mechanic Conflicts</strong> &mdash; <span class="lang-vi">Rewrite SLEMechanicEngine: MULTIPLY &rarr; SMELT &rarr; TELEKINESIS chạy đúng thứ tự, không conflict</span><span class="lang-en">Rewrote SLEMechanicEngine: MULTIPLY &rarr; SMELT &rarr; TELEKINESIS runs in correct order, no conflicts</span></li>
+      <li><strong>Blast Mine Filter</strong> &mdash; <span class="lang-vi">3x3/5x5/7x7 chỉ phá stone, ore, deepslate... Không phá dirt, grass, wood</span><span class="lang-en">3x3/5x5/7x7 only breaks stone, ore, deepslate... No longer breaks dirt, grass, wood</span></li>
+      <li><strong>Placeholder Display</strong> &mdash; <span class="lang-vi">Mechanics hiện chance, params, conditions. Abilities hiện damage</span><span class="lang-en">Mechanics show chance, params, conditions. Abilities show damage</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Durability Cost</strong> &mdash; <span class="lang-vi">Multi-block mechanics tốn độ bền tương ứng (đào 9 blocks = -9 durability). Respect Unbreaking</span><span class="lang-en">Multi-block mechanics cost proportional durability (9 blocks = -9 durability). Respects Unbreaking</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><strong>SLEMechanicEngine v2</strong> &mdash; <span class="lang-vi">Coordinated pipeline thay vì mỗi mechanic xử lý riêng. Extra blocks dùng chung pipeline</span><span class="lang-en">Coordinated pipeline replaces per-mechanic processing. Extra blocks share same pipeline</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.3 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.3</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>Placeholder Display</strong> &mdash; <span class="lang-vi"><code>/sle enchant</code> GUI và MMOItems editor giờ hiện giá trị thật (lv1) thay vì formula raw</span><span class="lang-en"><code>/sle enchant</code> GUI and MMOItems editor now show resolved values (lv1) instead of raw formulas</span></li>
+      <li><strong>Success Rate 0</strong> &mdash; <span class="lang-vi">Cho phép đặt tỷ lệ thành công = 0% (trước đây bị chặn ở 1%)</span><span class="lang-en">Allows success rate of 0% (was blocked at 1%)</span></li>
+      <li><strong>Tier Shop EXP</strong> &mdash; <span class="lang-vi">Giá EXP dùng vanilla formula (10 levels = 160 EXP), trừ đúng EXP và recalculate level/progress</span><span class="lang-en">EXP pricing uses vanilla formula (10 levels = 160 EXP), correct deduction with level/progress recalculation</span></li>
+      <li><strong>Orb Failure Rate</strong> &mdash; <span class="lang-vi">Orb reveal giờ luôn random tỷ lệ vỡ đồ (kể cả khi base = 0)</span><span class="lang-en">Orb reveal now always randomizes failure rate (even when base = 0, random 0-5%)</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Tier Shop LEVEL Mode</strong> &mdash; <span class="lang-vi"><code>currency: LEVEL</code> trong tier-shop.yml &rarr; trừ trực tiếp level</span><span class="lang-en"><code>currency: LEVEL</code> in tier-shop.yml &rarr; direct level deduction</span></li>
+      <li><strong>Give Command Random</strong> &mdash; <span class="lang-vi"><code>/sle give</code> không chỉ định rate &rarr; tự random giống orb reveal</span><span class="lang-en"><code>/sle give</code> without rate args &rarr; auto-randomize like orb reveal</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-removed">REMOVED</span></h4>
+    <ul>
+      <li><strong>Dust Consolation</strong> &mdash; <span class="lang-vi">Không còn nhận dust khi ép enchant thất bại (dành cho GUI ép sách sau)</span><span class="lang-en">No longer receive dust on enchant failure (reserved for future tier crafting GUI)</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.2 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.2</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span> <span class="lang-vi">Tính Năng Mới</span><span class="lang-en">New Features</span></h4>
+    <ul>
+      <li><strong>SLE Mechanic Engine</strong> &mdash; <span class="lang-vi">Hệ thống scripting tùy chỉnh cho enchant effects không có trong MMOItems/MythicLib. 12 mechanic types: <code>MULTIPLY_DROPS</code>, <code>AUTO_SMELT</code>, <code>BLAST_MINE</code>, <code>VEIN_MINE</code>, <code>TREE_FELLER</code>, <code>HARVEST_AREA</code>, <code>TELEKINESIS</code>, <code>REPLANT</code>, <code>MULTIPLY_MOB_DROPS</code>, <code>MULTIPLY_EXP</code>, <code>HEAD_DROP</code>, <code>BONUS_MONEY</code></span><span class="lang-en">Custom scripting system for enchant effects not in MMOItems/MythicLib. 12 mechanic types including drop multipliers, blast mining, vein mining, tree felling, and more</span></li>
+      <li><strong>Condition System</strong> &mdash; <span class="lang-vi">15+ điều kiện môi trường: <code>IN_DAY</code>, <code>IN_NIGHT</code>, <code>IN_WATER</code>, <code>ON_GROUND</code>, <code>IN_BIOME_xxx</code>, <code>HEALTH_BELOW/ABOVE</code>, <code>SNEAKING</code>, <code>SPRINTING</code></span><span class="lang-en">15+ environment conditions: <code>IN_DAY</code>, <code>IN_NIGHT</code>, <code>IN_WATER</code>, <code>ON_GROUND</code>, <code>IN_BIOME_xxx</code>, <code>HEALTH_BELOW/ABOVE</code>, <code>SNEAKING</code>, <code>SPRINTING</code></span></li>
+      <li><strong>Stat Mode Unification</strong> <em>(deprecated in v1.2.5 — stats are now always permanent)</em> &mdash; <span class="lang-vi">Stats hỗ trợ <code>mode:</code> — <strong>đã xóa trong v1.2.5</strong>, stats giờ luôn permanent</span><span class="lang-en">Stats supported <code>mode:</code> — <strong>removed in v1.2.5</strong>, stats are now always permanent</span></li>
+      <li><strong>Enchant Browser GUI</strong> &mdash; <span class="lang-vi"><code>/sle enchant</code> mở GUI duyệt tất cả enchants. Phân trang, sắp xếp (tên/rarity/level/loại), lọc (All/Sword/Axe/Pickaxe/Bow/Armor/Hoe), hiện chi tiết stats/abilities/mechanics</span><span class="lang-en"><code>/sle enchant</code> opens paginated GUI to browse all enchants. Sort by name/rarity/level/type, filter by weapon category, detailed stats/abilities/mechanics view</span></li>
+      <li><strong>8 New Enchants</strong> &mdash; <code>blast_mine</code>, <code>vein_miner</code>, <code>tree_feller</code>, <code>auto_smelt</code>, <code>telekinesis</code>, <code>harvest_area</code>, <code>extra_mob_drops</code>, <code>exp_multiplier</code></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>Tier Shop EXP</strong> &mdash; <span class="lang-vi">Trừ XP level thay vì total EXP &rarr; giờ dùng <code>player.totalExperience</code></span><span class="lang-en">Was deducting XP levels instead of total EXP &rarr; now uses <code>player.totalExperience</code></span></li>
+      <li><strong>Orb Failure Rate</strong> &mdash; <span class="lang-vi">Orb reveal dùng global default (0.0) thay vì per-enchant <code>failure-rate</code></span><span class="lang-en">Orb reveals used global default (0.0) instead of per-enchant <code>failure-rate</code></span></li>
+      <li><strong>Item Destruction</strong> &mdash; <span class="lang-vi">Item không bị xóa khi failure rate kích hoạt &rarr; dùng <code>clickedInventory.setItem(slot, null)</code></span><span class="lang-en">Items not destroyed when failure rate triggered &rarr; uses <code>clickedInventory.setItem(slot, null)</code></span></li>
+      <li><strong>Build Error</strong> &mdash; <span class="lang-vi">Fix <code>biome.name</code> compilation error trong Kotlin</span><span class="lang-en">Fixed <code>biome.name</code> compilation error in Kotlin</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><span class="lang-vi">11 enchants legacy <code>trigger:</code> chuyển sang <code>stats:</code> với <code>mode:</code></span><span class="lang-en">11 legacy <code>trigger:</code> enchants converted to <code>stats:</code> with <code>mode:</code></span></li>
+      <li><code>double_ore</code> &mdash; <span class="lang-vi">Đổi từ fake LUCK stat sang <code>MULTIPLY_DROPS</code> mechanic thật</span><span class="lang-en">Changed from fake LUCK stat to real <code>MULTIPLY_DROPS</code> mechanic</span></li>
+      <li><code>executioner</code> &mdash; <span class="lang-vi">Thêm điều kiện <code>IN_NIGHT</code> (stats chỉ active ban đêm)</span><span class="lang-en">Added <code>IN_NIGHT</code> condition (stats only active at night)</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.1 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.1</span><span class="cl-date">2026-03-04</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span> <span class="lang-vi">Tính Năng Mới</span><span class="lang-en">New Features</span></h4>
+    <ul>
+      <li><strong>Protection Stone</strong> &mdash; <span class="lang-vi">Item mới (TOTEM_OF_UNDYING) bảo vệ vật phẩm khỏi phá hủy khi ép enchant thất bại. Kéo thả lên item, lore hiện trạng thái bảo vệ, tiêu hao khi roll vỡ trúng</span><span class="lang-en">New item (TOTEM_OF_UNDYING) protects items from destruction on enchant failure. Drag onto item, lore shows protection status, consumed when destroy roll hits</span></li>
+      <li><strong>Random Failure Rate (Tier Shop)</strong> &mdash; <span class="lang-vi">Orb reveal giờ random cả success rate (base &plusmn;15%) và failure rate (0 đến 2x base)</span><span class="lang-en">Orb reveals now randomize both success rate (base &plusmn;15%) and failure rate (0 to 2x base)</span></li>
+      <li><strong>Comprehensive Messages</strong> &mdash; <span class="lang-vi">15+ message keys mới: protection, orb reveal, shop, grindstone, vanilla book, lore format</span><span class="lang-en">15+ new message keys: protection, orb reveal, shop, grindstone, vanilla book, lore format</span></li>
+      <li><strong>Failure Rate Tab Complete</strong> &mdash; <span class="lang-vi">Brigadier tab completion cho <code>failureRate</code> arg trong lệnh <code>/sle give</code></span><span class="lang-en">Brigadier tab completion for <code>failureRate</code> arg in <code>/sle give</code> command</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span></h4>
+    <ul>
+      <li><code>DragDropListener</code> &mdash; <span class="lang-vi">Thêm handler <code>protection_stone</code> + kiểm tra protection trước khi phá item</span><span class="lang-en">Added <code>protection_stone</code> handler + protection check before item destroy</span></li>
+      <li><code>OrbRevealListener</code> &mdash; <span class="lang-vi">Dùng <code>ApplicationConfigLoader</code> cho base rates, random cả success và failure</span><span class="lang-en">Uses <code>ApplicationConfigLoader</code> for base rates, randomizes both success and failure</span></li>
+      <li><code>EnchantDataUtil</code> &mdash; <span class="lang-vi">Render lore protection khi item có tag <code>SLENCHANT_PROTECTED</code></span><span class="lang-en">Renders protection lore when item has <code>SLENCHANT_PROTECTED</code> tag</span></li>
+      <li><code>EnchantBookBuilder</code> &mdash; <span class="lang-vi">Luôn lưu failure rate vào PDC (trước đây chỉ lưu khi > 0)</span><span class="lang-en">Always stores failure rate in PDC (previously only when > 0)</span></li>
+      <li><code>messages.yml</code> &mdash; <span class="lang-vi">Tái cấu trúc toàn bộ với sections cho mọi tính năng</span><span class="lang-en">Fully restructured with sections for all features</span></li>
+      <li><code>items.yml</code> &mdash; <span class="lang-vi">Thêm <code>protection_stone</code> definition</span><span class="lang-en">Added <code>protection_stone</code> definition</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Grindstone không gỡ được enchant khi item chỉ có custom enchant (không có vanilla) &mdash; giờ force result khi input có SLE data</span><span class="lang-en">Grindstone couldn't remove enchants when item only had custom enchants (no vanilla) &mdash; now forces result when input has SLE data</span></li>
+      <li><span class="lang-vi">Grindstone click handler kiểm tra input slots thay vì result đã clean</span><span class="lang-en">Grindstone click handler checks input slots instead of already-cleaned result</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.2.0 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.2.0</span><span class="cl-date">2026-03-03</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Enchant Table Integration</strong> &mdash; <span class="lang-vi">Enchant tại bàn vanilla có cơ hội nhận thêm SLEnchant. Config: <code>enchant-table.yml</code></span><span class="lang-en">Enchanting at vanilla table has a chance to add SLEnchant. Config: <code>enchant-table.yml</code></span></li>
+      <li><strong>Grindstone Support</strong> &mdash; <span class="lang-vi">Grindstone xóa tất cả SLEnchant, render lại lore, tính lại stats</span><span class="lang-en">Grindstone removes all SLEnchants, re-renders lore, recalculates stats</span></li>
+      <li><strong>Failure Rate System</strong> &mdash; <span class="lang-vi"><code>failure-rate</code> per-enchant. Thất bại &rarr; roll vỡ &rarr; phá item</span><span class="lang-en"><code>failure-rate</code> per-enchant. Fail &rarr; roll destroy &rarr; break item</span></li>
+      <li><strong>Inventory Scan Interval</strong> &mdash; <code>inventory-interval</code> (default 200 ticks = 10s)</li>
+      <li><strong>Give Command</strong> &mdash; <span class="lang-vi">Thêm arg <code>[successRate] [failureRate]</code></span><span class="lang-en">Added <code>[successRate] [failureRate]</code> args</span></li>
+      <li><strong>Enchant Editor GUI</strong> &mdash; <span class="lang-vi">GUI paginated thay cho text dump</span><span class="lang-en">Paginated GUI replaces text dump</span></li>
+      <li><strong>List Pagination</strong> &mdash; <span class="lang-vi">10/trang, nút Prev/Next clickable</span><span class="lang-en">10/page with clickable Prev/Next buttons</span></li>
+      <li><strong>Vanilla Enchant Lore</strong> &mdash; <span class="lang-vi">Vanilla enchants hiện custom display name + description + rarity</span><span class="lang-en">Vanilla enchants show custom display name + description + rarity</span></li>
+      <li><strong>Book Lore Format</strong> &mdash; <span class="lang-vi">Success + destroy rate hiện cùng dòng: <code>&sect;a85% &sect;8| &sect;c10%</code></span><span class="lang-en">Success + destroy rate shown on same line: <code>&sect;a85% &sect;8| &sect;c10%</code></span></li>
+      <li><strong>Vanilla Book Drag-Drop</strong> &mdash; <span class="lang-vi">Sách vanilla kéo thả lên MMOItem (configurable)</span><span class="lang-en">Vanilla books can be dragged onto MMOItems (configurable)</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Vanilla enchants giờ tính vào giới hạn <code>max-enchants-per-item</code></span><span class="lang-en">Vanilla enchants now count toward <code>max-enchants-per-item</code> limit</span></li>
+      <li><span class="lang-vi">File enchant mặc định chỉ tạo nếu folder chưa tồn tại</span><span class="lang-en">Default enchant files only generated if folder doesn't exist</span></li>
+      <li><span class="lang-vi">MythicLib Abilities register đúng với <code>PassiveSkill</code> API</span><span class="lang-en">MythicLib Abilities properly register with <code>PassiveSkill</code> API</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.5 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.5</span><span class="cl-date">2026-03-03</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span> Critical</h4>
+    <ul>
+      <li><strong>[CRITICAL] Stats Stacking</strong> &mdash; <span class="lang-vi">UUID root cause: <code>StatModifier.unregister()</code> dùng UUID, nhưng code cũ tạo instance mới &rarr; UUID khác &rarr; không bao giờ xóa. Giờ lưu actual instances</span><span class="lang-en">UUID root cause: <code>StatModifier.unregister()</code> uses UUID, but old code created new instances &rarr; wrong UUID &rarr; never removed. Now stores actual instances</span></li>
+      <li><strong>[CRITICAL] Set Bonus Stacking</strong> &mdash; <span class="lang-vi">Bug UUID tương tự trong <code>SetBonusManager</code></span><span class="lang-en">Same UUID bug in <code>SetBonusManager</code></span></li>
+      <li><strong>[CRITICAL] Safety Sweep</strong> &mdash; <span class="lang-vi">Thêm backup key-based removal mỗi lần recalculate</span><span class="lang-en">Added backup key-based removal on every recalculate</span></li>
+      <li><strong>[HIGH] Fusion GUI Crash</strong> &mdash; <span class="lang-vi">triumph-gui crash trên Paper 1.21.8, đổi sang Paper native API</span><span class="lang-en">triumph-gui crash on Paper 1.21.8, switched to Paper native API</span></li>
+      <li><strong>[MEDIUM] Armor Change Event</strong> &mdash; <span class="lang-vi">Thêm <code>PlayerArmorChangeEvent</code> handler</span><span class="lang-en">Added <code>PlayerArmorChangeEvent</code> handler</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Permanent Effects</strong> &mdash; <span class="lang-vi"><code>perm-effects:</code> potion effects active khi đeo item. Auto-refresh, auto-remove</span><span class="lang-en"><code>perm-effects:</code> potion effects active while item equipped. Auto-refresh, auto-remove</span></li>
+      <li><strong>Particle Effects</strong> &mdash; <span class="lang-vi"><code>particles:</code> FLAME, DUST (custom color/size)</span><span class="lang-en"><code>particles:</code> FLAME, DUST (custom color/size)</span></li>
+      <li><strong>6-Piece Set Bonus</strong> &mdash; <span class="lang-vi">King enchant hỗ trợ full 6pc set</span><span class="lang-en">King enchant supports full 6pc set</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.4 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.4</span><span class="cl-date">2026-03-03</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span> Critical</h4>
+    <ul>
+      <li><strong>[CRITICAL] Set Bonus statId</strong> &mdash; <span class="lang-vi">Mapping sai statId khi unregister. Giờ lưu <code>modKey &rarr; statId</code></span><span class="lang-en">Wrong statId mapping on unregister. Now stores <code>modKey &rarr; statId</code></span></li>
+      <li><strong>[CRITICAL] Stat Modifier</strong> &mdash; <span class="lang-vi"><code>activeStats</code>: <code>Set</code> &rarr; <code>Map&lt;modKey, statId&gt;</code></span><span class="lang-en"><code>activeStats</code>: <code>Set</code> &rarr; <code>Map&lt;modKey, statId&gt;</code></span></li>
+      <li><strong>[HIGH] Trak Persistence</strong> &mdash; <span class="lang-vi">Counter + NBT write trong cùng operation</span><span class="lang-en">Counter + NBT write in single operation</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>New YAML Format</strong> &mdash; <span class="lang-vi">63 enchants chuyển sang <code>name/lore/formula</code> format</span><span class="lang-en">63 enchants converted to <code>name/lore/formula</code> format</span></li>
+      <li><strong>8 MythicLib Abilities</strong> &mdash; Void Slash, Earthquake, Chain Lightning, Shockwave, Vampiric Touch, Frenzy, Arcane Barrier, Earth Spike</li>
+      <li><strong>Set Bonus Formulas</strong> &mdash; <span class="lang-vi">Per-tier stats + abilities với formula engine</span><span class="lang-en">Per-tier stats + abilities with formula engine</span></li>
+      <li><strong>Skill &rarr; Ability Migration</strong> &mdash; <span class="lang-vi">14 legacy enchants chuyển đổi</span><span class="lang-en">14 legacy enchants converted</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.3 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.3</span><span class="cl-date">2026-03-02</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span> Major Features</h4>
+    <ul>
+      <li><strong>Souls System</strong> &mdash; <span class="lang-vi">Kill mob/player &rarr; +soul trên vũ khí. PAPI: <code>%slenchant_soul_pvp%</code>, <code>%slenchant_soul_pve%</code>, <code>%slenchant_soul%</code></span><span class="lang-en">Kill mob/player &rarr; +soul on weapon. PAPI: <code>%slenchant_soul_pvp%</code>, <code>%slenchant_soul_pve%</code>, <code>%slenchant_soul%</code></span></li>
+      <li><strong>Set Enchants</strong> &mdash; <span class="lang-vi">2pc/4pc/6pc bonus: King, Warlord, Phantom</span><span class="lang-en">2pc/4pc/6pc bonus: King, Warlord, Phantom</span></li>
+      <li><strong>BlockTrak/StatTrak/MobTrak</strong> &mdash; <span class="lang-vi">Đếm blocks mined, player kills, mob kills per item</span><span class="lang-en">Track blocks mined, player kills, mob kills per item</span></li>
+      <li><strong>Slot Increaser</strong> &mdash; <span class="lang-vi">Kéo thả lên item để tăng max enchant slots</span><span class="lang-en">Drag onto item to increase max enchant slots</span></li>
+      <li><strong>/sle show</strong> &mdash; <span class="lang-vi">Toggle detailed/compact display</span><span class="lang-en">Toggle detailed/compact display</span></li>
+      <li><strong>Vanilla Enchant Hooks</strong> &mdash; <code>vanilla-enchants.yml</code></li>
+      <li><strong>50+ Sample Enchants</strong> &mdash; <span class="lang-vi">8 categories</span><span class="lang-en">8 categories</span></li>
+      <li><strong>PlaceholderAPI Expansion</strong> &mdash; <span class="lang-vi">Auto-register khi PAPI có mặt</span><span class="lang-en">Auto-registers when PAPI present</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.2 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.2</span><span class="cl-date">2026-03-02</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Lucky Dust on Books</strong> &mdash; <span class="lang-vi">Kéo Lucky Dust lên sách enchant để tăng tỷ lệ (+1%/dust, max 100%)</span><span class="lang-en">Drag Lucky Dust onto enchant book to increase rate (+1%/dust, max 100%)</span></li>
+      <li><strong>/sle giveall</strong> &mdash; <span class="lang-vi">Give 1 book mỗi enchant cho player</span><span class="lang-en">Give one book of every enchant to player</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Lore spacing thừa giữa enchant lore và item lore</span><span class="lang-en">Extra lore spacing between enchant lore and item lore</span></li>
+      <li><span class="lang-vi">MMOItems Editor GUI workflow</span><span class="lang-en">MMOItems Editor GUI workflow</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.1 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.1</span><span class="cl-date">2026-03-02</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>[CRITICAL] Lore Position</strong> &mdash; <span class="lang-vi">Enchant lore giờ hiện trên đầu (như vanilla), không phải cuối</span><span class="lang-en">Enchant lore now displays at top (like vanilla), not bottom</span></li>
+      <li><strong>[CRITICAL] Visible Markers</strong> &mdash; <span class="lang-vi">Xóa <code>[SLE_START]</code>/<code>[SLE_END]</code> khỏi lore, thay bằng invisible codes</span><span class="lang-en">Removed visible <code>[SLE_START]</code>/<code>[SLE_END]</code> from lore, replaced with invisible codes</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Enchant Upgrade on Apply</strong> &mdash; <span class="lang-vi">Cùng enchant + cùng level &rarr; auto upgrade level+1</span><span class="lang-en">Same enchant + same level &rarr; auto upgrade to level+1</span></li>
+      <li><strong>Block Lower Level</strong> &mdash; <span class="lang-vi">Không cho ép sách level thấp hơn</span><span class="lang-en">Prevents applying lower-level books</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.1.0 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.1.0</span><span class="cl-date">2026-03-02</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Custom Success Rate</strong> &mdash; <span class="lang-vi"><code>success-rate</code> per-enchant trong YAML, hiện trên book lore</span><span class="lang-en"><code>success-rate</code> per-enchant in YAML, shown on book lore</span></li>
+      <li><strong>Named Placeholders</strong> &mdash; <span class="lang-vi"><code>key</code> field cho stats: <code>{ATK}</code>, <code>{SPD}</code>, <code>{CRIT}</code></span><span class="lang-en"><code>key</code> field for stats: <code>{ATK}</code>, <code>{SPD}</code>, <code>{CRIT}</code></span></li>
+      <li><strong>messages.yml</strong> &mdash; <span class="lang-vi">File messages tùy chỉnh mới</span><span class="lang-en">New customizable messages file</span></li>
+      <li><strong>Skill Fallback</strong> &mdash; <span class="lang-vi">Native Bukkit effects khi MythicMobs không có</span><span class="lang-en">Native Bukkit effects when MythicMobs unavailable</span></li>
+      <li><strong>Character Wrapping</strong> &mdash; <code>chars-per-line</code> <span class="lang-vi">thay <code>enchants-per-line</code></span><span class="lang-en">replaces <code>enchants-per-line</code></span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><strong>[CRITICAL] Lore Wiping</strong> &mdash; <span class="lang-vi">Enchants không còn ghi đè MMOItems lore</span><span class="lang-en">Enchants no longer overwrite MMOItems lore</span></li>
+      <li><strong>[CRITICAL] Vault ClassNotFoundError</strong> &mdash; <span class="lang-vi">Dùng isolated bridge objects</span><span class="lang-en">Uses isolated bridge objects</span></li>
+      <li><span class="lang-vi">Duplicate <code>/sle fuse</code> command đã xóa</span><span class="lang-en">Removed duplicate <code>/sle fuse</code> command</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.8 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.8</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span> Code Review</h4>
+    <ul>
+      <li><strong>[CRITICAL]</strong> EnchantRegistry atomic swap &mdash; volatile reference swap</li>
+      <li><strong>[CRITICAL]</strong> matchesMetadata ENCHANT_LEVEL &mdash; <span class="lang-vi">dùng <code>metadataFilter.min-level</code></span><span class="lang-en">uses <code>metadataFilter.min-level</code></span></li>
+      <li><strong>[CRITICAL]</strong> ExtractionHandler lore update + stale NBT cleanup</li>
+      <li><strong>[PERF]</strong> <span class="lang-vi">trackActivity không ghi YAML mỗi lần gọi, dùng dirty-flag</span><span class="lang-en">trackActivity no longer writes YAML on every call, uses dirty-flag</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-changed">CHANGED</span> DRY Refactoring</h4>
+    <ul>
+      <li><span class="lang-vi">Tách <code>EnchantDataUtil</code> &mdash; shared writeEnchantData + lore update</span><span class="lang-en">Extracted <code>EnchantDataUtil</code> &mdash; shared writeEnchantData + lore update</span></li>
+      <li><span class="lang-vi">Tách <code>CommandRegistrar</code> từ main plugin (218 &rarr; 83 dòng)</span><span class="lang-en">Extracted <code>CommandRegistrar</code> from main plugin (218 &rarr; 83 lines)</span></li>
+      <li><span class="lang-vi">Cached <code>TypeToken</code>, <code>NamespacedKey</code></span><span class="lang-en">Cached <code>TypeToken</code>, <code>NamespacedKey</code></span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-removed">REMOVED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Xóa <code>SLEnchantTabCompleter</code> (Brigadier xử lý)</span><span class="lang-en">Deleted <code>SLEnchantTabCompleter</code> (Brigadier handles this)</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.7 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.7</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Per-file Enchant System</strong> &mdash; <span class="lang-vi">Mỗi enchant = 1 file YAML trong <code>enchants/</code>. Auto-generate mặc định lần đầu</span><span class="lang-en">Each enchant = 1 YAML file in <code>enchants/</code>. Auto-generates defaults on first run</span></li>
+      <li><strong>Improved Help</strong> &mdash; <span class="lang-vi">Clickable commands với hover tooltips</span><span class="lang-en">Clickable commands with hover tooltips</span></li>
+      <li><strong>Better /sle list</strong> &mdash; <span class="lang-vi">Sorted by rarity, clickable, type tags</span><span class="lang-en">Sorted by rarity, clickable, type tags</span></li>
+      <li><strong>Better /sle info</strong> &mdash; <span class="lang-vi">Formatted stats, [Give Book] button</span><span class="lang-en">Formatted stats, [Give Book] button</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Gson singleton thay thế tất cả <code>Gson()</code> instances</span><span class="lang-en">Gson singleton replaces all <code>Gson()</code> instances</span></li>
+      <li><span class="lang-vi">Missing imports: FoliaCompat, ModifierTracker</span><span class="lang-en">Missing imports: FoliaCompat, ModifierTracker</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.6 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.6</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Memory Leak Prevention</strong> &mdash; <span class="lang-vi">Cleanup task mỗi 5 phút, xóa data sau 30 phút inactive</span><span class="lang-en">Cleanup task every 5 min, removes data after 30 min inactive</span></li>
+      <li><strong>ModifierTracker</strong> &mdash; <span class="lang-vi">Cleanup StatModifier khi player quit</span><span class="lang-en">Cleans up StatModifiers on player quit</span></li>
+      <li><strong>Async File I/O</strong> &mdash; <span class="lang-vi">Activity saves không còn gây lag</span><span class="lang-en">Activity saves no longer cause lag</span></li>
+      <li><strong>GsonUtil</strong> &mdash; <span class="lang-vi">Singleton giảm object allocation</span><span class="lang-en">Singleton reduces object allocation</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.5 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.5</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span> Security &amp; Thread Safety</h4>
+    <ul>
+      <li><strong>[CRITICAL]</strong> <span class="lang-vi">Thread safety: <code>ConcurrentHashMap</code> cho ActivityManager, EnchantRegistry</span><span class="lang-en">Thread safety: <code>ConcurrentHashMap</code> for ActivityManager, EnchantRegistry</span></li>
+      <li><strong>[CRITICAL]</strong> <span class="lang-vi">Thêm <code>EconomyWrapper.deposit()</code> (build-breaking bug)</span><span class="lang-en">Added <code>EconomyWrapper.deposit()</code> (build-breaking bug)</span></li>
+      <li><strong>[HIGH]</strong> <span class="lang-vi">Command injection protection trong activity rewards</span><span class="lang-en">Command injection protection in activity rewards</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.4 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.4</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
+    <ul>
+      <li><strong>Activity/Achievement System</strong> &mdash; <span class="lang-vi">11 activities, progress tracking, reward system (money, points, books, commands), GUI, broadcast</span><span class="lang-en">11 activities, progress tracking, reward system (money, points, books, commands), GUI, broadcast</span></li>
+      <li><code>/sle activity</code> &mdash; <span class="lang-vi">Xem tiến trình và achievements</span><span class="lang-en">View progress and achievements</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Drag-drop enchant: permission checks, item type validation, dust bonus</span><span class="lang-en">Drag-drop enchant: permission checks, item type validation, dust bonus</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.3 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.3</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Color codes: thêm hex colors (<code>&amp;#RRGGBB</code>) + MiniMessage support</span><span class="lang-en">Color codes: added hex colors (<code>&amp;#RRGGBB</code>) + MiniMessage support</span></li>
+      <li><span class="lang-vi">Drag-drop enchant application + dust bonus calculation</span><span class="lang-en">Drag-drop enchant application + dust bonus calculation</span></li>
+    </ul>
+  </div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-tech">TECHNICAL</span></h4>
+    <ul>
+      <li><span class="lang-vi">Xóa <code>minimize()</code> khỏi Shadow JAR (gây lỗi FoliaLib reflection)</span><span class="lang-en">Removed <code>minimize()</code> from Shadow JAR (broke FoliaLib reflection)</span></li>
+      <li><span class="lang-vi">Chuyển từ YAML sang Paper Lifecycle API + Brigadier</span><span class="lang-en">Migrated from YAML to Paper Lifecycle API + Brigadier</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.2 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.2</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><span class="lang-vi">Paper plugin command registration &mdash; xóa YAML <code>commands:</code>, dùng Lifecycle API</span><span class="lang-en">Paper plugin command registration &mdash; removed YAML <code>commands:</code>, uses Lifecycle API</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.1 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.1</span><span class="cl-date">2026-03-01</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
+    <ul>
+      <li><code>ClassNotFoundException</code> <span class="lang-vi">cho FoliaLib &mdash; xóa <code>minimize()</code> khỏi Shadow JAR</span><span class="lang-en">for FoliaLib &mdash; removed <code>minimize()</code> from Shadow JAR</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== v1.0.0 ==================== -->
+<div class="cl-entry">
+  <div class="cl-header"><span class="cl-ver">v1.0.0</span><span class="cl-date">2026-02-28</span></div>
+  <div class="cl-section"><h4><span class="cl-tag cl-tag-added">ADDED</span> Initial Release</h4>
+    <ul>
+      <li><span class="lang-vi">Hệ thống enchant tùy chỉnh cho MMOItems</span><span class="lang-en">Custom enchantment system for MMOItems</span></li>
+      <li>Drag-drop enchant book application</li>
+      <li><span class="lang-vi">Book combining (cùng enchant + cùng level = level up)</span><span class="lang-en">Book combining (same enchant + same level = level up)</span></li>
+      <li>Lucky Dust system, Enchant extraction, Fusion GUI</li>
+      <li><span class="lang-vi">Rarity system (Common, Uncommon, Rare, Epic, Legendary)</span><span class="lang-en">Rarity system (Common, Uncommon, Rare, Epic, Legendary)</span></li>
+      <li><span class="lang-vi">Conflict detection, Permission-based usage, Item type restrictions</span><span class="lang-en">Conflict detection, Permission-based usage, Item type restrictions</span></li>
+      <li>Stat modifiers (FLAT, RELATIVE, MULTIPLY)</li>
+      <li>Trigger system, Buff system, Skill system (MythicMobs)</li>
+      <li><span class="lang-vi">Economy integration (Vault, PlayerPoints)</span><span class="lang-en">Economy integration (Vault, PlayerPoints)</span></li>
+      <li>Folia compatibility via FoliaLib</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.7 — by <strong>SalyVn</strong></p></div></div>
+</div>
+</body>
+</html>

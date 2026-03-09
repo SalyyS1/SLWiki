@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Items & Systems — SLMMOEnchant Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.8</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link active"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands &amp; API</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+
+<div class="content">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Items & Systems</span>
+    <h1 class="hero-title">Items &amp; Systems</h1>
+    <p class="hero-subtitle">All custom items, souls system, set enchants, trak counters, and enchant slots.</p>
+  </div>
+</section>
+
+<!-- CUSTOM ITEMS -->
+<section class="section" id="items">
+  <h2 class="section-title">Custom Items</h2>
+  <p class="section-desc">Items created by the plugin, given via <code>/sle giveitem &lt;player&gt; &lt;item_id&gt;</code>.</p>
+  <div class="enchant-grid">
+    <div class="enchant-card rarity-common">
+      <div class="enchant-header"><span class="enchant-name">Lucky Dust</span><span class="enchant-rarity rarity-tag-common">CONSUMABLE</span></div>
+      <p class="enchant-desc">Drag onto enchant book to increase success rate (+1%/dust, max +15%). Material: GLOWSTONE_DUST</p>
+      <p class="enchant-meta">ID: <code>lucky_dust</code></p>
+    </div>
+    <div class="enchant-card rarity-uncommon">
+      <div class="enchant-header"><span class="enchant-name">Slot Increaser</span><span class="enchant-rarity rarity-tag-uncommon">CONSUMABLE</span></div>
+      <p class="enchant-desc">Drag onto item to increase max enchant slots (+1 slot). Material: NETHER_STAR</p>
+      <p class="enchant-meta">ID: <code>slot_increaser</code></p>
+    </div>
+    <div class="enchant-card rarity-epic">
+      <div class="enchant-header"><span class="enchant-name">Protection Stone</span><span class="enchant-rarity rarity-tag-epic">CONSUMABLE</span></div>
+      <p class="enchant-desc">Drag onto item to protect once from destruction on enchant failure. Material: TOTEM_OF_UNDYING</p>
+      <p class="enchant-meta">ID: <code>protection_stone</code></p>
+    </div>
+    <div class="enchant-card rarity-rare">
+      <div class="enchant-header"><span class="enchant-name">Extraction Scroll</span><span class="enchant-rarity rarity-tag-rare">CONSUMABLE</span></div>
+      <p class="enchant-desc">Required for extraction when <code>require-scroll: true</code>. Held in off-hand during /sle extract. Material: PAPER</p>
+      <p class="enchant-meta">ID: <code>scroll</code></p>
+    </div>
+    <div class="enchant-card rarity-rare">
+      <div class="enchant-header"><span class="enchant-name">Soul Stone</span><span class="enchant-rarity rarity-tag-rare">PASSIVE</span></div>
+      <p class="enchant-desc">Attach to weapon to start collecting soul points from kills</p>
+      <p class="enchant-meta">ID: <code>soul_pvp</code>, <code>soul_pve</code></p>
+    </div>
+    <div class="enchant-card rarity-rare">
+      <div class="enchant-header"><span class="enchant-name">Soul Booster</span><span class="enchant-rarity rarity-tag-rare">CONSUMABLE</span></div>
+      <p class="enchant-desc">Drag onto weapon with Soul Stone to add bonus soul points</p>
+      <p class="enchant-meta">ID: <code>soul_booster_pvp</code>, <code>soul_booster_pve</code></p>
+    </div>
+    <div class="enchant-card rarity-rare">
+      <div class="enchant-header"><span class="enchant-name">Trak Stones</span><span class="enchant-rarity rarity-tag-rare">PASSIVE</span></div>
+      <p class="enchant-desc">Attach to item to count kills/blocks. Three types: Block tracker, Kill tracker, Mob kill tracker</p>
+      <p class="enchant-meta">ID: <code>trak_block</code>, <code>trak_kill</code>, <code>trak_mob</code></p>
+    </div>
+    <div class="enchant-card rarity-epic">
+      <div class="enchant-header"><span class="enchant-name">Enchant Orb</span><span class="enchant-rarity rarity-tag-epic">ORB</span></div>
+      <p class="enchant-desc">Purchased from Tier Shop. Right-click to reveal a random enchant book of the corresponding tier with randomized success/failure rates</p>
+      <p class="enchant-meta">Obtained via: <code>/sle shop</code></p>
+    </div>
+  </div>
+</section>
+
+<!-- SOULS SYSTEM -->
+<section class="section" id="souls">
+  <h2 class="section-title">Souls System</h2>
+  <p class="section-desc">Kill mobs/players to increase soul points on a weapon. Soul points affect enchants with <code>soul-cost</code> — each enchant activation deducts soul points.</p>
+  <div class="rarity-table-wrap">
+    <table class="rarity-table">
+      <thead><tr><th>Placeholder</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>%slenchant_soul_pvp%</code></td><td>Soul points from player kills</td></tr>
+        <tr><td><code>%slenchant_soul_pve%</code></td><td>Soul points from mob kills</td></tr>
+        <tr><td><code>%slenchant_soul%</code></td><td>Total soul points</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="info-box" style="margin-top:.75rem">
+    <div class="info-icon">i</div>
+    <p><strong>Soul Economy:</strong> Use Soul Stones to enable tracking → gain souls from kills → enchants with <code>soul-cost</code> consume souls. Players must manage their soul budget wisely.</p>
+  </div>
+</section>
+
+<!-- SET ENCHANTS -->
+<section class="section" id="sets">
+  <h2 class="section-title">Set Enchants</h2>
+  <p class="section-desc">Enchants with bonuses when wearing 2/4/6 items with the same enchant. Like MMO item set bonuses.</p>
+  <div class="enchant-grid">
+    <div class="enchant-card rarity-legendary">
+      <div class="enchant-header"><span class="enchant-name">King</span><span class="enchant-rarity rarity-tag-legendary">SET</span></div>
+      <p class="enchant-desc">2pc: +10% ATK DMG | 4pc: +20% ATK DMG + GOLEM_WRATH | 6pc: Full set bonus</p>
+    </div>
+    <div class="enchant-card rarity-epic">
+      <div class="enchant-header"><span class="enchant-name">Warlord</span><span class="enchant-rarity rarity-tag-epic">SET</span></div>
+      <p class="enchant-desc">2pc: +5% DEF | 4pc: +15% DEF + HEAVY_CHARGE</p>
+    </div>
+    <div class="enchant-card rarity-rare">
+      <div class="enchant-header"><span class="enchant-name">Phantom</span><span class="enchant-rarity rarity-tag-rare">SET</span></div>
+      <p class="enchant-desc">2pc: +10% SPEED | 4pc: +25% SPEED + BLINK</p>
+    </div>
+  </div>
+</section>
+
+<!-- ENCHANT SLOTS -->
+<section class="section" id="slots">
+  <h2 class="section-title">Enchant Slots</h2>
+  <p class="section-desc">Each item has limited enchant slots. Shown on item lore: <code>Enchant: x/max</code>. Use Slot Increaser to add more.</p>
+  <div class="mc-lore" style="max-width:400px">
+    <div class="lore-line"><span class="mc-gold">Divine III</span></div>
+    <div class="lore-line"><span class="mc-green">Aegis II</span></div>
+    <div class="lore-line">&nbsp;</div>
+    <div class="lore-line"><span class="mc-aqua">Enchant: 2/6</span></div>
+  </div>
+  <div class="info-box" style="margin-top:.75rem">
+    <div class="info-icon">i</div>
+    <p><strong>Base:</strong> <code>config.yml → max-enchants-per-item: 6</code><br>
+    <strong>Extra:</strong> Slot Increaser adds +1 per use (up to <code>extra-slot-limit</code>)<br>
+    <strong>Example:</strong> Base=6, Extra=3 → Item accepts max 9 enchants.</p>
+  </div>
+</section>
+
+<!-- CONFLICT PAIRS -->
+<section class="section" id="conflict-pairs">
+  <h2 class="section-title">Current Conflict Pairs</h2>
+  <p class="section-desc">Enchants that cannot coexist on the same item:</p>
+  <div class="rarity-table-wrap">
+    <table class="rarity-table">
+      <thead><tr><th>Group</th><th>Enchant A</th><th>Enchant B</th><th>Slot Type</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Holy</strong></td><td>Divine</td><td>Umbra</td><td>SWORD/AXE</td></tr>
+        <tr><td><strong>Cursed</strong></td><td>Reaper</td><td>Ruin</td><td>SWORD/AXE</td></tr>
+        <tr><td><strong>Titan</strong></td><td>Bulwark</td><td>Vitality</td><td>CHESTPLATE</td></tr>
+        <tr><td><strong>Heavy</strong></td><td>Juggernaut</td><td>Lethality</td><td>AXE/SWORD</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.8 — by <strong>SalyVn</strong></p></div></div>
+</div>
+<script>
+document.getElementById('mobileToggle').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');this.classList.toggle('active')});
+</script>
+</body>
+</html>

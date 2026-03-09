@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration — SLMMOEnchant Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.8</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link active"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands &amp; API</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+
+<div class="content">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Admin Guide</span>
+    <h1 class="hero-title">Configuration Reference</h1>
+    <p class="hero-subtitle">All configuration files in <code>plugins/SLMMOEnchant/</code> — complete guide for every field, default values, and usage.</p>
+  </div>
+</section>
+
+<!-- config.yml -->
+<section class="section" id="config">
+  <h2 class="section-title">⚙️ config.yml — General Settings</h2>
+  <p class="section-desc">The main configuration file that controls general plugin behavior.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">config.yml</span></div>
+    <pre class="code-block"><span class="k">version:</span> <span class="v">1</span>                         <span class="c"># Do not edit (auto migration)</span>
+<span class="k">debug:</span> <span class="v">false</span>                        <span class="c"># Enable detailed logging (dev only)</span>
+<span class="k">book-material:</span> <span class="v">ENCHANTED_BOOK</span>       <span class="c"># Material used for enchant books</span>
+<span class="k">max-enchants-per-item:</span> <span class="v">6</span>            <span class="c"># Maximum enchants per item (base)</span>
+<span class="k">allow-stacking:</span> <span class="v">false</span>              <span class="c"># Allow duplicate enchants?</span>
+<span class="k">inventory-interval:</span> <span class="v">200</span>            <span class="c"># Ticks between inventory scans (200=10s)</span>
+<span class="k">lore-spacing:</span> <span class="v">0</span>                    <span class="c"># Gap between enchant lore lines</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">!</div>
+    <p><code>max-enchants-per-item</code> is the BASE value. If using <strong>Slot Increaser</strong> (Nether Star), items gain extra slots on top of this base. E.g.: base=6, extra=2 → max=8.</p>
+  </div>
+</section>
+
+<!-- application.yml -->
+<section class="section" id="application">
+  <h2 class="section-title">🔨 settings/application.yml — Drag-Drop &amp; Rates</h2>
+  <p class="section-desc">Controls the enchant application mechanic: success/failure rates, upgrade behavior, unique activation, extra slot limit.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/application.yml</span><span class="config-desc">Full reference</span></div>
+    <pre class="code-block"><span class="k">drag-drop:</span>
+  <span class="k">enabled:</span> <span class="v">true</span>                    <span class="c"># Enable/disable drag-drop enchanting</span>
+  <span class="k">base-success-rate:</span> <span class="v">85</span>            <span class="c"># Default success % rate</span>
+  <span class="k">base-failure-rate:</span> <span class="v">10</span>            <span class="c"># % chance to destroy item on failure</span>
+  <span class="k">allow-upgrade-on-apply:</span> <span class="v">true</span>     <span class="c"># Same enchant+level → auto upgrade</span>
+  <span class="k">unique-activation:</span> <span class="v">true</span>         <span class="c"># Keep only highest level for duplicate enchants</span>
+
+<span class="k">extra-slot-limit:</span> <span class="v">5</span>               <span class="c"># Max extra slots from Slot Increaser (0=unlimited)</span>
+
+<span class="k">dust:</span>
+  <span class="k">enabled:</span> <span class="v">true</span>                    <span class="c"># Enable Lucky Dust</span>
+  <span class="k">bonus-per-dust:</span> <span class="v">1</span>               <span class="c"># +1% success per dust</span>
+  <span class="k">max-bonus:</span> <span class="v">15</span>                   <span class="c"># Max cap +15%</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p><strong>Enchanting flow:</strong><br>
+    1. Success rate = <code>success-rate on book</code> (from enchant config or /sle give random)<br>
+    2. Failure → roll <code>failure-rate</code> → hit = destroy item (unless Protection Stone)<br>
+    3. Lucky Dust increases success rate (adds % directly)</p>
+  </div>
+</section>
+
+<!-- display.yml -->
+<section class="section" id="display">
+  <h2 class="section-title">🎨 settings/display.yml — Rarity &amp; Colors</h2>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/display.yml</span></div>
+    <pre class="code-block"><span class="k">chars-per-line:</span> <span class="v">40</span>                <span class="c"># Compact mode: auto line wrap</span>
+<span class="k">rarities:</span>
+  <span class="k">COMMON:</span>
+    <span class="k">color:</span> <span class="s">"&amp;7"</span>                    <span class="c"># Color code for name</span>
+    <span class="k">display-name:</span> <span class="s">"Common"</span>         <span class="c"># Tier display name</span>
+  <span class="k">UNCOMMON:</span>    { <span class="k">color:</span> <span class="s">"&amp;a"</span>, <span class="k">display-name:</span> <span class="s">"Uncommon"</span> }
+  <span class="k">RARE:</span>        { <span class="k">color:</span> <span class="s">"&amp;9"</span>, <span class="k">display-name:</span> <span class="s">"Rare"</span> }
+  <span class="k">EPIC:</span>        { <span class="k">color:</span> <span class="s">"&amp;5"</span>, <span class="k">display-name:</span> <span class="s">"Epic"</span> }
+  <span class="k">LEGENDARY:</span>   { <span class="k">color:</span> <span class="s">"&amp;6"</span>, <span class="k">display-name:</span> <span class="s">"Legendary"</span> }</pre>
+  </div>
+</section>
+
+<!-- tier-shop.yml -->
+<section class="section" id="tier-shop">
+  <h2 class="section-title">🏪 settings/tier-shop.yml — GUI Shop Setup</h2>
+  <p class="section-desc">Configure the Enchant Orb purchase GUI. <strong>DeluxeMenus-like</strong> style — customize slot, material, lore, price per tier.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/tier-shop.yml</span><span class="config-desc">GUI customization</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
+<span class="k">currency:</span> <span class="v">EXP</span>                      <span class="c"># EXP, VAULT, POINTS (PlayerPoints)</span>
+<span class="k">orb-material:</span> <span class="v">MAGMA_CREAM</span>          <span class="c"># Material for Orb item</span>
+
+<span class="k">gui:</span>
+  <span class="k">title:</span> <span class="s">"&amp;5&amp;l✦ Enchant Shop"</span>       <span class="c"># GUI title</span>
+  <span class="k">rows:</span> <span class="v">3</span>                           <span class="c"># Number of rows (1-6)</span>
+  <span class="k">background:</span>                        <span class="c"># Background fill border</span>
+    <span class="k">slots:</span> <span class="v">[0,1,2,...,26]</span>           <span class="c"># Slot numbers (0-indexed)</span>
+    <span class="k">material:</span> <span class="v">BLACK_STAINED_GLASS_PANE</span>
+    <span class="k">name:</span> <span class="s">" "</span>
+  <span class="k">info:</span>                              <span class="c"># Center info item</span>
+    <span class="k">slot:</span> <span class="v">13</span>
+    <span class="k">material:</span> <span class="v">NETHER_STAR</span>
+    <span class="k">name:</span> <span class="s">"&amp;e&amp;lEnchant Shop"</span>
+    <span class="k">lore:</span> [<span class="s">"&amp;7Buy Enchant Orbs..."</span>]
+
+<span class="k">tiers:</span>                               <span class="c"># Each tier = 1 button in GUI</span>
+  <span class="k">COMMON:</span>
+    <span class="k">slot:</span> <span class="v">10</span>                        <span class="c"># Position in GUI</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;f✦ Common Orb"</span>
+    <span class="k">material:</span> <span class="v">WHITE_DYE</span>
+    <span class="k">price:</span> <span class="v">10</span>                       <span class="c"># Price (currency unit)</span>
+    <span class="k">description:</span>                     <span class="c"># Display lore</span>
+      - <span class="s">"&amp;7Contains a random &amp;fCommon &amp;7enchant"</span>
+      - <span class="s">"&amp;7Price: &amp;a{price} Levels"</span>   <span class="c"># {price} = auto fill</span>
+      - <span class="s">"&amp;eClick to purchase!"</span>
+  <span class="k">LEGENDARY:</span>
+    <span class="k">slot:</span> <span class="v">16</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;6✦ Legendary Orb"</span>
+    <span class="k">material:</span> <span class="v">ORANGE_DYE</span>
+    <span class="k">price:</span> <span class="v">75</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">!</div>
+    <p><strong>Open GUI:</strong> <code>/sle shop</code> or <code>/sle tiershop</code><br>
+    <strong>Flow:</strong> Buy Orb → Right-click to reveal → Receive random enchant book of that tier, with randomized success/failure rate (base ±15%, failure 0-2×base).</p>
+  </div>
+</section>
+
+<!-- enchant-table.yml -->
+<section class="section" id="enchant-table">
+  <h2 class="section-title">📖 settings/enchant-table.yml — Enchant Table Integration</h2>
+  <p class="section-desc">Configure how custom enchants appear when using the vanilla enchanting table.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/enchant-table.yml</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
+
+<span class="k">enchant-list:</span>
+  <span class="k">mode:</span> <span class="v">false</span>                      <span class="c"># true=WHITELIST, false=BLACKLIST</span>
+  <span class="k">list:</span> <span class="v">[]</span>                         <span class="c"># Enchant IDs</span>
+
+<span class="c"># Override weight/level per enchant</span>
+<span class="k">enchants:</span>
+  <span class="k">aegis:</span>
+    <span class="k">weight:</span> <span class="v">2.0</span>                   <span class="c"># 2× appearance rate</span>
+    <span class="k">min-level:</span> <span class="v">1</span>
+    <span class="k">max-level:</span> <span class="v">2</span>                  <span class="c"># Cap level from enchanting table</span>
+  <span class="k">frenzy:</span>
+    <span class="k">weight:</span> <span class="v">0.5</span>                   <span class="c"># 0.5× rate (rarer)</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p><strong>Weight</strong> controls relative appearance rate. Enchants not in the list use weight=1.0 by default. <code>max-level</code> is capped by the <code>max-level</code> in the enchant YAML file.</p>
+  </div>
+</section>
+
+<!-- extraction.yml -->
+<section class="section" id="extraction">
+  <h2 class="section-title">🔬 settings/extraction.yml — Enchant Extraction</h2>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/extraction.yml</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
+<span class="k">require-scroll:</span> <span class="v">true</span>              <span class="c"># Requires Extraction Scroll to use</span>
+<span class="k">scroll-material:</span> <span class="v">PAPER</span>            <span class="c"># Material for scroll item</span>
+<span class="k">success-rate:</span> <span class="v">100</span>                 <span class="c"># % success rate for extraction</span>
+<span class="k">level-penalty:</span> <span class="v">0</span>                  <span class="c"># Reduce enchant level after extraction (0=keep)</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p><strong>Command:</strong> <code>/sle extract</code> (random enchant) or <code>/sle extract &lt;enchant_id&gt;</code> (specific).<br>
+    If <code>require-scroll: true</code>, player must hold Extraction Scroll in off-hand. Create scroll: <code>/sle give &lt;player&gt; scroll &lt;amount&gt;</code>.</p>
+  </div>
+</section>
+
+<!-- fusion.yml -->
+<section class="section" id="fusion">
+  <h2 class="section-title">🔀 settings/fusion.yml — Fusion Recipes</h2>
+  <p class="section-desc">Define recipes for combining enchant books into more powerful enchants.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/fusion.yml</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
+<span class="k">gui:</span>
+  <span class="k">title:</span> <span class="s">"&amp;d&amp;l✦ Enchant Fusion"</span>
+  <span class="k">rows:</span> <span class="v">3</span>
+<span class="k">recipes:</span>
+  <span class="k">strength_2:</span>                        <span class="c"># Recipe ID (custom name)</span>
+    <span class="k">result:</span>
+      <span class="k">enchant:</span> <span class="v">strength</span>              <span class="c"># Output enchant</span>
+      <span class="k">level:</span> <span class="v">2</span>                      <span class="c"># Output level</span>
+    <span class="k">ingredients:</span>                      <span class="c"># Required enchant books</span>
+      - <span class="k">enchant:</span> <span class="v">strength</span>
+        <span class="k">level:</span> <span class="v">1</span>
+        <span class="k">amount:</span> <span class="v">3</span>                    <span class="c"># Needs 3 Strength I books</span></pre>
+  </div>
+</section>
+
+<!-- vanilla-enchants.yml -->
+<section class="section" id="vanilla">
+  <h2 class="section-title">📜 settings/vanilla-enchants.yml — Override Vanilla</h2>
+  <p class="section-desc">Override display name, description, and rarity for vanilla Minecraft enchants in SLE lore block.</p>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/vanilla-enchants.yml</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>                      <span class="c"># Show vanilla enchants in SLE lore</span>
+<span class="k">show-in-lore:</span> <span class="v">true</span>                 <span class="c"># Display vanilla enchant info</span>
+<span class="k">allow-drag-drop:</span> <span class="v">true</span>              <span class="c"># Allow dragging vanilla books onto MMOItems</span>
+<span class="k">enchants:</span>
+  <span class="k">sharpness:</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;fSharpness"</span>
+    <span class="k">description:</span> <span class="s">"&amp;7Increases melee damage"</span>
+    <span class="k">rarity:</span> <span class="v">COMMON</span>
+  <span class="k">protection:</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;fProtection"</span>
+    <span class="k">description:</span> <span class="s">"&amp;7Reduces damage taken"</span>
+    <span class="k">rarity:</span> <span class="v">COMMON</span></pre>
+  </div>
+</section>
+
+<!-- messages.yml -->
+<section class="section" id="messages">
+  <h2 class="section-title">💬 settings/messages.yml — Custom Messages</h2>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">messages.yml</span><span class="config-desc">Placeholders: {enchant}, {level}, {max}, {price}</span></div>
+    <pre class="code-block code-sm"><span class="c"># Enchant application</span>
+<span class="k">enchant-success:</span> <span class="s">"&amp;a{enchant} &amp;7Lv.{level} applied!"</span>
+<span class="k">enchant-fail:</span> <span class="s">"&amp;cFailed to apply {enchant}."</span>
+<span class="k">enchant-destroyed:</span> <span class="s">"&amp;4Item DESTROYED!"</span>
+<span class="k">enchant-max:</span> <span class="s">"&amp;cMax enchants reached! ({max})"</span>
+
+<span class="c"># Protection &amp; Items</span>
+<span class="k">protection-applied:</span> <span class="s">"&amp;aProtection Stone applied!"</span>
+<span class="k">protection-saved:</span> <span class="s">"&amp;eProtection saved your item!"</span>
+
+<span class="c"># Shop &amp; Orb</span>
+<span class="k">shop-purchase-success:</span> <span class="s">"&amp;aPurchased {tier} Orb!"</span>
+<span class="k">shop-not-enough-exp:</span> <span class="s">"&amp;cNot enough EXP!"</span>
+<span class="k">orb-reveal:</span> <span class="s">"&amp;dRevealed: {enchant}!"</span></pre>
+  </div>
+</section>
+
+<!-- dust.yml -->
+<section class="section" id="dust">
+  <h2 class="section-title">✨ settings/dust.yml — Lucky Dust Config</h2>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">settings/dust.yml</span></div>
+    <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
+<span class="k">material:</span> <span class="v">GLOWSTONE_DUST</span>           <span class="c"># Material for dust item</span>
+<span class="k">bonus-per-dust:</span> <span class="v">1</span>                  <span class="c"># % success increase per dust</span>
+<span class="k">max-bonus:</span> <span class="v">15</span>                      <span class="c"># Max bonus cap</span>
+<span class="k">random-rate:</span>                        <span class="c"># When using dust, random bonus in range</span>
+  <span class="k">min:</span> <span class="v">1</span>
+  <span class="k">max:</span> <span class="v">3</span></pre>
+  </div>
+</section>
+
+<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.8 — by <strong>SalyVn</strong></p></div></div>
+</div>
+<script>
+document.getElementById('mobileToggle').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');this.classList.toggle('active')});
+</script>
+</body>
+</html>

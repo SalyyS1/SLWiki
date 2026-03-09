@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commands &amp; API — SLMMOEnchant Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.8</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link active"><span class="nav-icon">&#62;</span>Commands &amp; API</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+
+<div class="content">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Commands &amp; API</span>
+    <h1 class="hero-title">Commands &amp; API</h1>
+    <p class="hero-subtitle">All commands, permissions, PlaceholderAPI placeholders, and developer API.</p>
+  </div>
+</section>
+
+<!-- ADMIN COMMANDS -->
+<section class="section" id="admin-cmd">
+  <h2 class="section-title">Admin Commands</h2>
+  <p class="section-desc">Alias: <code>/sle</code> or <code>/slenchant</code></p>
+  <div class="cmd-list">
+    <div class="cmd-item"><code class="cmd">/sle reload</code><span class="cmd-desc">Reload all config + enchant files</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle give &lt;player&gt; &lt;enchant&gt; [level] [amount] [successRate] [failureRate]</code><span class="cmd-desc">Create enchant book with custom rates</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle giveall &lt;player&gt; [level] [amount]</code><span class="cmd-desc">One book of every registered enchant</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle giveitem &lt;player&gt; &lt;item_id&gt; [amount]</code><span class="cmd-desc">Give custom items (Lucky Dust, Slot Increaser, etc)</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle list [page]</code><span class="cmd-desc">List enchants (10/page, clickable)</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle info &lt;enchant&gt;</code><span class="cmd-desc">Enchant details (stats, formulas, rarity)</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><code class="cmd">/sle debug</code><span class="cmd-desc">Debug held item (NBT, enchant data)</span><span class="cmd-perm">slenchant.admin</span></div>
+  </div>
+</section>
+
+<!-- PLAYER COMMANDS -->
+<section class="section" id="player-cmd">
+  <h2 class="section-title">Player Commands</h2>
+  <div class="cmd-list">
+    <div class="cmd-item"><code class="cmd">/sle fusion</code><span class="cmd-desc">Open Fusion GUI</span><span class="cmd-perm">slenchant.use</span></div>
+    <div class="cmd-item"><code class="cmd">/sle extract [enchant]</code><span class="cmd-desc">Extract enchant from item (random or selective)</span><span class="cmd-perm">slenchant.use</span></div>
+    <div class="cmd-item"><code class="cmd">/sle activity</code><span class="cmd-desc">Activity/Achievement GUI</span><span class="cmd-perm">slenchant.use</span></div>
+    <div class="cmd-item"><code class="cmd">/sle activities</code><span class="cmd-desc">Activities list (text)</span><span class="cmd-perm">slenchant.use</span></div>
+    <div class="cmd-item"><code class="cmd">/sle show</code><span class="cmd-desc">Toggle detailed/compact lore display</span><span class="cmd-perm">slenchant.use</span></div>
+  </div>
+</section>
+
+<!-- PERMISSIONS -->
+<section class="section" id="perms">
+  <h2 class="section-title">Permissions</h2>
+  <div class="perm-table-wrap">
+    <table class="perm-table">
+      <thead><tr><th>Permission</th><th>Description</th><th>Default</th></tr></thead>
+      <tbody>
+        <tr><td><code>slenchant.admin</code></td><td>All admin commands</td><td>OP</td></tr>
+        <tr><td><code>slenchant.use</code></td><td>Basic player commands</td><td>true</td></tr>
+        <tr><td><code>slenchant.enchant.drag</code></td><td>Drag-drop enchant books</td><td>true</td></tr>
+        <tr><td><code>slenchant.enchant.&lt;id&gt;</code></td><td>Use specific enchant</td><td>true</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PAPI -->
+<section class="section" id="papi">
+  <h2 class="section-title">PlaceholderAPI</h2>
+  <p class="section-desc">Auto-registers when PlaceholderAPI is present. Expansion: <code>slenchant</code></p>
+  <div class="perm-table-wrap">
+    <table class="perm-table">
+      <thead><tr><th>Placeholder</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>%slenchant_soul_pvp%</code></td><td>PvP soul points on held weapon</td></tr>
+        <tr><td><code>%slenchant_soul_pve%</code></td><td>PvE soul points on held weapon</td></tr>
+        <tr><td><code>%slenchant_soul%</code></td><td>Total soul points</td></tr>
+        <tr><td><code>%slenchant_trak_blocks%</code></td><td>Blocks mined counter</td></tr>
+        <tr><td><code>%slenchant_trak_kills%</code></td><td>Player kills counter</td></tr>
+        <tr><td><code>%slenchant_trak_mob_kills%</code></td><td>Mob kills counter</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DEVELOPER API -->
+<section class="section" id="api">
+  <h2 class="section-title">Developer API</h2>
+  <p class="section-desc">NBT structure and key classes for developers wanting to integrate with SLMMOEnchant.</p>
+  <div class="api-grid">
+    <div class="api-card">
+      <h3>NBT Structure</h3>
+      <ul class="api-list">
+        <li><code>MMOITEMS_SLENCHANT</code> &mdash; JSON map of enchant ID &rarr; level</li>
+        <li><code>SLENCHANT_MOD_*</code> &mdash; stat modifier tags</li>
+        <li><code>SLENCHANT_PROTECTED</code> &mdash; protection stone tag</li>
+        <li><code>SLENCHANT_SOUL_PVP/PVE</code> &mdash; soul counters</li>
+        <li><code>SLENCHANT_TRAK_*</code> &mdash; trak counters</li>
+      </ul>
+    </div>
+    <div class="api-card">
+      <h3>Key Classes (Kotlin)</h3>
+      <ul class="api-list">
+        <li><code>EnchantRegistry</code> &mdash; Registry of all enchants</li>
+        <li><code>EnchantBookBuilder</code> &mdash; Create enchant books</li>
+        <li><code>EnchantDataUtil</code> &mdash; Read/write enchant data on items</li>
+        <li><code>LoreRenderUtil</code> &mdash; Render enchant lore</li>
+        <li><code>StatApplyListener</code> &mdash; Apply/remove stat modifiers</li>
+        <li><code>SetBonusManager</code> &mdash; Manage set bonuses</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.8 — by <strong>SalyVn</strong></p></div></div>
+</div>
+<script>
+document.getElementById('mobileToggle').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');this.classList.toggle('active')});
+</script>
+</body>
+</html>
