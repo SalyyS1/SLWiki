@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SLMMOStatsApply — Wiki</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --bg-card: #161618;
+        --bg-code: #1c1c1f;
+        --border: #2a2a2e;
+        --border-accent: #3d3d42;
+        --text: #e0e0e0;
+        --text-dim: #888;
+        --text-muted: #666;
+        --accent: #c89b3c;
+        --accent-dim: #8b6914;
+        --success: #3d8b37;
+        --danger: #a83232;
+        --info: #3a6ea5;
+        --purple: #7b5ea7;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Layout ─────────────────────────────────── */
+      .page {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 260px;
+        background: var(--bg-card);
+        border-right: 1px solid var(--border);
+        padding: 32px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 10;
+      }
+
+      .sidebar-header {
+        padding: 0 24px 24px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 16px;
+      }
+
+      .sidebar-header h1 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.5px;
+      }
+
+      .sidebar-header p {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      .nav-group {
+        margin-bottom: 8px;
+      }
+
+      .nav-group-title {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-muted);
+        padding: 12px 24px 6px;
+      }
+
+      .nav-group a {
+        display: block;
+        padding: 6px 24px 6px 32px;
+        font-size: 13px;
+        color: var(--text-dim);
+        text-decoration: none;
+        transition: all 0.15s;
+        border-left: 2px solid transparent;
+      }
+
+      .nav-group a:hover {
+        color: var(--text);
+        background: rgba(200, 155, 60, 0.06);
+        border-left-color: var(--accent-dim);
+      }
+
+      .nav-group a.active {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: rgba(200, 155, 60, 0.08);
+      }
+
+      .content {
+        margin-left: 260px;
+        flex: 1;
+        max-width: 820px;
+        padding: 48px 56px 96px;
+      }
+
+      /* ── Typography ──────────────────────────────── */
+      h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #f0f0f0;
+        margin: 56px 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      h2:first-of-type {
+        margin-top: 0;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ddd;
+        margin: 32px 0 12px;
+      }
+
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-dim);
+        margin: 20px 0 8px;
+      }
+
+      p {
+        margin-bottom: 12px;
+        font-size: 14px;
+      }
+
+      strong {
+        color: #f0f0f0;
+      }
+
+      /* ── Code Blocks ─────────────────────────────── */
+      code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: var(--accent);
+      }
+
+      pre {
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px 20px;
+        margin: 12px 0 20px;
+        overflow-x: auto;
+        line-height: 1.5;
+      }
+
+      pre code {
+        background: none;
+        border: none;
+        padding: 0;
+        color: var(--text);
+        font-size: 12.5px;
+      }
+
+      .comment {
+        color: #5c6370;
+      }
+      .key {
+        color: #e5c07b;
+      }
+      .val {
+        color: #98c379;
+      }
+      .num {
+        color: #d19a66;
+      }
+
+      /* ── Tables ──────────────────────────────────── */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 24px;
+        font-size: 13px;
+      }
+
+      th {
+        text-align: left;
+        padding: 10px 14px;
+        background: var(--bg-code);
+        border: 1px solid var(--border);
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-dim);
+      }
+
+      td {
+        padding: 9px 14px;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.015);
+      }
+
+      /* ── Callouts ────────────────────────────────── */
+      .callout {
+        padding: 14px 18px;
+        border-radius: 5px;
+        margin: 16px 0;
+        font-size: 13px;
+        border-left: 3px solid;
+      }
+
+      .callout-note {
+        background: rgba(58, 110, 165, 0.08);
+        border-color: var(--info);
+      }
+
+      .callout-warn {
+        background: rgba(200, 155, 60, 0.08);
+        border-color: var(--accent);
+      }
+
+      .callout-danger {
+        background: rgba(168, 50, 50, 0.08);
+        border-color: var(--danger);
+      }
+
+      .callout strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .callout-note strong {
+        color: var(--info);
+      }
+      .callout-warn strong {
+        color: var(--accent);
+      }
+      .callout-danger strong {
+        color: var(--danger);
+      }
+
+      /* ── Lists ───────────────────────────────────── */
+      ul,
+      ol {
+        margin: 8px 0 16px 20px;
+        font-size: 14px;
+      }
+
+      li {
+        margin-bottom: 4px;
+      }
+
+      /* ── Badge ───────────────────────────────────── */
+      .badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        vertical-align: middle;
+      }
+
+      .badge-prefix {
+        background: rgba(200, 155, 60, 0.15);
+        color: var(--accent);
+      }
+      .badge-suffix {
+        background: rgba(123, 94, 167, 0.15);
+        color: var(--purple);
+      }
+      .badge-required {
+        background: rgba(168, 50, 50, 0.15);
+        color: #d45;
+      }
+      .badge-optional {
+        background: rgba(61, 139, 55, 0.15);
+        color: #5b5;
+      }
+
+      /* ── Responsive ──────────────────────────────── */
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .content {
+          margin-left: 0;
+          padding: 32px 24px 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <h1>SLMMOStatsApply</h1>
+          <p>v1.0.0 &mdash; Wiki</p>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Getting Started</div>
+          <a href="#overview">Overview</a>
+          <a href="#installation">Installation</a>
+          <a href="#dependencies">Dependencies</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Core Mechanics</div>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#creating-runes">Creating Runes</a>
+          <a href="#applying-modifiers">Applying Modifiers</a>
+          <a href="#tiers">Tier System</a>
+          <a href="#prefix-suffix">Prefix / Suffix</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Advanced</div>
+          <a href="#conflicts">Conflicts</a>
+          <a href="#synergies">Synergies</a>
+          <a href="#stacking">Stacking Modes</a>
+          <a href="#crafting">Modifier Crafting</a>
+          <a href="#scrolls">Scrolls</a>
+          <a href="#tier-overrides">Tier Overrides</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Configuration</div>
+          <a href="#config-yml">config.yml</a>
+          <a href="#modifiers-yml">modifiers.yml</a>
+          <a href="#crafting-yml">crafting.yml</a>
+          <a href="#messages-yml">messages.yml</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Reference</div>
+          <a href="#commands">Commands</a>
+          <a href="#permissions">Permissions</a>
+          <a href="#placeholders">PlaceholderAPI</a>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="content">
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="overview">Overview</h2>
+
+        <p>
+          <strong>SLMMOStatsApply</strong> is an addon plugin for
+          <strong>MMOItems</strong> and <strong>MythicLib</strong> that
+          introduces a Path of Exile 2&ndash;inspired modifier system. Players
+          can drag and drop "rune" items onto their gear to permanently apply
+          stat bonuses.
+        </p>
+
+        <p>
+          The stats come directly from the MMOItem rune itself &mdash; the
+          plugin reads whatever stats the server admin configured on the rune
+          and merges them into the target item. This gives admins full control
+          over what each modifier does without editing plugin config files.
+        </p>
+
+        <p>Key features:</p>
+        <ul>
+          <li>Drag-and-drop modifier application via inventory clicks</li>
+          <li>5-tier system with configurable success rates per tier</li>
+          <li>
+            Prefix/suffix naming system (e.g. "Sharp Diamond Sword of
+            Fortification")
+          </li>
+          <li>Conflict and synergy rules between modifiers</li>
+          <li>Critical success chance for doubled stats</li>
+          <li>Protection and removal scrolls</li>
+          <li>Modifier crafting: combine 2x same tier into 1x next tier</li>
+          <li>Configurable animations (particles, sounds, titles)</li>
+          <li>Per-tier modifier limits based on MMOItems item tier</li>
+          <li>PlaceholderAPI support</li>
+        </ul>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="installation">Installation</h2>
+
+        <ol>
+          <li>
+            Place <code>SLMMOStatsApply-1.0.0-all.jar</code> into your
+            <code>plugins/</code> folder.
+          </li>
+          <li>
+            Make sure <strong>MMOItems</strong> and
+            <strong>MythicLib</strong> are installed.
+          </li>
+          <li>
+            Restart the server. The plugin will generate all config files.
+          </li>
+          <li>
+            Create your rune items in MMOItems (see
+            <a href="#creating-runes">Creating Runes</a>).
+          </li>
+          <li>Define modifier metadata in <code>modifiers.yml</code>.</li>
+        </ol>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="dependencies">Dependencies</h2>
+
+        <table>
+          <tr>
+            <th>Plugin</th>
+            <th>Version</th>
+            <th>Type</th>
+          </tr>
+          <tr>
+            <td>Paper</td>
+            <td>1.21.4+</td>
+            <td><span class="badge badge-required">Required</span></td>
+          </tr>
+          <tr>
+            <td>MMOItems</td>
+            <td>6.10.1+</td>
+            <td><span class="badge badge-required">Required</span></td>
+          </tr>
+          <tr>
+            <td>MythicLib</td>
+            <td>1.7.1+</td>
+            <td><span class="badge badge-required">Required</span></td>
+          </tr>
+          <tr>
+            <td>PlaceholderAPI</td>
+            <td>2.11.6+</td>
+            <td><span class="badge badge-optional">Optional</span></td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="how-it-works">How It Works</h2>
+
+        <p>The modifier system follows a simple loop:</p>
+
+        <ol>
+          <li>
+            Admin creates a rune item in MMOItems with specific stats (attack
+            damage, defense, etc.).
+          </li>
+          <li>
+            Admin adds three custom stats to that rune:
+            <code>APPLICABLE: true</code>, <code>MODIFIER_ID</code>, and
+            <code>MODIFIER_TIER</code>.
+          </li>
+          <li>Player picks up the rune on their cursor.</li>
+          <li>Player clicks on a target MMOItem in their inventory.</li>
+          <li>
+            The plugin validates the action (type restrictions, max slots,
+            conflicts, permissions).
+          </li>
+          <li>
+            A success roll is made based on the tier's configured success rate.
+          </li>
+          <li>
+            On success: all stats from the rune are read and merged into the
+            target. On failure: the rune is consumed (optionally).
+          </li>
+          <li>The item's lore and name update automatically.</li>
+        </ol>
+
+        <div class="callout callout-note">
+          <strong>Note</strong>
+          Stats are never defined in <code>modifiers.yml</code>. The plugin
+          reads stats directly from the rune's NBT data at the moment of
+          application. Whatever stats you put on the MMOItem rune &mdash; those
+          are the stats that get applied.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="creating-runes">Creating Runes in MMOItems</h2>
+
+        <p>
+          To create a modifier rune, make an MMOItem with these three custom
+          stats set on the item:
+        </p>
+
+        <table>
+          <tr>
+            <th>Stat</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>APPLICABLE</code></td>
+            <td>Boolean</td>
+            <td>
+              Must be <code>true</code> for the item to be recognized as a
+              modifier rune.
+            </td>
+          </tr>
+          <tr>
+            <td><code>MODIFIER_ID</code></td>
+            <td>String</td>
+            <td>
+              Must match a key in <code>modifiers.yml</code> (e.g.
+              <code>sharp</code>).
+            </td>
+          </tr>
+          <tr>
+            <td><code>MODIFIER_TIER</code></td>
+            <td>Number</td>
+            <td>The tier level (1&ndash;5).</td>
+          </tr>
+        </table>
+
+        <p>
+          Then set whatever stats you want the rune to grant. Example MMOItems
+          config:
+        </p>
+
+        <pre><code><span class="key">SHARP_RUNE_T3</span>:
+  <span class="key">base</span>:
+    <span class="key">material</span>: <span class="val">PAPER</span>
+    <span class="key">name</span>: <span class="val">'&fSharp Rune III'</span>
+    <span class="key">attack-damage</span>:
+      <span class="key">base</span>: <span class="num">7</span>
+      <span class="key">scale</span>: <span class="num">0.3</span>
+      <span class="key">spread</span>: <span class="num">0.1</span>
+      <span class="key">max-spread</span>: <span class="num">0.3</span>
+    <span class="key">critical-strike-chance</span>: <span class="num">30.0</span>
+    <span class="key">lore</span>:
+      - <span class="val">"&7Drag onto a weapon to apply"</span>
+      - <span class="val">"&7+7 Attack Damage"</span>
+    <span class="comment"># --- Required SLMMOStatsApply stats ---</span>
+    <span class="key">APPLICABLE</span>: <span class="val">true</span>
+    <span class="key">MODIFIER_ID</span>: <span class="val">sharp</span>
+    <span class="key">MODIFIER_TIER</span>: <span class="num">3</span></code></pre>
+
+        <p>
+          When this rune is dragged onto a weapon, the plugin reads the
+          <code>attack-damage</code> and
+          <code>critical-strike-chance</code> values (with scale/spread applied
+          by MMOItems) and adds them to the target.
+        </p>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="applying-modifiers">Applying Modifiers</h2>
+
+        <h3>Drag and Drop</h3>
+        <p>
+          Pick up a rune item on your cursor and click it onto a target MMOItem
+          in your inventory. The plugin intercepts the click and processes the
+          modifier application.
+        </p>
+
+        <h3>Success and Failure</h3>
+        <p>
+          Each tier has a <strong>success rate</strong> configured in
+          <code>modifiers.yml</code>. Higher tiers have lower success rates.
+          When application fails:
+        </p>
+        <ul>
+          <li>
+            The rune is consumed if <code>apply.consume-on-fail</code> is
+            <code>true</code>.
+          </li>
+          <li>
+            If the player has a <strong>Protection Scroll</strong> in their
+            inventory, it is consumed instead and the target item is saved.
+          </li>
+        </ul>
+
+        <h3>Critical Success</h3>
+        <p>
+          Each modifier has a <code>critical-chance</code> value. When a
+          critical success occurs, all stats from the rune are multiplied by the
+          <code>critical-multiplier</code> (default 2.0x) before being applied.
+        </p>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="tiers">Tier System</h2>
+
+        <p>Modifiers support up to 5 tiers. Each tier defines:</p>
+        <ul>
+          <li>
+            <strong>success-rate</strong> &mdash; percent chance for the apply
+            to succeed
+          </li>
+          <li>
+            <strong>weight</strong> &mdash; used for weighted random selection
+            (crafting recipes)
+          </li>
+        </ul>
+
+        <p>Example from the default "sharp" modifier:</p>
+
+        <table>
+          <tr>
+            <th>Tier</th>
+            <th>Roman</th>
+            <th>Success Rate</th>
+            <th>Weight</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>I</td>
+            <td>95%</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>II</td>
+            <td>85%</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>III</td>
+            <td>70%</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>IV</td>
+            <td>50%</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>V</td>
+            <td>30%</td>
+            <td>5</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="prefix-suffix">Prefix / Suffix</h2>
+
+        <p>
+          Each modifier is either a <strong>PREFIX</strong> or a
+          <strong>SUFFIX</strong>. This affects:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Item name</strong> &mdash; prefixes appear before the
+            original name, suffixes after. For example:
+            <em>"Sharp Diamond Sword of Fortification"</em>
+          </li>
+          <li>
+            <strong>Slot limits</strong> &mdash; prefixes and suffixes have
+            separate max counts per item.
+          </li>
+        </ul>
+
+        <table>
+          <tr>
+            <th>Type</th>
+            <th>Example</th>
+            <th>Name Format</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Sharp, Deadly, Blazing</td>
+            <td><code>{name} Original</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-suffix">Suffix</span></td>
+            <td>of Fortification, of Luck</td>
+            <td><code>Original {name}</code></td>
+          </tr>
+        </table>
+
+        <p>
+          The name format is controlled by <code>name-transform.format</code> in
+          <code>config.yml</code>.
+        </p>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="conflicts">Conflicts</h2>
+
+        <p>
+          Modifiers can define a list of conflicting modifier IDs. If a target
+          item already has a conflicting modifier, the new one cannot be
+          applied.
+        </p>
+
+        <pre><code><span class="key">blazing</span>:
+  <span class="key">conflicts</span>: [<span class="val">frozen</span>]    <span class="comment"># Cannot coexist with Frozen</span>
+
+<span class="key">frozen</span>:
+  <span class="key">conflicts</span>: [<span class="val">blazing</span>]   <span class="comment"># Cannot coexist with Blazing</span></code></pre>
+
+        <p>
+          Conflicts are checked bidirectionally &mdash; if A conflicts with B,
+          it doesn't matter which was applied first.
+        </p>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="synergies">Synergies</h2>
+
+        <p>
+          When two specific modifiers coexist on the same item, a
+          <strong>synergy bonus</strong> stat is automatically added.
+        </p>
+
+        <pre><code><span class="key">deadly</span>:
+  <span class="key">synergies</span>:
+    <span class="key">sharp</span>: { <span class="key">bonus-stat</span>: <span class="val">CRITICAL_STRIKE_POWER</span>, <span class="key">bonus-value</span>: <span class="num">5</span> }</code></pre>
+
+        <p>
+          This means: if an item has both "Deadly" and "Sharp", +5 Critical
+          Strike Power is added as a bonus.
+        </p>
+
+        <h4>Default Synergies</h4>
+        <table>
+          <tr>
+            <th>Modifier A</th>
+            <th>Modifier B</th>
+            <th>Bonus Stat</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Deadly</td>
+            <td>Sharp</td>
+            <td>CRITICAL_STRIKE_POWER</td>
+            <td>+5</td>
+          </tr>
+          <tr>
+            <td>Vitality</td>
+            <td>Fortified</td>
+            <td>HEALTH_REGENERATION</td>
+            <td>+1</td>
+          </tr>
+          <tr>
+            <td>Blazing</td>
+            <td>Swift</td>
+            <td>FIRE_DAMAGE</td>
+            <td>+2</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="stacking">Stacking Modes</h2>
+
+        <p>
+          Controls what happens when the same modifier is applied to an item
+          that already has it.
+        </p>
+
+        <table>
+          <tr>
+            <th>Mode</th>
+            <th>Behavior</th>
+          </tr>
+          <tr>
+            <td><code>REPLACE</code></td>
+            <td>
+              The new modifier replaces the old one. Old stats are removed, new
+              stats are added.
+            </td>
+          </tr>
+          <tr>
+            <td><code>STACK</code></td>
+            <td>Both instances coexist. Stats accumulate.</td>
+          </tr>
+          <tr>
+            <td><code>BLOCK</code></td>
+            <td>Application is refused. "Already applied" message is sent.</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="crafting">Modifier Crafting</h2>
+
+        <p>
+          Players can combine two identical runes (same modifier ID and tier) to
+          attempt creating a higher tier rune.
+        </p>
+
+        <p>
+          <strong>How:</strong> Drag one rune onto another identical rune in
+          inventory. If both are "Sharp III", the plugin attempts to craft
+          "Sharp IV".
+        </p>
+
+        <table>
+          <tr>
+            <th>Setting</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>crafting.enabled</code></td>
+            <td>true</td>
+            <td>Toggle crafting on/off</td>
+          </tr>
+          <tr>
+            <td><code>defaults.success-rate</code></td>
+            <td>60%</td>
+            <td>Base success rate for all crafting</td>
+          </tr>
+          <tr>
+            <td><code>defaults.fail-destroy-both</code></td>
+            <td>true</td>
+            <td>Both runes destroyed on fail?</td>
+          </tr>
+        </table>
+
+        <p>Per-modifier overrides are supported:</p>
+        <pre><code><span class="key">overrides</span>:
+  <span class="key">sharp</span>:
+    <span class="key">1-to-2</span>: { <span class="key">success-rate</span>: <span class="num">80</span> }
+    <span class="key">2-to-3</span>: { <span class="key">success-rate</span>: <span class="num">60</span> }
+    <span class="key">3-to-4</span>: { <span class="key">success-rate</span>: <span class="num">40</span> }
+    <span class="key">4-to-5</span>: { <span class="key">success-rate</span>: <span class="num">20</span> }</code></pre>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="scrolls">Scrolls</h2>
+
+        <h3>Protection Scroll</h3>
+        <p>
+          An MMOItem with the NBT stat <code>PROTECTION_SCROLL: true</code>. If
+          the player has one in their inventory when a modifier application
+          fails, the scroll is consumed and the target item is saved.
+        </p>
+
+        <ul>
+          <li>
+            <code>scrolls.protection.auto-consume</code> &mdash; automatically
+            consume from inventory (default: <code>true</code>)
+          </li>
+        </ul>
+
+        <h3>Removal Scroll</h3>
+        <p>
+          An MMOItem with the NBT stat <code>REMOVAL_SCROLL: true</code>.
+          Dragging it onto a modified item removes one modifier and reverses its
+          stat changes.
+        </p>
+
+        <ul>
+          <li>
+            <code>scrolls.removal.random-remove: true</code> &mdash; removes a
+            random modifier
+          </li>
+          <li>
+            <code>scrolls.removal.random-remove: false</code> &mdash; removes
+            the last applied modifier
+          </li>
+        </ul>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="tier-overrides">Tier Overrides</h2>
+
+        <p>
+          Modifier slot limits can vary based on the MMOItems
+          <strong>tier</strong> of the target item:
+        </p>
+
+        <pre><code><span class="key">tier-overrides</span>:
+  <span class="key">LEGENDARY</span>: { <span class="key">max</span>: <span class="num">6</span>, <span class="key">max-prefix</span>: <span class="num">3</span>, <span class="key">max-suffix</span>: <span class="num">3</span> }
+  <span class="key">EPIC</span>:      { <span class="key">max</span>: <span class="num">4</span>, <span class="key">max-prefix</span>: <span class="num">2</span>, <span class="key">max-suffix</span>: <span class="num">2</span> }
+  <span class="key">RARE</span>:      { <span class="key">max</span>: <span class="num">3</span>, <span class="key">max-prefix</span>: <span class="num">2</span>, <span class="key">max-suffix</span>: <span class="num">1</span> }
+  <span class="key">UNCOMMON</span>:  { <span class="key">max</span>: <span class="num">2</span>, <span class="key">max-prefix</span>: <span class="num">1</span>, <span class="key">max-suffix</span>: <span class="num">1</span> }
+  <span class="key">COMMON</span>:    { <span class="key">max</span>: <span class="num">1</span>, <span class="key">max-prefix</span>: <span class="num">1</span>, <span class="key">max-suffix</span>: <span class="num">0</span> }</code></pre>
+
+        <p>Items without a tier use the global defaults.</p>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="config-yml">config.yml</h2>
+
+        <table>
+          <tr>
+            <th>Path</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>settings.max-modifiers-per-item</code></td>
+            <td>6</td>
+            <td>Global max modifiers per item</td>
+          </tr>
+          <tr>
+            <td><code>settings.max-prefixes</code></td>
+            <td>3</td>
+            <td>Global max prefixes per item</td>
+          </tr>
+          <tr>
+            <td><code>settings.max-suffixes</code></td>
+            <td>3</td>
+            <td>Global max suffixes per item</td>
+          </tr>
+          <tr>
+            <td><code>apply.drag-and-drop</code></td>
+            <td>true</td>
+            <td>Enable drag-and-drop mechanic</td>
+          </tr>
+          <tr>
+            <td><code>apply.require-permission</code></td>
+            <td>true</td>
+            <td>Require <code>slmod.use</code> to apply</td>
+          </tr>
+          <tr>
+            <td><code>apply.consume-on-fail</code></td>
+            <td>true</td>
+            <td>Consume rune even on failure</td>
+          </tr>
+          <tr>
+            <td><code>apply.critical-multiplier</code></td>
+            <td>2.0</td>
+            <td>Stat multiplier on critical success</td>
+          </tr>
+          <tr>
+            <td><code>name-transform.enabled</code></td>
+            <td>true</td>
+            <td>Enable automatic name changes</td>
+          </tr>
+          <tr>
+            <td><code>name-transform.format</code></td>
+            <td>{prefix} {original} {suffix}</td>
+            <td>Name format template</td>
+          </tr>
+          <tr>
+            <td><code>animations.enabled</code></td>
+            <td>true</td>
+            <td>Enable particles/sounds/titles</td>
+          </tr>
+        </table>
+
+        <h3>Animation Config</h3>
+        <p>
+          Each event type (<code>success</code>, <code>critical</code>,
+          <code>fail</code>, <code>protected-fail</code>) has:
+        </p>
+        <ul>
+          <li>
+            <code>particle</code> / <code>particle-count</code> &mdash; Bukkit
+            Particle name and count
+          </li>
+          <li>
+            <code>sound</code> / <code>sound-volume</code> /
+            <code>sound-pitch</code> &mdash; Bukkit Sound name
+          </li>
+          <li>
+            <code>title</code> / <code>subtitle</code> &mdash; MiniMessage
+            formatted text (supports <code>{modifier}</code>,
+            <code>{item}</code>)
+          </li>
+          <li>
+            <code>title-fade-in</code> / <code>title-stay</code> /
+            <code>title-fade-out</code> &mdash; ticks
+          </li>
+        </ul>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="modifiers-yml">modifiers.yml</h2>
+
+        <div class="callout callout-warn">
+          <strong>Important</strong>
+          This file only defines modifier <em>metadata</em>. Stats are read from
+          the MMOItem rune, not from this file.
+        </div>
+
+        <h3>Modifier Structure</h3>
+        <pre><code><span class="key">modifiers</span>:
+  <span class="key">sharp</span>:                            <span class="comment"># Modifier ID (matches MODIFIER_ID on rune)</span>
+    <span class="key">name</span>: <span class="val">"Sharp"</span>                   <span class="comment"># Display name</span>
+    <span class="key">type</span>: <span class="val">PREFIX</span>                    <span class="comment"># PREFIX or SUFFIX</span>
+    <span class="key">category</span>: <span class="val">"offensive"</span>           <span class="comment"># Organizational category</span>
+    <span class="key">tiers</span>:
+      <span class="num">1</span>: { <span class="key">success-rate</span>: <span class="num">95</span>, <span class="key">weight</span>: <span class="num">1</span> }
+      <span class="num">2</span>: { <span class="key">success-rate</span>: <span class="num">85</span>, <span class="key">weight</span>: <span class="num">2</span> }
+      <span class="num">3</span>: { <span class="key">success-rate</span>: <span class="num">70</span>, <span class="key">weight</span>: <span class="num">3</span> }
+      <span class="num">4</span>: { <span class="key">success-rate</span>: <span class="num">50</span>, <span class="key">weight</span>: <span class="num">4</span> }
+      <span class="num">5</span>: { <span class="key">success-rate</span>: <span class="num">30</span>, <span class="key">weight</span>: <span class="num">5</span> }
+    <span class="key">critical-chance</span>: <span class="num">5</span>              <span class="comment"># % chance of critical success</span>
+    <span class="key">allowed-types</span>: [<span class="val">SWORD</span>, <span class="val">AXE</span>]    <span class="comment"># MMOItems types this can apply to</span>
+    <span class="key">conflicts</span>: [<span class="val">dull</span>]              <span class="comment"># Cannot coexist with these IDs</span>
+    <span class="key">synergies</span>:
+      <span class="key">deadly</span>: { <span class="key">bonus-stat</span>: <span class="val">CRITICAL_STRIKE_POWER</span>, <span class="key">bonus-value</span>: <span class="num">5</span> }
+    <span class="key">stacking</span>: <span class="val">REPLACE</span>               <span class="comment"># STACK, REPLACE, or BLOCK</span></code></pre>
+
+        <h3>Default Modifiers</h3>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Allowed Types</th>
+          </tr>
+          <tr>
+            <td>sharp</td>
+            <td>Sharp</td>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Offensive</td>
+            <td>SWORD, AXE, BOW, CROSSBOW, SPEAR, DAGGER</td>
+          </tr>
+          <tr>
+            <td>deadly</td>
+            <td>Deadly</td>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Offensive</td>
+            <td>SWORD, AXE, BOW, CROSSBOW, DAGGER</td>
+          </tr>
+          <tr>
+            <td>swift</td>
+            <td>Swift</td>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Offensive</td>
+            <td>SWORD, AXE, BOW, DAGGER</td>
+          </tr>
+          <tr>
+            <td>blazing</td>
+            <td>Blazing</td>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Elemental</td>
+            <td>SWORD, AXE, BOW, CROSSBOW, SPEAR, DAGGER</td>
+          </tr>
+          <tr>
+            <td>frozen</td>
+            <td>Frozen</td>
+            <td><span class="badge badge-prefix">Prefix</span></td>
+            <td>Elemental</td>
+            <td>SWORD, AXE, BOW, CROSSBOW, SPEAR, DAGGER</td>
+          </tr>
+          <tr>
+            <td>fortified</td>
+            <td>of Fortification</td>
+            <td><span class="badge badge-suffix">Suffix</span></td>
+            <td>Defensive</td>
+            <td>ARMOR, HELMET, LEGGINGS, BOOTS, CHESTPLATE</td>
+          </tr>
+          <tr>
+            <td>vitality</td>
+            <td>of Vitality</td>
+            <td><span class="badge badge-suffix">Suffix</span></td>
+            <td>Defensive</td>
+            <td>ARMOR, HELMET, LEGGINGS, BOOTS, CHESTPLATE</td>
+          </tr>
+          <tr>
+            <td>lucky</td>
+            <td>of Luck</td>
+            <td><span class="badge badge-suffix">Suffix</span></td>
+            <td>Utility</td>
+            <td>SWORD, AXE, BOW, ARMOR, HELMET, LEGGINGS, BOOTS, CHESTPLATE</td>
+          </tr>
+          <tr>
+            <td>wise</td>
+            <td>of Wisdom</td>
+            <td><span class="badge badge-suffix">Suffix</span></td>
+            <td>Utility</td>
+            <td>ARMOR, HELMET, LEGGINGS, BOOTS, CHESTPLATE</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="crafting-yml">crafting.yml</h2>
+
+        <pre><code><span class="key">crafting</span>:
+  <span class="key">enabled</span>: <span class="val">true</span>
+  <span class="key">defaults</span>:
+    <span class="key">success-rate</span>: <span class="num">60</span>
+    <span class="key">fail-destroy-both</span>: <span class="val">true</span>
+    <span class="key">fail-return-one</span>: <span class="val">false</span>
+  <span class="key">overrides</span>:
+    <span class="key">sharp</span>:
+      <span class="key">1-to-2</span>: { <span class="key">success-rate</span>: <span class="num">80</span> }
+      <span class="key">2-to-3</span>: { <span class="key">success-rate</span>: <span class="num">60</span> }
+      <span class="key">3-to-4</span>: { <span class="key">success-rate</span>: <span class="num">40</span> }
+      <span class="key">4-to-5</span>: { <span class="key">success-rate</span>: <span class="num">20</span> }</code></pre>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="messages-yml">messages.yml</h2>
+
+        <p>
+          All messages use <strong>MiniMessage</strong> format. Placeholders use
+          <code>{key}</code> syntax.
+        </p>
+
+        <table>
+          <tr>
+            <th>Key</th>
+            <th>Placeholders</th>
+          </tr>
+          <tr>
+            <td><code>apply-success</code></td>
+            <td>{modifier}, {tier}, {item}</td>
+          </tr>
+          <tr>
+            <td><code>apply-critical</code></td>
+            <td>{modifier}, {tier}, {item}</td>
+          </tr>
+          <tr>
+            <td><code>apply-fail</code></td>
+            <td>{modifier}, {tier}</td>
+          </tr>
+          <tr>
+            <td><code>apply-fail-protected</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>not-applicable</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>not-mmoitem</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>max-modifiers</code></td>
+            <td>{max}</td>
+          </tr>
+          <tr>
+            <td><code>max-prefixes</code></td>
+            <td>{max}</td>
+          </tr>
+          <tr>
+            <td><code>max-suffixes</code></td>
+            <td>{max}</td>
+          </tr>
+          <tr>
+            <td><code>type-restricted</code></td>
+            <td>{modifier}</td>
+          </tr>
+          <tr>
+            <td><code>conflict</code></td>
+            <td>{modifier}, {existing}</td>
+          </tr>
+          <tr>
+            <td><code>stacking-blocked</code></td>
+            <td>{modifier}</td>
+          </tr>
+          <tr>
+            <td><code>craft-success</code></td>
+            <td>{modifier}, {from}, {to}</td>
+          </tr>
+          <tr>
+            <td><code>craft-fail</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>remove-success</code></td>
+            <td>{modifier}, {tier}, {item}</td>
+          </tr>
+          <tr>
+            <td><code>synergy-bonus</code></td>
+            <td>{modifier1}, {modifier2}, {value}, {stat}</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="commands">Commands</h2>
+
+        <p>All commands require the <code>slmod.admin</code> permission.</p>
+
+        <table>
+          <tr>
+            <th>Command</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>/slmod reload</code></td>
+            <td>Reload all configuration files.</td>
+          </tr>
+          <tr>
+            <td><code>/slmod apply &lt;id&gt; &lt;tier&gt; [player]</code></td>
+            <td>
+              Force-apply a modifier to the held item (bypasses success roll).
+            </td>
+          </tr>
+          <tr>
+            <td><code>/slmod remove &lt;index|id&gt; [player]</code></td>
+            <td>Remove a modifier from the held item by index or ID.</td>
+          </tr>
+          <tr>
+            <td><code>/slmod info [player]</code></td>
+            <td>Display all applied modifiers on the held item.</td>
+          </tr>
+          <tr>
+            <td><code>/slmod list</code></td>
+            <td>List all available modifier IDs and their tier ranges.</td>
+          </tr>
+        </table>
+
+        <div class="callout callout-note">
+          <strong>Note</strong>
+          The <code>apply</code> command is an admin override. It adds the
+          modifier metadata but uses empty stats (no stat bonuses). To properly
+          test, use actual rune items through drag-and-drop.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="permissions">Permissions</h2>
+
+        <table>
+          <tr>
+            <th>Permission</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>slmod.admin</code></td>
+            <td>op</td>
+            <td>Access to all <code>/slmod</code> commands</td>
+          </tr>
+          <tr>
+            <td><code>slmod.use</code></td>
+            <td>true</td>
+            <td>
+              Allow drag-and-drop modifier application (when
+              <code>require-permission</code> is enabled)
+            </td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="placeholders">PlaceholderAPI</h2>
+
+        <p>
+          Requires PlaceholderAPI. All placeholders read the item in the
+          player's main hand.
+        </p>
+
+        <table>
+          <tr>
+            <th>Placeholder</th>
+            <th>Output</th>
+          </tr>
+          <tr>
+            <td><code>%slmod_total_applied%</code></td>
+            <td>Number of modifiers on held item</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_list%</code></td>
+            <td>Comma-separated list (e.g. "Sharp III, Blazing II")</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_&lt;index&gt;_name%</code></td>
+            <td>Name of modifier at index (0-based)</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_&lt;index&gt;_tier%</code></td>
+            <td>Tier (Roman numeral) at index</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_&lt;index&gt;_type%</code></td>
+            <td>PREFIX or SUFFIX</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_&lt;index&gt;_stats%</code></td>
+            <td>Stats display string</td>
+          </tr>
+          <tr>
+            <td><code>%slmod_modifier_&lt;index&gt;_critical%</code></td>
+            <td>true/false &mdash; was it a critical apply</td>
+          </tr>
+        </table>
+      </main>
+    </div>
+
+    <script>
+      // Simple sidebar active state on scroll
+      const sections = document.querySelectorAll("h2[id]");
+      const navLinks = document.querySelectorAll(".nav-group a");
+
+      function updateActive() {
+        let current = "";
+        sections.forEach((section) => {
+          if (window.scrollY >= section.offsetTop - 100) {
+            current = section.getAttribute("id");
+          }
+        });
+        navLinks.forEach((link) => {
+          link.classList.toggle(
+            "active",
+            link.getAttribute("href") === "#" + current,
+          );
+        });
+      }
+
+      window.addEventListener("scroll", updateActive);
+      updateActive();
+    </script>
+  </body>
+</html>
