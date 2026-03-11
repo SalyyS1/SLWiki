@@ -342,6 +342,8 @@
           <a href="#how-it-works">How It Works</a>
           <a href="#creating-runes">Creating Runes</a>
           <a href="#applying-modifiers">Applying Modifiers</a>
+          <a href="#lore-display">Lore Display (POE2)</a>
+          <a href="#abilities">Abilities / Skills</a>
           <a href="#tiers">Tier System</a>
           <a href="#prefix-suffix">Prefix / Suffix</a>
         </div>
@@ -358,6 +360,8 @@
           <div class="nav-group-title">Configuration</div>
           <a href="#config-yml">config.yml</a>
           <a href="#modifiers-yml">modifiers.yml</a>
+          <a href="#lore-display-yml">lore-display.yml</a>
+          <a href="#stat-formats-yml">stat-formats.yml</a>
           <a href="#crafting-yml">crafting.yml</a>
           <a href="#messages-yml">messages.yml</a>
         </div>
@@ -399,6 +403,9 @@
           </li>
           <li>Conflict and synergy rules between modifiers</li>
           <li>Critical success chance for doubled stats</li>
+          <li>Rune abilities/skills transfer (copied from rune to target)</li>
+          <li>POE2-style lore display: aggregated stats + compact rune list</li>
+          <li>Fully configurable stat formats and display order</li>
           <li>Protection and removal scrolls</li>
           <li>Modifier crafting: combine 2x same tier into 1x next tier</li>
           <li>Configurable animations (particles, sounds, titles)</li>
@@ -495,7 +502,140 @@
           Stats are never defined in <code>modifiers.yml</code>. The plugin
           reads stats directly from the rune's NBT data at the moment of
           application. Whatever stats you put on the MMOItem rune &mdash; those
-          are the stats that get applied.
+          are the stats that get applied. Abilities (skills) are also
+          transferred from rune to target item.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="lore-display">Lore Display (POE2 Style)</h2>
+
+        <p>
+          Inspired by Path of Exile 2, applied modifiers are <strong>not</strong>
+          shown individually. Instead, the item lore displays an
+          <strong>aggregated summary</strong> of all stat bonuses from all
+          applied runes, followed by a compact list of applied runes.
+        </p>
+
+        <h3>Example Output</h3>
+        <pre><code><span class="comment">&mdash; Existing MMOItems lore above &mdash;</span>
+
+<span class="val">═══</span> <span class="key">Rune Bonuses</span> <span class="comment">(3/6)</span> <span class="val">═══</span>
+  <span class="val">➸</span> Attack Damage: <span class="num">100</span>
+  <span class="val">■</span> Crit Strike Chance: <span class="num">+30%</span>
+  <span class="val">🔥</span> Fire Damage: <span class="num">+5</span>
+  <span class="val">|</span> Right Click <span class="val">|</span><span class="key">|</span><span class="val">|</span> <span class="key">Firebolt</span>
+<span class="val">───</span> <span class="key">Runes</span> <span class="val">───</span>
+  <span class="comment">◇ Sharp III</span>, <span class="val">◇ Blazing II</span>, <span class="num">◇ Lucky I</span></code></pre>
+
+        <h3>Key Features</h3>
+        <table>
+          <tr>
+            <th>Feature</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Stat Aggregation</td>
+            <td>
+              Same stat from multiple runes is summed into one line.<br />
+              e.g. Sharp III (+50 ATK) + Sharp I (+30 ATK) = <code>+80 Attack Damage</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Display Order</td>
+            <td>
+              Stats are shown in the order defined in <code>lore-display.yml</code>.
+              Stats not in the order list are appended at the bottom.
+            </td>
+          </tr>
+          <tr>
+            <td>Per-Stat Format</td>
+            <td>
+              Each stat has its own configurable format string in
+              <code>stat-formats.yml</code> (colors, icons, % signs, etc.).
+            </td>
+          </tr>
+          <tr>
+            <td>Rune List</td>
+            <td>
+              Compact list with tier-colored names. Auto-wraps to new line
+              when exceeding <code>rune-max-chars-per-line</code>.
+            </td>
+          </tr>
+          <tr>
+            <td>Live Reload</td>
+            <td>
+              <code>/slmod reload</code> reloads both <code>lore-display.yml</code>
+              and <code>stat-formats.yml</code> without restart.
+            </td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="abilities">Abilities / Skills</h2>
+
+        <p>
+          Rune items can also carry <strong>MMOItems abilities</strong> (skills).
+          When a rune is applied to a target item, all abilities from the rune
+          are transferred and appended to the target item's ability slots.
+        </p>
+
+        <h3>How It Works</h3>
+        <ol>
+          <li>
+            Create a rune in MMOItems and assign abilities to it using the
+            MMOItems GUI editor (e.g. Firebolt, Heal, Frostbolt).
+          </li>
+          <li>
+            When the rune is applied to a target item, the abilities are read
+            from the rune's NBT tags (<code>MMOITEMS_ABILITY_0</code>,
+            <code>MMOITEMS_ABILITY_1</code>, etc.).
+          </li>
+          <li>
+            The abilities are appended to the target item's next available
+            ability slots.
+          </li>
+          <li>
+            When a modifier is removed (via scroll or command), its abilities
+            are also removed and the remaining abilities are compacted.
+          </li>
+        </ol>
+
+        <h3>Lore Display</h3>
+        <p>
+          Abilities appear in the aggregated stats section with the format
+          defined in <code>stat-formats.yml</code> under the <code>ability</code>
+          section. Available placeholders:
+        </p>
+
+        <table>
+          <tr>
+            <th>Placeholder</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>{ability}</code></td>
+            <td>Ability display name (e.g. Firebolt)</td>
+          </tr>
+          <tr>
+            <td><code>{trigger}</code></td>
+            <td>Trigger type (Right Click, Left Click, Sneak, etc.)</td>
+          </tr>
+          <tr>
+            <td><code>{modifier}</code></td>
+            <td>Modifier name (e.g. Level, Cooldown, Damage)</td>
+          </tr>
+          <tr>
+            <td><code>{value}</code></td>
+            <td>Modifier value</td>
+          </tr>
+        </table>
+
+        <div class="callout callout-note">
+          <strong>Note</strong>
+          Ability modifiers (Level, Cooldown, Mana Cost, Damage, etc.) are
+          parsed from the ability's JSON data and displayed using the
+          <code>modifier-foreach</code> format with <code>modifier-splitter</code>
+          between them.
         </div>
 
         <!-- ════════════════════════════════════════════ -->
@@ -1075,6 +1215,161 @@
             <td><span class="badge badge-suffix">Suffix</span></td>
             <td>Utility</td>
             <td>ARMOR, HELMET, LEGGINGS, BOOTS, CHESTPLATE</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="lore-display-yml">lore-display.yml</h2>
+
+        <p>
+          Controls the layout and ordering of the rune bonuses lore block.
+        </p>
+
+        <table>
+          <tr>
+            <th>Path</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>header</code></td>
+            <td><code>&amp;8═══ &amp;6Rune Bonuses &amp;7({count}/{max}) &amp;8═══</code></td>
+            <td>Header line. <code>{count}</code> and <code>{max}</code> are auto-replaced.</td>
+          </tr>
+          <tr>
+            <td><code>rune-header</code></td>
+            <td><code>&amp;8─── &amp;eRunes &amp;8───</code></td>
+            <td>Header for the rune list section.</td>
+          </tr>
+          <tr>
+            <td><code>stat-order</code></td>
+            <td><em>(list)</em></td>
+            <td>
+              Ordered list of stat keys. Stats display in this order.
+              Unlisted stats are appended at the bottom.
+            </td>
+          </tr>
+          <tr>
+            <td><code>rune-format</code></td>
+            <td><code>{color}◇ {name} {tier}</code></td>
+            <td>Format for each rune in the rune list.</td>
+          </tr>
+          <tr>
+            <td><code>rune-separator</code></td>
+            <td><code>&amp;7, </code></td>
+            <td>Separator between rune entries.</td>
+          </tr>
+          <tr>
+            <td><code>rune-max-chars-per-line</code></td>
+            <td>45</td>
+            <td>Max visible characters per line before wrapping.</td>
+          </tr>
+          <tr>
+            <td><code>rune-tier-colors</code></td>
+            <td><em>(map)</em></td>
+            <td>Color code per tier: <code>1: &amp;7</code>, <code>2: &amp;a</code>, <code>3: &amp;9</code>, etc.</td>
+          </tr>
+          <tr>
+            <td><code>aggregate-stats</code></td>
+            <td>true</td>
+            <td>If true, same stat from multiple runes = summed. If false, listed separately.</td>
+          </tr>
+          <tr>
+            <td><code>default-format</code></td>
+            <td><code>&amp;3 &amp;7■ {name}: &amp;f&lt;plus&gt;{value}</code></td>
+            <td>Fallback format for stats not defined in stat-formats.yml.</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="stat-formats-yml">stat-formats.yml</h2>
+
+        <p>
+          Defines the display format for each individual MMOItems stat.
+          Contains 100+ stat entries organized by category.
+        </p>
+
+        <h3>Format Placeholders</h3>
+        <table>
+          <tr>
+            <th>Placeholder</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>{value}</code></td>
+            <td>The stat value (absolute, no sign)</td>
+          </tr>
+          <tr>
+            <td><code>&lt;plus&gt;</code></td>
+            <td>Shows <code>+</code> for positive values, <code>-</code> for negative</td>
+          </tr>
+          <tr>
+            <td><code>{sign}</code></td>
+            <td>Always shows <code>+</code> or <code>-</code></td>
+          </tr>
+          <tr>
+            <td><code>{name}</code></td>
+            <td>Auto-generated display name from stat key</td>
+          </tr>
+        </table>
+
+        <h3>Example Entries</h3>
+        <pre><code><span class="comment"># Weapon Stats</span>
+<span class="key">attack-damage</span>: <span class="val">'&amp;3 &amp;7➸ Attack Damage: &amp;f{value}'</span>
+<span class="key">critical-strike-chance</span>: <span class="val">'&amp;3 &amp;7■ Crit Strike Chance: &amp;f&lt;plus&gt;{value}%'</span>
+
+<span class="comment"># Elemental</span>
+<span class="key">fire-damage</span>: <span class="val">'&amp;3 &amp;6🔥&amp;7 Fire Damage: &amp;f&lt;plus&gt;{value}'</span>
+<span class="key">ice-damage</span>: <span class="val">'&amp;3 &amp;b❄&amp;7 Ice Damage: &amp;f&lt;plus&gt;{value}'</span>
+
+<span class="comment"># Armor</span>
+<span class="key">max-health</span>: <span class="val">'&amp;3 &amp;7❤ Health:&amp;c &lt;plus&gt;{value}'</span>
+<span class="key">defense</span>: <span class="val">'&amp;3 &amp;7■ Defense: &amp;f&lt;plus&gt;{value}'</span></code></pre>
+
+        <h3>Ability Format</h3>
+        <pre><code><span class="key">ability</span>:
+  <span class="key">general-format</span>: <span class="val">"&amp;8| &amp;7{trigger} &amp;8|&amp;e|&amp;8| &amp;7&amp;l{ability}"</span>
+  <span class="key">modifier-foreach</span>: <span class="val">"&amp;7{modifier}&amp;8: &amp;f{value}"</span>
+  <span class="key">modifier-splitter</span>: <span class="val">" &amp;8&amp;l|&amp;7 "</span>
+  <span class="key">modifiers-per-line</span>: <span class="num">3</span></code></pre>
+
+        <h3>Stat Categories</h3>
+        <table>
+          <tr>
+            <th>Category</th>
+            <th>Example Stats</th>
+          </tr>
+          <tr>
+            <td>Weapon</td>
+            <td>attack-damage, attack-speed, critical-strike-chance, lifesteal</td>
+          </tr>
+          <tr>
+            <td>Extra Damage</td>
+            <td>pve-damage, pvp-damage, magic-damage, skill-damage</td>
+          </tr>
+          <tr>
+            <td>Armor</td>
+            <td>defense, armor, block-power, dodge-rating, max-health</td>
+          </tr>
+          <tr>
+            <td>Damage Reduction</td>
+            <td>damage-reduction, fire-damage-reduction, magic-damage-reduction</td>
+          </tr>
+          <tr>
+            <td>RPG</td>
+            <td>max-mana, mana-regeneration, cooldown-reduction, additional-experience</td>
+          </tr>
+          <tr>
+            <td>1.20.2+ Attributes</td>
+            <td>block-break-speed, gravity, jump-strength, scale, mining-efficiency</td>
+          </tr>
+          <tr>
+            <td>Elemental</td>
+            <td>fire-damage, ice-damage, thunder-damage, fire-defense, etc.</td>
+          </tr>
+          <tr>
+            <td>Consumables</td>
+            <td>restore-health, restore-mana, repair, success-rate</td>
           </tr>
         </table>
 
