@@ -329,7 +329,7 @@
       <nav class="sidebar">
         <div class="sidebar-header">
           <h1>SLMMOStatsApply</h1>
-          <p>v1.0.0 &mdash; Wiki</p>
+          <p>v1.1.0 &mdash; Wiki</p>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Getting Started</div>
@@ -366,10 +366,19 @@
           <a href="#messages-yml">messages.yml</a>
         </div>
         <div class="nav-group">
+          <div class="nav-group-title">PoE2 System</div>
+          <a href="#poe2-overview">Overview</a>
+          <a href="#pool-mode">POOL Mode</a>
+          <a href="#pool-group-mode">POOL_GROUP Mode</a>
+          <a href="#item-level-gating">Item-Level Gating</a>
+          <a href="#rarity-system">Rarity System</a>
+        </div>
+        <div class="nav-group">
           <div class="nav-group-title">Reference</div>
           <a href="#commands">Commands</a>
           <a href="#permissions">Permissions</a>
           <a href="#placeholders">PlaceholderAPI</a>
+          <a href="#changelog">Changelog</a>
         </div>
       </nav>
 
@@ -525,7 +534,7 @@
   <span class="val">🔥</span> Fire Damage: <span class="num">+5</span>
   <span class="val">|</span> Right Click <span class="val">|</span><span class="key">|</span><span class="val">|</span> <span class="key">Firebolt</span>
 <span class="val">───</span> <span class="key">Runes</span> <span class="val">───</span>
-  <span class="comment">◇ Sharp III</span>, <span class="val">◇ Blazing II</span>, <span class="num">◇ Lucky I</span></code></pre>
+  <span class="comment">◇ Sharp Rune III</span>, <span class="val">◇ Blazing Gem II</span>, <span class="num">◇ Lucky Stone I</span></code></pre>
 
         <h3>Key Features</h3>
         <table>
@@ -557,8 +566,9 @@
           <tr>
             <td>Rune List</td>
             <td>
-              Compact list with tier-colored names. Auto-wraps to new line
-              when exceeding <code>rune-max-chars-per-line</code>.
+              Compact list showing each rune's <strong>actual MMOItem display name</strong>
+              (not the modifier config name). Tier-colored, auto-wraps per
+              <code>rune-max-chars-per-line</code>.
             </td>
           </tr>
           <tr>
@@ -566,6 +576,14 @@
             <td>
               <code>/slmod reload</code> reloads both <code>lore-display.yml</code>
               and <code>stat-formats.yml</code> without restart.
+            </td>
+          </tr>
+          <tr>
+            <td>MMOItems Compatibility</td>
+            <td>
+              Modifier lore and names survive MMOItems rebuild events
+              (gemstones, skins, <code>/mi browse</code>) via
+              <code>ItemBuildListener</code>.
             </td>
           </tr>
         </table>
@@ -587,8 +605,11 @@
           </li>
           <li>
             When the rune is applied to a target item, the abilities are read
-            from the rune's NBT tags (<code>MMOITEMS_ABILITY_0</code>,
-            <code>MMOITEMS_ABILITY_1</code>, etc.).
+            When the rune is applied to a target item, the abilities are
+            extracted from the rune's NBT data. The plugin scans for individual
+            ability tags (<code>MMOITEMS_ABILITY_0</code>,
+            <code>MMOITEMS_ABILITY_1</code>, etc.) and also scans all NBT tags
+            containing <code>ABILITY</code> for alternative storage formats.
           </li>
           <li>
             The abilities are appended to the target item's next available
@@ -983,9 +1004,10 @@
 
         <h3>Protection Scroll</h3>
         <p>
-          An MMOItem with the NBT stat <code>PROTECTION_SCROLL: true</code>. If
+          Any item with the NBT tag <code>MMOITEMS_PROTECTION_SCROLL: true</code>. If
           the player has one in their inventory when a modifier application
           fails, the scroll is consumed and the target item is saved.
+          Use <code>/slmod give protection</code> to create one.
         </p>
 
         <ul>
@@ -997,9 +1019,10 @@
 
         <h3>Removal Scroll</h3>
         <p>
-          An MMOItem with the NBT stat <code>REMOVAL_SCROLL: true</code>.
-          Dragging it onto a modified item removes one modifier and reverses its
-          stat changes.
+          Any item with the NBT tag <code>MMOITEMS_REMOVAL_SCROLL: true</code>.
+          Dragging it onto a modified item opens a GUI to select which modifier
+          to remove, reversing the stat changes.
+          Use <code>/slmod give removal</code> to create one.
         </p>
 
         <ul>
@@ -1500,13 +1523,29 @@
             <td><code>/slmod list</code></td>
             <td>List all available modifier IDs and their tier ranges.</td>
           </tr>
+          <tr>
+            <td><code>/slmod debug</code></td>
+            <td>
+              Dump all MMOITEMS NBT tags, extracted stats, extracted abilities,
+              and applied modifier PDC data from the held item. Useful for
+              diagnosing rune configuration issues.
+            </td>
+          </tr>
+          <tr>
+            <td><code>/slmod give &lt;removal|protection&gt; [player] [amount]</code></td>
+            <td>
+              Create and give scroll items to the specified player (or self).
+              Scrolls come pre-configured with the correct NBT tags.
+            </td>
+          </tr>
         </table>
 
         <div class="callout callout-note">
           <strong>Note</strong>
-          The <code>apply</code> command is an admin override. It adds the
-          modifier metadata but uses empty stats (no stat bonuses). To properly
-          test, use actual rune items through drag-and-drop.
+          The <code>apply</code> command is an admin override. It applies
+          actual stats from the modifier definition to the item's NBT.
+          For testing with full rune abilities and stats, use actual rune
+          items through drag-and-drop.
         </div>
 
         <!-- ════════════════════════════════════════════ -->
@@ -1575,6 +1614,333 @@
             <td>true/false &mdash; was it a critical apply</td>
           </tr>
         </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="poe2-overview">PoE2-Style Modifier System</h2>
+
+        <p>
+          Version <strong>1.1.0</strong> introduces a <strong>Path of Exile 2&ndash;inspired</strong>
+          crafting system with three modifier modes. These are fully backwards
+          compatible &mdash; existing RUNE-mode modifiers work identically.
+        </p>
+
+        <table>
+          <tr>
+            <th>Mode</th>
+            <th>Stats Source</th>
+            <th>Tier Selection</th>
+            <th>Use Case</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-prefix">RUNE</span></td>
+            <td>Rune's NBT (MMOItem stats)</td>
+            <td>Fixed (from rune item)</td>
+            <td>Traditional rune system</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-suffix">POOL</span></td>
+            <td>Config <code>min</code>/<code>max</code> ranges</td>
+            <td>Weighted random + level gate</td>
+            <td>PoE2-style tiered modifiers</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-optional">POOL_GROUP</span></td>
+            <td>Config <code>min</code>/<code>max</code> ranges</td>
+            <td>Random modifier &rarr; weighted tier</td>
+            <td>Currency items (Transmutation Orbs)</td>
+          </tr>
+        </table>
+
+        <div class="callout callout-note">
+          <strong>Backwards Compatible</strong>
+          If you don't set <code>mode</code> in your modifier config, it defaults
+          to <code>RUNE</code>. All existing modifiers continue working without
+          any config changes.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="pool-mode">POOL Mode &mdash; Weighted Random Tiers</h2>
+
+        <p>
+          In <strong>POOL mode</strong>, stats are <strong>rolled randomly</strong>
+          from configured min/max ranges. Tiers use <strong>inverted PoE2 numbering</strong>:
+          T5 = worst but most common, T1 = best but rarest.
+        </p>
+
+        <h3>How Tier Rolling Works</h3>
+        <ol>
+          <li>Player uses a rune with <code>MODIFIER_ID: flat_physical</code> on a target item.</li>
+          <li>Plugin reads the target item's <strong>level</strong> from MMOItems NBT.</li>
+          <li>Filters out tiers whose <code>required-level</code> exceeds the item level.</li>
+          <li>Performs <strong>weighted random selection</strong> from eligible tiers.</li>
+          <li>Rolls random stat values within the tier's <code>min</code>/<code>max</code> range.</li>
+          <li>Applies the rolled stats to the target item.</li>
+        </ol>
+
+        <h3>Example Configuration</h3>
+        <pre><code><span class="key">flat_physical</span>:
+  <span class="key">name</span>: <span class="val">"Adds Physical Damage"</span>
+  <span class="key">type</span>: <span class="val">PREFIX</span>
+  <span class="key">mode</span>: <span class="val">POOL</span>
+  <span class="key">category</span>: <span class="val">"offensive"</span>
+  <span class="key">critical-chance</span>: <span class="num">3</span>
+  <span class="key">allowed-types</span>: [<span class="val">SWORD</span>, <span class="val">AXE</span>, <span class="val">BOW</span>]
+  <span class="key">tiers</span>:
+    <span class="key">5</span>:                       <span class="comment"># T5 = worst but most common</span>
+      <span class="key">weight</span>: <span class="num">50</span>            <span class="comment"># Highest weight = most likely</span>
+      <span class="key">required-level</span>: <span class="num">1</span>    <span class="comment"># Available from level 1</span>
+      <span class="key">lore-name</span>: <span class="val">"Physical Damage (T5)"</span>
+      <span class="key">stats</span>:
+        <span class="key">attack-damage</span>:
+          <span class="key">min</span>: <span class="num">1</span>
+          <span class="key">max</span>: <span class="num">5</span>
+    <span class="key">1</span>:                       <span class="comment"># T1 = best but rarest</span>
+      <span class="key">weight</span>: <span class="num">1</span>             <span class="comment"># Lowest weight = hardest to get</span>
+      <span class="key">required-level</span>: <span class="num">75</span>   <span class="comment"># Only on level 75+ items</span>
+      <span class="key">lore-name</span>: <span class="val">"Physical Damage (T1)"</span>
+      <span class="key">stats</span>:
+        <span class="key">attack-damage</span>:
+          <span class="key">min</span>: <span class="num">21</span>
+          <span class="key">max</span>: <span class="num">25</span></code></pre>
+
+        <h3>POOL Tier Fields</h3>
+        <table>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>weight</code></td>
+            <td>Integer</td>
+            <td>Higher = more likely to be selected. T5 should have highest weight.</td>
+          </tr>
+          <tr>
+            <td><code>required-level</code></td>
+            <td>Integer</td>
+            <td>Minimum item level for this tier. Items below this level cannot roll it.</td>
+          </tr>
+          <tr>
+            <td><code>lore-name</code></td>
+            <td>String</td>
+            <td>Custom display name in lore (overrides rune name).</td>
+          </tr>
+          <tr>
+            <td><code>stats</code></td>
+            <td>Map</td>
+            <td>Each stat key maps to <code>min</code>/<code>max</code> for random rolling.</td>
+          </tr>
+        </table>
+
+        <h3>Probability Example</h3>
+        <div class="callout callout-warn">
+          <strong>Example</strong>
+          A level 35 item with all 5 tiers configured &mdash; T3 requires level 40,
+          so only T5 (weight 50) and T4 (weight 30) are eligible.<br/>
+          Chances: T5 = 50/80 = 62.5%, T4 = 30/80 = 37.5%. T3, T2, T1 are locked.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="pool-group-mode">POOL_GROUP Mode &mdash; Currency Items</h2>
+
+        <p>
+          <strong>POOL_GROUP mode</strong> creates "currency" items that
+          <strong>randomly select</strong> which modifier to apply from a weighted
+          pool. Like PoE2's Transmutation or Augmentation Orbs.
+        </p>
+
+        <h3>How It Works</h3>
+        <ol>
+          <li>Player uses a currency rune (e.g. <code>transmutation</code>) on a target item.</li>
+          <li>Plugin randomly selects one modifier from the <code>pool</code> list (weighted).</li>
+          <li>If <code>random-type: true</code>, randomly assigns PREFIX or SUFFIX.</li>
+          <li>Then rolls tier + stats using POOL mode logic on the selected modifier.</li>
+        </ol>
+
+        <h3>Example Configuration</h3>
+        <pre><code><span class="key">transmutation</span>:
+  <span class="key">name</span>: <span class="val">"Transmutation"</span>
+  <span class="key">type</span>: <span class="val">PREFIX</span>
+  <span class="key">mode</span>: <span class="val">POOL_GROUP</span>
+  <span class="key">random-type</span>: <span class="val">true</span>         <span class="comment"># 50/50 PREFIX or SUFFIX</span>
+  <span class="key">category</span>: <span class="val">"currency"</span>
+  <span class="key">allowed-types</span>: []         <span class="comment"># Empty = all types</span>
+  <span class="key">tiers</span>: {}                  <span class="comment"># Not used for POOL_GROUP</span>
+  <span class="key">pool</span>:
+    - { <span class="key">modifier</span>: <span class="val">flat_physical</span>, <span class="key">weight</span>: <span class="num">20</span> }
+    - { <span class="key">modifier</span>: <span class="val">flat_fire</span>, <span class="key">weight</span>: <span class="num">15</span> }
+    - { <span class="key">modifier</span>: <span class="val">flat_defense</span>, <span class="key">weight</span>: <span class="num">20</span> }</code></pre>
+
+        <table>
+          <tr>
+            <th>Field</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>mode: POOL_GROUP</code></td>
+            <td>Enables currency-mode behavior.</td>
+          </tr>
+          <tr>
+            <td><code>random-type</code></td>
+            <td>If <code>true</code>, randomly assigns PREFIX or SUFFIX (50/50). If <code>false</code>, uses the modifier's configured type.</td>
+          </tr>
+          <tr>
+            <td><code>pool</code></td>
+            <td>List of child modifiers with weights. Each child must be a POOL-mode modifier.</td>
+          </tr>
+        </table>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="item-level-gating">Item-Level Gating</h2>
+
+        <p>
+          Each POOL tier can specify a <code>required-level</code>. The plugin
+          reads the target item's level from MMOItems NBT (<code>MMOITEMS_REQUIRED_LEVEL</code>
+          or <code>MMOITEMS_ITEM_LEVEL</code>).
+        </p>
+
+        <p>
+          If no tiers are eligible for the item's level, the player receives
+          the <code>no-eligible-tier</code> message and the rune is <strong>not</strong>
+          consumed (unless <code>consume-on-fail</code> is enabled).
+        </p>
+
+        <div class="callout callout-warn">
+          <strong>Important</strong>
+          Items with <code>required-level: 0</code> or no level set will be treated
+          as level 0. Only T5 tiers with <code>required-level: 1</code> or lower
+          will be available.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="rarity-system">PoE2 Rarity Display</h2>
+
+        <p>
+          An <strong>optional</strong> system that changes item name color based on
+          how many modifiers are applied &mdash; mimicking PoE2's rarity tiers.
+        </p>
+
+        <h3>Configuration (config.yml)</h3>
+        <pre><code><span class="key">rarity</span>:
+  <span class="key">enabled</span>: <span class="val">true</span>
+  <span class="key">tiers</span>:
+    <span class="key">NORMAL</span>: { <span class="key">max-mods</span>: <span class="num">0</span>, <span class="key">color</span>: <span class="val">"&amp;f"</span>, <span class="key">label</span>: <span class="val">""</span> }   <span class="comment"># White</span>
+    <span class="key">MAGIC</span>:  { <span class="key">max-mods</span>: <span class="num">1</span>, <span class="key">color</span>: <span class="val">"&amp;9"</span>, <span class="key">label</span>: <span class="val">""</span> }   <span class="comment"># Blue</span>
+    <span class="key">RARE</span>:   { <span class="key">max-mods</span>: <span class="num">3</span>, <span class="key">color</span>: <span class="val">"&amp;e"</span>, <span class="key">label</span>: <span class="val">""</span> }   <span class="comment"># Yellow</span></code></pre>
+
+        <table>
+          <tr>
+            <th>Mod Count</th>
+            <th>Rarity</th>
+            <th>Name Color</th>
+          </tr>
+          <tr>
+            <td>0 modifiers</td>
+            <td>Normal</td>
+            <td style="color:#fff">&#9632; White (<code>&amp;f</code>)</td>
+          </tr>
+          <tr>
+            <td>1&ndash;2 modifiers</td>
+            <td>Magic</td>
+            <td style="color:#55f">&#9632; Blue (<code>&amp;9</code>)</td>
+          </tr>
+          <tr>
+            <td>3+ modifiers</td>
+            <td>Rare</td>
+            <td style="color:#ff5">&#9632; Yellow (<code>&amp;e</code>)</td>
+          </tr>
+        </table>
+
+        <div class="callout callout-note">
+          <strong>Note</strong>
+          Rarity is <strong>disabled by default</strong>. Set
+          <code>rarity.enabled: true</code> in <code>config.yml</code> to enable.
+          This only affects the item name color &mdash; it does not change stats
+          or modifier behavior.
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <h2 id="changelog">Changelog</h2>
+
+        <h3>v1.1.0 <span style="color:var(--text-muted);font-weight:400">&mdash; 2026-03-17</span></h3>
+        <h4>&#x1F195; PoE2-Style Modifier System</h4>
+
+        <p><strong>Added &mdash; POOL Mode (Weighted Random Modifier Pools)</strong></p>
+        <ul>
+          <li>Modifiers can now roll random stats from configured <code>min</code>/<code>max</code> ranges per tier</li>
+          <li>Each tier has a <strong>weight</strong> for weighted random selection (higher = more common)</li>
+          <li>New files: <code>ModifierMode.java</code>, <code>StatRange.java</code></li>
+          <li>New config fields: <code>mode: POOL</code>, <code>stats: { min, max }</code> per tier</li>
+        </ul>
+
+        <p><strong>Added &mdash; Item-Level Gating</strong></p>
+        <ul>
+          <li>Each tier can have <code>required-level</code> that gates access based on target item level</li>
+          <li>Uses <code>MMOITEMS_REQUIRED_LEVEL</code> or <code>MMOITEMS_ITEM_LEVEL</code> from NBT</li>
+        </ul>
+
+        <p><strong>Added &mdash; Custom Lore Name Per Tier</strong></p>
+        <ul>
+          <li>Each tier can define <code>lore-name</code> overriding the rune's display name</li>
+          <li>Example: "Adds Physical Damage (T5)" instead of the rune item name</li>
+        </ul>
+
+        <p><strong>Added &mdash; POOL_GROUP Mode (Currency Items)</strong></p>
+        <ul>
+          <li>Currency-type modifiers that randomly select which modifier to apply from a weighted pool</li>
+          <li>Supports <code>random-type: true</code> for 50/50 PREFIX/SUFFIX assignment</li>
+          <li>Like PoE2's Transmutation/Augmentation Orbs</li>
+        </ul>
+
+        <p><strong>Added &mdash; PoE2 Rarity Display</strong></p>
+        <ul>
+          <li>Optional system changing item name color based on modifier count</li>
+          <li>Normal (white) &rarr; Magic (blue) &rarr; Rare (yellow)</li>
+          <li>Disabled by default. Enable in <code>config.yml</code> under <code>rarity.enabled</code></li>
+        </ul>
+
+        <p><strong>Changed</strong></p>
+        <ul>
+          <li><code>ModifierTier.java</code> &mdash; Added <code>requiredLevel</code>, <code>loreName</code>, <code>statRanges</code></li>
+          <li><code>Modifier.java</code> &mdash; Added <code>rollTier()</code>, <code>rollStats()</code>, <code>rollPoolModifier()</code></li>
+          <li><code>ApplyEngine.java</code> &mdash; Refactored into 3 mode-specific methods with <code>ApplyContext</code></li>
+          <li><code>StatsEngine.java</code> &mdash; Added <code>getItemLevel()</code> for level gating</li>
+          <li><code>NameEngine.java</code> &mdash; Rarity-based name coloring</li>
+          <li><code>DragDropListener.java</code> &mdash; Uses <code>ApplyContext</code>, handles <code>NO_ELIGIBLE_TIER</code></li>
+          <li><code>ConfigManager.java</code> &mdash; Rarity system config loading</li>
+        </ul>
+
+        <p><strong>New Message Keys</strong></p>
+        <ul>
+          <li><code>no-eligible-tier</code> &mdash; Displayed when no tiers available for item's level</li>
+        </ul>
+
+        <div class="callout callout-note">
+          <strong>Backwards Compatibility</strong>
+          Fully backwards compatible. Existing RUNE-mode modifiers continue to work
+          identically. No config migration needed &mdash; omitting <code>mode</code>
+          defaults to <code>RUNE</code>.
+        </div>
+
+        <h3>v1.0.0 <span style="color:var(--text-muted);font-weight:400">&mdash; 2026-03-11</span></h3>
+        <p><strong>Initial Release</strong></p>
+        <ul>
+          <li>Drag &amp; Drop modifier application system for MMOItems</li>
+          <li>Prefix/Suffix system with configurable limits</li>
+          <li>Modifier tiers with success rates and weights</li>
+          <li>Critical success system with stat multiplier</li>
+          <li>Item type restrictions and conflict system</li>
+          <li>Synergy bonuses between modifiers</li>
+          <li>Stacking modes (REPLACE, BLOCK, STACK)</li>
+          <li>Lore display engine with aggregated stats</li>
+          <li>Name transformation engine (prefix/suffix in item name)</li>
+          <li>Protection and Removal scroll support</li>
+          <li>Modifier crafting (combine 2&times; T(n) &rarr; 1&times; T(n+1))</li>
+          <li>PlaceholderAPI integration</li>
+          <li>Full MiniMessage support for all messages</li>
+          <li>Configurable animations (particles, sounds, titles)</li>
+        </ul>
+
       </main>
     </div>
 
