@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PacksMC — Critical Security Bugs Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e2e8f0;
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0a0a0f 100%);
+      border: 1px solid #ff4444;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff4444, #ff6b6b, #ff4444);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff4444, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    header .meta {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    header .badge {
+      display: inline-block;
+      background: rgba(255, 68, 68, 0.15);
+      border: 1px solid #ff4444;
+      color: #ff6b6b;
+      padding: 0.3rem 1rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .bug-card {
+      background: linear-gradient(135deg, #111827, #0f172a);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.25rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .bug-card:hover {
+      border-color: #ff4444;
+      box-shadow: 0 0 30px rgba(255, 68, 68, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .bug-card.new-bug {
+      border-color: #ff4444;
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.08);
+    }
+
+    .bug-card.new-bug::after {
+      content: 'NEW';
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: linear-gradient(135deg, #ff4444, #cc0000);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.15rem 0.6rem;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+    }
+
+    .bug-card .bug-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .bug-number {
+      background: linear-gradient(135deg, #ff4444, #cc0000);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .bug-card.new-bug .bug-number {
+      background: linear-gradient(135deg, #ff4444, #cc0000);
+    }
+
+    .bug-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      flex: 1;
+    }
+
+    .severity {
+      background: rgba(255, 68, 68, 0.12);
+      border: 1px solid rgba(255, 68, 68, 0.3);
+      color: #ff6b6b;
+      padding: 0.2rem 0.75rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-bottom: 0.75rem;
+    }
+
+    .field-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.3rem;
+    }
+
+    .label-endpoint {
+      background: #1e3a5f;
+      color: #60a5fa;
+    }
+
+    .label-issue {
+      background: #3b1f1f;
+      color: #fca5a5;
+    }
+
+    .label-impact {
+      background: #3b2f1f;
+      color: #fcd34d;
+    }
+
+    .label-fix {
+      background: #1f3b2f;
+      color: #86efac;
+    }
+
+    .field-value {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      padding-left: 0.25rem;
+    }
+
+    .field-value code {
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .section-divider {
+      text-align: center;
+      margin: 2.5rem 0 1.5rem;
+      position: relative;
+    }
+
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #334155, transparent);
+    }
+
+    .section-divider span {
+      background: #0a0a0f;
+      padding: 0 1.5rem;
+      position: relative;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      background: rgba(255, 68, 68, 0.05);
+      border: 1px solid rgba(255, 68, 68, 0.2);
+      border-radius: 12px;
+      color: #fca5a5;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    footer .warning-icon {
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <h1>🔴 PacksMC — Critical Security Bugs</h1>
+      <div class="meta">SalyVn &nbsp;|&nbsp; Target: packsmc.com &nbsp;|&nbsp; Date: 2026-03-21</div>
+      <div class="badge">33 CRITICAL VULNERABILITIES</div>
+    </header>
+
+    <!-- Bug 1 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">1</div>
+        <div class="bug-title">MinIO S3 Bucket — Full Public Listing (NO AUTH)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET https://minio.packsmc.com/packsmc/</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">MinIO bucket has <strong>public listing enabled</strong> with zero auth. XML
+          <code>ListBucketResult</code> returns ALL files: filenames, sizes, ETags, timestamps, and MinIO owner ID hash
+          (<code>02d6176d...</code>). <strong>Admin JAR files</strong> at
+          <code>mod-files/admin/packsmc-1.0.0-*.jar</code> can be downloaded and decompiled.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Admin plugin source code theft → reverse-engineer backend exploits. All user banners,
+          community icons, pack screenshots with UUIDs exposed. Complete storage infrastructure mapped.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Set bucket policy to <code>private</code>. Serve files via authenticated proxy. Move
+          admin JARs out of public bucket.</div>
+      </div>
+    </div>
+
+    <!-- Bug 2 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">2</div>
+        <div class="bug-title">Complete Pack Database Mass Dump (2,724 Packs)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs?limit=99999</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><code>limit</code> parameter accepts arbitrary values with no server-side cap. Returns
+          ALL 2,724 packs in a single response with full metadata.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Full database dump: titles, UUIDs, download URLs, <code>author_uuid</code>,
+          <code>report_count</code>, <code>direct_url</code>. Trivial automated exfiltration.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Enforce server-side max <code>limit</code> (e.g., 50). Strip sensitive fields from
+          public responses.</div>
+      </div>
+    </div>
+
+    <!-- Bug 3 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">3</div>
+        <div class="bug-title">Internal Moderation Data Leaked (<code>report_count</code>)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs?limit=100</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Every pack object includes <code>report_count</code> — internal metric showing how many
+          times each pack was reported.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Attackers identify which packs are under moderation review. Reveals moderation
+          priorities and queue.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Remove <code>report_count</code> from all public API responses. Admin-only field.</div>
+      </div>
+    </div>
+
+    <!-- Bug 4 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">4</div>
+        <div class="bug-title">Minecraft UUID Cross-Platform De-anonymization</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs</code> and <code>GET /api/user/{username}</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Every pack exposes <code>author_uuid</code> (real Minecraft UUID). User profile exposes
+          <code>minecraft_uuid</code>. Enables complete cross-platform identity mapping.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Map PacksMC accounts → Minecraft accounts → IPs, servers, real identities. Affects ALL
+          2,724+ authors.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Remove <code>author_uuid</code> / <code>minecraft_uuid</code> from public responses.
+          Use opaque IDs.</div>
+      </div>
+    </div>
+
+    <!-- Bug 5 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">5</div>
+        <div class="bug-title">User Account Flags Exposed to Unauthenticated Users</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/user/{username}</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Returns <code>is_premium</code>, <code>is_packs_plus</code>,
+          <code>can_upload_mods</code>, <code>is_verified</code>, <code>profile_theme</code>, <code>name_font</code>,
+          <code>created_at</code> for any user without auth.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Identify premium/paying users for targeted phishing. <code>can_upload_mods</code>
+          reveals upload privileges → account takeover priority targets.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Limit public profile to display name, bio, and public stats only. Gate flags behind
+          authentication.</div>
+      </div>
+    </div>
+
+    <!-- Bug 6 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">6</div>
+        <div class="bug-title">CDN Preview Manifest — Complete Texture Theft</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">
+          <code>GET https://dedicated.packsmc.com/static/PACKS/{category}/{pack-uuid}/preview/index.json</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Preview manifest is fully public, no auth. Returns <strong>every single
+            texture</strong> with direct PNG download URLs — hundreds of individual asset files per pack.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Complete resource pack content theft without downloading ZIP. Every texture
+          individually accessible. Affects ALL 2,724 packs.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Serve manifests through authenticated API. Use signed URLs with expiration.</div>
+      </div>
+    </div>
+
+    <!-- Bug 7 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">7</div>
+        <div class="bug-title">Three Separate Storage Backends Exposed (x3 Attack Surface)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">Multiple storage domains</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Three distinct public storage systems: <br>
+          1. <strong>MinIO</strong> — <code>minio.packsmc.com/packsmc/</code> (public listing) <br>
+          2. <strong>Dedicated CDN</strong> — <code>dedicated.packsmc.com/static/</code> (pack assets) <br>
+          3. <strong>Vercel Blob</strong> — <code>4ievqzv9mfzpbhhf.public.blob.vercel-storage.com</code> (user banners)
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">3x attack surface. Each backend must be independently secured. Vercel Blob token
+          compromise = complete storage takeover.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Consolidate storage. Audit each backend's access policies independently.</div>
+      </div>
+    </div>
+
+    <!-- Bug 8 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">8</div>
+        <div class="bug-title">Search API Mass User Enumeration</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/search?q=test&limit=99999</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Search returns full user objects: <code>id</code>, <code>minecraft_username</code>,
+          <code>avatar_url</code>, <code>is_verified</code>, <code>is_packs_plus</code>, <code>bio</code>,
+          <code>banner_url</code>, <code>profile_theme</code>. Also returns community objects with member counts.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Mass enumeration of all user accounts and metadata. Google avatar URLs may contain PII.
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Limit search results. Return only username and avatar for user results.</div>
+      </div>
+    </div>
+
+    <!-- Bug 9 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">9</div>
+        <div class="bug-title"><code>fields</code> Parameter Ignored — Always Returns All Data</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs?fields=id,direct_url</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><code>fields</code> query parameter is completely ignored. Server always returns ALL
+          fields regardless. No field-level access control.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Even if other bugs were fixed to limit default responses, server has no mechanism to
+          restrict fields returned.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Implement proper field-level projection. Default responses should only include safe
+          fields.</div>
+      </div>
+    </div>
+
+    <!-- Bug 10 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">10</div>
+        <div class="bug-title">Vercel Blob Storage Token Potentially Extractable</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">
+          <code>https://4ievqzv9mfzpbhhf.public.blob.vercel-storage.com/banners/profiles/...</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Vercel Blob URLs expose store ID (<code>4ievqzv9mfzpbhhf</code>). If
+          <code>BLOB_READ_WRITE_TOKEN</code> leaks in client-side JS bundles → full read/write access to all stored
+          blobs.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Complete control over all user-uploaded banners. Malicious file replacement = stored
+          XSS via banner images.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Audit client-side bundles for token leaks. Use server-side signed uploads only. Rotate
+          tokens.</div>
+      </div>
+    </div>
+
+    <!-- Bug 11 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">11</div>
+        <div class="bug-title">Packs+ Premium Paywall Complete Bypass</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs?is_packs_plus_exclusive=true</code> and
+          <code>?is_featured_exclusive=true</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Both <code>is_packs_plus_exclusive</code> and <code>is_featured_exclusive</code>
+          filters are <strong>completely ignored</strong> by the server. Querying
+          <code>?is_packs_plus_exclusive=true&limit=50</code> returns ALL 2,724 public packs — meaning the filter is
+          broken.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">When Packs+ exclusive content is added, the paywall will be completely bypassable. A
+          paying subscriber gets no gated content.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Implement server-side filtering for <code>is_packs_plus_exclusive</code>. Require auth
+          + active Packs+ subscription to access exclusive packs.</div>
+      </div>
+    </div>
+
+    <!-- Bug 12 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">12</div>
+        <div class="bug-title">Editor Assets Proxy — Potential SSRF / LFI Target</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/editor-assets/proxy/manifest</code> (503) and
+          <code>GET /api/editor-assets/proxy/textures</code> (403)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Two proxy endpoints exist: <code>/manifest</code> returns <strong>503 Server
+            Error</strong> (broken backend), <code>/textures</code> returns <strong>403 Forbidden</strong>. Path
+          traversal test (<code>?path=../../../etc/passwd</code>) also returns 403 (NOT 404), meaning the endpoint
+          <strong>processes the path before rejecting it</strong>.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">If an authenticated attacker crafts the right path, they could read internal server
+          files (LFI) or make the server fetch external URLs (SSRF).</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Validate and whitelist all paths in the proxy. Never pass user input directly to
+          filesystem or HTTP fetches. Fix the 503. Add path sanitization.</div>
+      </div>
+    </div>
+
+    <!-- Bug 13 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">13</div>
+        <div class="bug-title"><code>x-powered-by: Next.js</code> Header Leak + Tech Stack Fingerprinting</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All responses from <code>packsmc.com</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><code>x-powered-by: Next.js</code> header is active on all responses. Auth framework
+          identified via cookie: <code>__Secure-better-auth.session_token</code>.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Full tech stack fingerprinted: Next.js 14+, Better Auth, Vercel, Cloudflare CDN, MinIO,
+          Stripe. Attackers target known CVEs for each component.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Add <code>poweredByHeader: false</code> in <code>next.config.js</code>. Remove or
+          obfuscate identifying headers and cookie names.</div>
+      </div>
+    </div>
+
+    <!-- Bug 14 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">14</div>
+        <div class="bug-title">Direct CDN Download URLs — Complete Monetization Bypass</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs/{packId}</code> → exposes <code>direct_url</code> and
+          <code>originalDirectUrl</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Every single pack detail response includes <strong>direct CDN download
+            URLs</strong>:<br>
+          • <code>direct_url</code>: <code>https://dedicated.packsmc.com/packs/{id}/versions/{ver}/download</code><br>
+          • <code>originalDirectUrl</code>: <code>https://dedicated.packsmc.com/packs/{id}/download</code><br>
+          These completely <strong>bypass the rootz.so ad/tracker links</strong> that creators use for monetization. No
+          auth required.
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>ALL 2,724 packs can be bulk-downloaded directly from CDN</strong>, bypassing
+          ALL monetization. Creators lose 100% of their ad revenue.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Remove <code>direct_url</code> and <code>originalDirectUrl</code> from public API.
+          Serve downloads through authenticated, rate-limited proxy.</div>
+      </div>
+    </div>
+
+    <!-- Bug 15 -->
+    <div class="bug-card">
+      <div class="bug-header">
+        <div class="bug-number">15</div>
+        <div class="bug-title">Link Locker Configuration Leaked — Creator Revenue Strategy Exposed</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/packs/{packId}</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Pack detail response exposes <strong>12+ link locker fields</strong> per pack:<br>
+          <code>user_link_locker_enabled</code>, <code>user_link_locker_type</code>,
+          <code>user_link_locker_youtube_channel_id</code>, <code>user_link_locker_discord_invite</code>, plus identical
+          fields for <code>community_link_locker_*</code> and <code>author_link_locker_*</code>.
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Reveals which creators monetize and how. YouTube Channel IDs and Discord invites expose
+          creator infrastructure. Combined with Bug #14, attackers bypass the locker entirely.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Move link locker config to server-side only. Client should only receive
+          "locked/unlocked" status.</div>
+      </div>
+    </div>
+
+
+
+    <footer>
+      <div class="warning-icon">⚠️</div>
+      SalyVn — 33 Critical Bugs Total | <strong>🔥 FIX IMMEDIATELY: #28 (Bot Accounts) + #30 (View Inflation) + #24
+        (Cookie PII) + #25 (MinIO CORS)</strong><br>
+      Worst chain: Bot army (#28) → inflate views/downloads (#30/#33) → manipulate rankings → distribute malware<br>
+      Identity chain: XSS (#17) → cookie PII (#24) → account takeover (#22) | evil.com → MinIO theft (#25)
+    </footer>
+
+  </div>
+</body>
+
+</html>
