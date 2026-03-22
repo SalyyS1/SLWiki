@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLElemental — Admin Wiki</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a28;--bg4:#22223a;
+  --text:#e0e0f0;--text2:#8888aa;--text3:#555570;
+  --accent:#6c5ce7;--accent2:#a29bfe;--accent3:#2d2b55;
+  --fire:#ff6b35;--water:#4a90d9;--earth:#8b6914;--wind:#90ee90;
+  --lightning:#ffd700;--ice:#87ceeb;--light:#fffacd;--dark:#6a6a9f;
+  --poison:#9932cc;--metal:#c0c0c0;--arcane:#da70d6;--void:#8888bb;
+  --demonic:#ff4444;--celestial:#ffd700;--draconic:#4169e1;
+  --green:#2ecc71;--red:#e74c3c;--yellow:#f39c12;
+  --border:rgba(108,92,231,0.15);
+  --glow:rgba(108,92,231,0.3);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+
+/* Layout */
+.wiki{display:flex;min-height:100vh}
+.sidebar{
+  width:260px;position:fixed;top:0;left:0;height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;padding:24px 0;
+  transition:transform 0.3s ease;
+}
+.sidebar-header{
+  padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;
+}
+.sidebar-header h1{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.sidebar-header h1 span{color:var(--accent2)}
+.sidebar-header p{font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.sidebar nav a{
+  display:block;padding:8px 24px;font-size:13px;color:var(--text2);
+  text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;
+}
+.sidebar nav a:hover,.sidebar nav a.active{
+  color:var(--text);background:rgba(108,92,231,0.08);
+  border-left-color:var(--accent);
+}
+.sidebar nav .section-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text3);padding:16px 24px 6px;font-weight:600;
+}
+.content{margin-left:260px;max-width:900px;padding:48px 64px 120px}
+
+/* Typography */
+h2{font-size:28px;font-weight:700;margin:48px 0 24px;letter-spacing:-0.5px;
+  padding-bottom:12px;border-bottom:1px solid var(--border)}
+h2:first-of-type{margin-top:0}
+h3{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--accent2)}
+p{margin:8px 0;color:var(--text2)}
+strong{color:var(--text);font-weight:600}
+
+/* Quick Start */
+.quick-start{
+  background:linear-gradient(135deg,var(--accent3),var(--bg3));
+  border:1px solid var(--border);border-radius:12px;
+  padding:32px;margin-bottom:32px;
+}
+.quick-start h2{margin:0 0 16px;border:none;padding:0;font-size:22px}
+.quick-start ol{padding-left:20px}
+.quick-start li{margin:8px 0;color:var(--text2)}
+.quick-start li code{color:var(--accent2)}
+.deps{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.dep{
+  padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;
+}
+.dep.req{background:rgba(108,92,231,0.15);color:var(--accent2);border:1px solid var(--border)}
+.dep.opt{background:rgba(255,255,255,0.03);color:var(--text3);border:1px solid rgba(255,255,255,0.06)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+thead{background:var(--bg3)}
+th{text-align:left;padding:10px 14px;font-weight:600;font-size:12px;
+  text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);
+  border-bottom:2px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.04)}
+tr:hover td{background:rgba(108,92,231,0.04)}
+code{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--accent2);
+}
+
+/* Code blocks */
+pre{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:20px;margin:16px 0;overflow-x:auto;font-size:12.5px;line-height:1.8;
+}
+pre code{background:none;padding:0;color:var(--text2)}
+.comment{color:var(--text3)}
+.key{color:var(--accent2)}
+.value{color:var(--green)}
+.string{color:var(--fire)}
+
+/* Element badge */
+.elem{
+  display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;
+  font-weight:600;margin:2px;letter-spacing:0.3px;
+}
+
+/* Info boxes */
+.tip{
+  background:rgba(46,204,113,0.08);border-left:3px solid var(--green);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:13px;color:var(--text2);
+}
+.tip strong{color:var(--green)}
+.warn{
+  background:rgba(243,156,18,0.08);border-left:3px solid var(--yellow);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:13px;color:var(--text2);
+}
+.warn strong{color:var(--yellow)}
+
+/* Flow diagram */
+.flow{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:20px;margin:16px 0;font-size:13px;
+}
+.flow .step{
+  background:var(--bg4);padding:8px 16px;border-radius:6px;
+  color:var(--text);font-weight:500;
+}
+.flow .arrow{color:var(--accent);font-weight:700;font-size:16px}
+.flow .result{
+  background:rgba(108,92,231,0.15);padding:8px 16px;border-radius:6px;
+  color:var(--accent2);font-weight:600;
+}
+
+/* Element grid */
+.elem-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:12px;margin:16px 0;
+}
+.elem-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:16px;transition:border-color 0.2s;
+}
+.elem-card:hover{border-color:var(--accent)}
+.elem-card .name{font-weight:700;font-size:14px;margin-bottom:6px}
+.elem-card .meta{font-size:11px;color:var(--text3)}
+.elem-card .matchups{font-size:11px;margin-top:8px}
+.matchup-strong{color:var(--green)}
+.matchup-weak{color:var(--red)}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .content{margin-left:0;padding:32px 24px}
+  .elem-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wiki">
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>SL<span>Elemental</span></h1>
+    <p>Admin Setup Wiki</p>
+  </div>
+  <nav>
+    <div class="section-label">Getting Started</div>
+    <a href="#quick-start">Quick Start</a>
+    <a href="#commands">Commands</a>
+    <a href="#permissions">Permissions</a>
+    <div class="section-label">Configuration</div>
+    <a href="#config">config.yml</a>
+    <a href="#elements">elements.yml</a>
+    <a href="#mob-elements">mob-elements.yml</a>
+    <a href="#type-chart">type-chart.yml</a>
+    <div class="section-label">Admin GUIs</div>
+    <a href="#admin-gui">Admin Panel</a>
+    <a href="#item-assign">Item Element Assign</a>
+    <a href="#mob-gui">Mob Assignment GUI</a>
+    <div class="section-label">Systems</div>
+    <a href="#combat">Combat Flow</a>
+    <a href="#armor">Armor Element</a>
+    <a href="#dual-type">Dual-Type</a>
+    <div class="section-label">Integrations</div>
+    <a href="#mmoitems">MMOItems</a>
+    <a href="#mythicmobs">MythicMobs Mechanic</a>
+    <a href="#papi">PlaceholderAPI</a>
+    <div class="section-label">Reference</div>
+    <a href="#all-elements">All Elements</a>
+    <a href="#config-summary">Config Summary</a>
+    <a href="#balance">Balance Testing</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<!-- QUICK START -->
+<div class="quick-start" id="quick-start">
+  <h2>Quick Start</h2>
+  <ol>
+    <li>Drop <code>SLElemental.jar</code> into <code>/plugins/</code></li>
+    <li>Start server &mdash; all config files auto-generate</li>
+    <li>Edit configs, then <code>/element admin reload</code></li>
+  </ol>
+  <div class="deps">
+    <span class="dep req">MMOItems (required)</span>
+    <span class="dep req">MythicLib (required)</span>
+    <span class="dep opt">MythicMobs</span>
+    <span class="dep opt">PlaceholderAPI</span>
+    <span class="dep opt">Vault</span>
+  </div>
+  <p style="margin-top:12px;font-size:12px">Supports Minecraft <strong>1.20 &mdash; 1.21.1</strong></p>
+</div>
+
+<!-- COMMANDS -->
+<h2 id="commands">Commands</h2>
+<p>All commands work with <code>/element</code> or the alias <code>/el</code>.</p>
+<table>
+  <thead><tr><th>Command</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>/element</code></td><td>Open element menu GUI</td></tr>
+    <tr><td><code>/element info &lt;type&gt;</code></td><td>View element details in chat</td></tr>
+    <tr><td><code>/element chart</code></td><td>Open interactive type chart GUI</td></tr>
+    <tr><td><code>/element check</code></td><td>Check held weapon's element</td></tr>
+    <tr><td><code>/element armor</code></td><td>Check armor element breakdown</td></tr>
+    <tr><td><code>/element admin</code></td><td>Open admin panel GUI</td></tr>
+    <tr><td><code>/element admin reload</code></td><td>Hot-reload all configs</td></tr>
+    <tr><td><code>/element admin mob set &lt;mob&gt; &lt;elem&gt;</code></td><td>Assign element to mob</td></tr>
+    <tr><td><code>/element admin mob remove &lt;mob&gt;</code></td><td>Remove mob assignment</td></tr>
+    <tr><td><code>/element admin mob list</code></td><td>List all mob-element mappings</td></tr>
+    <tr><td><code>/element admin create &lt;id&gt;</code></td><td>Create a new custom element</td></tr>
+  </tbody>
+</table>
+
+<!-- PERMISSIONS -->
+<h2 id="permissions">Permissions</h2>
+<table>
+  <thead><tr><th>Permission</th><th>Default</th><th>Scope</th></tr></thead>
+  <tbody>
+    <tr><td><code>slelemental.use</code></td><td>true</td><td>GUI, info, check, chart commands</td></tr>
+    <tr><td><code>slelemental.admin</code></td><td>op</td><td>Admin panel, reload, mob management, element creation</td></tr>
+  </tbody>
+</table>
+
+<!-- CONFIG.YML -->
+<h2 id="config">config.yml &mdash; Main Settings</h2>
+
+<h3>Weapon Effectiveness</h3>
+<pre><code><span class="key">effectiveness:</span>
+  <span class="key">strong-multiplier:</span> <span class="value">1.25</span>   <span class="comment"># +25% damage when strong</span>
+  <span class="key">weak-multiplier:</span> <span class="value">0.75</span>     <span class="comment"># -25% damage when weak</span></code></pre>
+
+<h3>Visual Effects Toggles</h3>
+<pre><code><span class="key">visual:</span>
+  <span class="key">particles:</span> <span class="value">true</span>            <span class="comment"># Particle burst on hit</span>
+  <span class="key">sounds:</span> <span class="value">true</span>               <span class="comment"># Element-specific hit sounds</span>
+  <span class="key">effects:</span> <span class="value">true</span>              <span class="comment"># On-hit potion effects</span>
+  <span class="key">head-indicator:</span> <span class="value">true</span>       <span class="comment"># Element name above target</span>
+  <span class="key">weapon-aura:</span> <span class="value">true</span>          <span class="comment"># Ambient particles on weapon</span>
+  <span class="key">effectiveness-text:</span> <span class="value">true</span>   <span class="comment"># Floating damage text</span></code></pre>
+
+<h3>Visual Timing &amp; Aura Tuning</h3>
+<pre><code><span class="key">visual:</span>
+  <span class="comment"># --- Timing (ticks, 20 ticks = 1 second) ---</span>
+  <span class="key">head-indicator-duration:</span> <span class="value">40</span>   <span class="comment"># How long indicator stays (40 = 2s)</span>
+  <span class="key">hologram-duration:</span> <span class="value">30</span>         <span class="comment"># How long effectiveness text stays (30 = 1.5s)</span>
+  <span class="key">hologram-rise-height:</span> <span class="value">1.2</span>     <span class="comment"># Height above target for floating text</span>
+
+  <span class="comment"># --- Weapon Aura Tuning ---</span>
+  <span class="key">aura-tick-interval:</span> <span class="value">10</span>        <span class="comment"># How often aura spawns (10 = every 0.5s)</span>
+  <span class="key">aura-particle-ratio:</span> <span class="value">0.25</span>     <span class="comment"># 25% of on-hit particle count</span>
+  <span class="key">aura-spread-ratio:</span> <span class="value">0.30</span>       <span class="comment"># 30% of on-hit spread</span>
+  <span class="key">aura-speed-ratio:</span> <span class="value">0.50</span>        <span class="comment"># 50% of on-hit speed</span></code></pre>
+
+<h3>Armor Element System</h3>
+<pre><code><span class="key">armor-element:</span>
+  <span class="key">enabled:</span> <span class="value">true</span>
+  <span class="key">mode:</span> <span class="value">dominant</span>             <span class="comment"># Majority element across 4 pieces</span>
+
+  <span class="key">damage:</span>
+    <span class="key">strong-reduction:</span> <span class="value">0.80</span>   <span class="comment"># Armor resists = 20% less damage</span>
+    <span class="key">weak-increase:</span> <span class="value">1.20</span>      <span class="comment"># Armor weak = 20% more damage</span>
+    <span class="key">same-element:</span> <span class="value">0.90</span>       <span class="comment"># Same element = 10% resistance</span>
+
+  <span class="key">durability:</span>
+    <span class="key">enabled:</span> <span class="value">true</span>
+    <span class="key">strong-multiplier:</span> <span class="value">0.70</span>  <span class="comment"># 30% less durability loss</span>
+    <span class="key">weak-multiplier:</span> <span class="value">1.50</span>    <span class="comment"># 50% more durability loss</span>
+    <span class="key">same-element:</span> <span class="value">0.85</span>       <span class="comment"># 15% less durability loss</span>
+
+  <span class="key">pvp:</span>
+    <span class="key">damage-cap:</span> <span class="value">1.15</span>          <span class="comment"># Max +15% in PvP</span>
+    <span class="key">damage-floor:</span> <span class="value">0.85</span>        <span class="comment"># Max -15% in PvP</span>
+    <span class="key">durability-scale:</span> <span class="value">0.60</span>    <span class="comment"># 60% of PvE effect</span>
+
+  <span class="key">set-bonus:</span>
+    <span class="key">enabled:</span> <span class="value">true</span>
+    <span class="key">full-set-reduction:</span> <span class="value">0.10</span>  <span class="comment"># Extra 10% DR for 4 matching</span>
+    <span class="key">full-set-aura:</span> <span class="value">true</span></code></pre>
+
+<div class="tip"><strong>Tip:</strong> All values are hot-reloadable. Edit, save, then <code>/element admin reload</code>. No restart needed.</div>
+
+<!-- ADMIN PANEL GUI -->
+<h2 id="admin-gui">Admin Panel GUI</h2>
+
+<p>Access the admin panel with <code>/element admin</code>. It provides 4 buttons:</p>
+
+<table>
+  <thead><tr><th>Button</th><th>Icon</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Mob Element Assignment</strong></td><td>Spawner</td><td>Open category selector for Vanilla / MythicMobs</td></tr>
+    <tr><td><strong>Element Creator / Editor</strong></td><td>Nether Star</td><td>Create or modify elements in-game</td></tr>
+    <tr><td><strong>Set Item Element</strong></td><td>Anvil</td><td>Assign elements to MMOItems via click-picker</td></tr>
+    <tr><td><strong>Reload Configs</strong></td><td>Command Block</td><td>Hot-reload all config files</td></tr>
+  </tbody>
+</table>
+
+<!-- ITEM ELEMENT ASSIGNMENT -->
+<h3 id="item-assign">Item Element Assignment (Click-to-Pick)</h3>
+
+<div class="flow">
+  <span class="step">/element admin</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Set Item Element</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Click MMOItem in inventory</span>
+  <span class="arrow">&rarr;</span>
+  <span class="result">Toggle Elements (max 2)</span>
+</div>
+
+<ol style="padding-left:20px;color:var(--text2)">
+  <li>Click <strong>"Set Item Element"</strong> in Admin Panel</li>
+  <li>A 1-row GUI opens &mdash; <strong>click any MMOItem in your inventory below</strong></li>
+  <li>The item is taken and the <strong>Element Toggle Picker</strong> opens</li>
+  <li>Toggle elements on/off (up to 2: primary + secondary)
+    <ul>
+      <li><span style="color:var(--green)">&#x2714; SELECTED</span> &mdash; element icon with colored name</li>
+      <li><span style="color:var(--text3)">&#x25CB; Not selected</span> &mdash; gray dye</li>
+    </ul>
+  </li>
+  <li>Click <strong>"&#x2714; Confirm &amp; Apply"</strong> to save &mdash; item returned to inventory</li>
+</ol>
+
+<div class="tip"><strong>Safety:</strong> Closing GUI with ESC or clicking Cancel always returns the item untouched. If inventory is full, item drops at your feet.</div>
+
+<!-- MOB ASSIGNMENT GUI -->
+<h3 id="mob-gui">Mob Assignment GUI (Vanilla / MythicMobs Tabs)</h3>
+
+<p>The mob assignment GUI now separates <strong>vanilla mobs</strong> and <strong>MythicMobs</strong> into distinct categories:</p>
+
+<table>
+  <thead><tr><th>Tab</th><th>Icon</th><th>Color</th><th>Contents</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Vanilla Mobs</strong></td><td>Zombie Head</td><td style="color:#55FF55">Green</td><td>All vanilla EntityTypes (Zombie, Skeleton, Creeper...)</td></tr>
+    <tr><td><strong>MythicMobs</strong></td><td>Wither Skull</td><td style="color:#AA55FF">Purple</td><td>All MythicMobs custom mobs</td></tr>
+  </tbody>
+</table>
+
+<p>Each tab features:</p>
+<ul style="color:var(--text2);padding-left:20px">
+  <li><strong>Assigned mobs</strong> shown first with element name &amp; color</li>
+  <li><strong>Unassigned mobs</strong> shown in gray after</li>
+  <li><strong>Search</strong> via compass button (type mob name in chat)</li>
+  <li><strong>Pagination</strong> with arrow buttons</li>
+  <li><strong>Click</strong> to assign element, <strong>Shift+Click</strong> to remove</li>
+</ul>
+
+<h3 id="config-summary">All Configurable Values Summary</h3>
+<table>
+  <thead><tr><th>Category</th><th>Count</th><th>Source File</th></tr></thead>
+  <tbody>
+    <tr><td>Weapon effectiveness</td><td>2 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Visual on/off toggles</td><td>6 switches</td><td><code>config.yml</code></td></tr>
+    <tr><td>Visual timing &amp; sizing</td><td>7 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Armor damage modifiers</td><td>3 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Armor durability modifiers</td><td>4 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>PvP overrides</td><td>3 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Set bonus</td><td>3 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Per-element visuals</td><td>7 values each</td><td><code>elements.yml</code></td></tr>
+    <tr><td>Per-element effects</td><td>3+ values each</td><td><code>elements.yml</code></td></tr>
+    <tr><td>Per-element matchups</td><td>2 lists each</td><td><code>elements.yml</code></td></tr>
+    <tr><td>Matchup overrides</td><td>unlimited</td><td><code>type-chart.yml</code></td></tr>
+    <tr><td>Mob assignments</td><td>unlimited</td><td><code>mob-elements.yml</code></td></tr>
+  </tbody>
+</table>
+
+<!-- ELEMENTS.YML -->
+<h2 id="elements">elements.yml &mdash; Element Definitions</h2>
+
+<p>Each element needs a unique ID and the following properties:</p>
+
+<pre><code><span class="key">elements:</span>
+  <span class="key">fire:</span>
+    <span class="key">display-name:</span> <span class="string">"Fire"</span>
+    <span class="key">color:</span> <span class="string">"#FF6B35"</span>               <span class="comment"># Hex color used everywhere</span>
+    <span class="key">strong-against:</span> <span class="value">[ice, poison]</span>    <span class="comment"># Elements this beats</span>
+    <span class="key">weak-to:</span> <span class="value">[water, earth]</span>          <span class="comment"># Elements that beat this</span>
+    <span class="key">gui-material:</span> <span class="value">RED_DYE</span>            <span class="comment"># Material in GUI menus</span>
+    <span class="key">description:</span>
+      - <span class="string">"&lt;color:#FF6B35&gt;Burns enemies&lt;/color&gt;"</span>
+    <span class="key">on-hit-effect:</span>
+      <span class="key">name:</span> <span class="string">"Burn"</span>
+      <span class="key">fire-ticks:</span> <span class="value">60</span>                 <span class="comment"># Set on fire (ticks)</span>
+      <span class="key">potion-effects:</span>
+        - <span class="value">{ type: SLOWNESS, duration: 40, amplifier: 0 }</span>
+    <span class="key">particle:</span>
+      <span class="key">type:</span> <span class="value">FLAME</span>     <span class="key">count:</span> <span class="value">25</span>     <span class="key">spread:</span> <span class="value">0.4</span>     <span class="key">speed:</span> <span class="value">0.05</span>
+    <span class="key">sound:</span>
+      <span class="key">on-hit:</span> <span class="value">ENTITY_BLAZE_SHOOT</span>
+      <span class="key">on-strong:</span> <span class="value">ENTITY_GENERIC_EXPLODE</span>
+      <span class="key">on-weak:</span> <span class="value">BLOCK_FIRE_EXTINGUISH</span></code></pre>
+
+<div class="tip"><strong>Adding custom elements:</strong> Copy any element block, change the ID and properties, and reload. No code changes needed.</div>
+
+<!-- MOB-ELEMENTS.YML -->
+<h2 id="mob-elements">mob-elements.yml &mdash; Mob Assignments</h2>
+
+<pre><code><span class="comment"># MythicMobs — use internal mob ID</span>
+<span class="key">mythicmobs:</span>
+  <span class="key">FireDragon:</span> <span class="value">fire,draconic</span>      <span class="comment"># Dual-type!</span>
+  <span class="key">IceGolem:</span> <span class="value">ice</span>
+
+<span class="comment"># Vanilla — use EntityType names</span>
+<span class="key">vanilla-mobs:</span>
+  <span class="key">BLAZE:</span> <span class="value">fire</span>
+  <span class="key">ENDER_DRAGON:</span> <span class="value">draconic</span>
+  <span class="key">ZOMBIE:</span> <span class="value">dark</span></code></pre>
+
+<p>Can also assign via GUI: <code>/element admin</code> &rarr; Mob Assignment</p>
+
+<!-- TYPE-CHART.YML -->
+<h2 id="type-chart">type-chart.yml &mdash; Override Matchups</h2>
+
+<p>Fine-tune specific matchups without touching elements.yml:</p>
+
+<pre><code><span class="key">overrides:</span>
+  <span class="key">fire.ice:</span> <span class="value">1.50</span>       <span class="comment"># Fire does 1.5x vs Ice (instead of 1.25x)</span>
+  <span class="key">normal.ghost:</span> <span class="value">0.0</span>    <span class="comment"># Complete immunity</span></code></pre>
+
+<!-- COMBAT FLOW -->
+<h2 id="combat">Combat Flow</h2>
+
+<h3>Weapon vs Mob (Offensive)</h3>
+<div class="flow">
+  <span class="step">Player (Fire sword)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Ice Mob</span>
+  <span class="arrow">=</span>
+  <span class="result">base_damage x 1.25</span>
+</div>
+<p>Triggers: on-hit effect (Burn), particle burst, sound, floating text "Strong! +25%", element name above target.</p>
+
+<h3>Boss vs Player Armor (Defensive)</h3>
+<div class="flow">
+  <span class="step">Fire Boss</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Player (Water armor)</span>
+  <span class="arrow">=</span>
+  <span class="result">base_damage x 0.80</span>
+</div>
+<p>Water is strong against Fire, so the player takes 20% less damage. Each Water armor piece also loses 30% less durability.</p>
+
+<h2 id="armor">Armor Element System</h2>
+
+<p>The system reads each of the 4 armor pieces and calculates a <strong>dominant element</strong> based on majority.</p>
+
+<table>
+  <thead><tr><th>Layer</th><th>How it Works</th><th>Values</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Damage Modifier</strong></td><td>Dominant element vs attacker</td><td>Strong: 0.80 / Weak: 1.20 / Same: 0.90</td></tr>
+    <tr><td><strong>Durability Drain</strong></td><td>Each piece individually</td><td>Strong: x0.70 / Weak: x1.50 / Same: x0.85</td></tr>
+    <tr><td><strong>Set Bonus</strong></td><td>All 4 pieces match</td><td>Extra 10% damage reduction</td></tr>
+    <tr><td><strong>PvP Caps</strong></td><td>Player vs Player limits</td><td>Damage: 0.85 &mdash; 1.15 / Durability: 60%</td></tr>
+  </tbody>
+</table>
+
+<h2 id="dual-type">Dual-Type System</h2>
+
+<p>When both attacker and defender have 2 elements, all 4 pairings are calculated and averaged:</p>
+
+<div class="flow">
+  <span class="step">Sword (Fire + Ice)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Boss (Water + Earth)</span>
+</div>
+
+<table>
+  <thead><tr><th>Pair</th><th>Matchup</th><th>Multiplier</th></tr></thead>
+  <tbody>
+    <tr><td>Fire vs Water</td><td>Weak</td><td>0.75</td></tr>
+    <tr><td>Fire vs Earth</td><td>Weak</td><td>0.75</td></tr>
+    <tr><td>Ice vs Water</td><td>Strong</td><td>1.25</td></tr>
+    <tr><td>Ice vs Earth</td><td>Neutral</td><td>1.00</td></tr>
+    <tr><td colspan="2" style="text-align:right"><strong>Average</strong></td><td><strong>0.9375</strong></td></tr>
+  </tbody>
+</table>
+
+<!-- MMOITEMS -->
+<h2 id="mmoitems">MMOItems Integration</h2>
+
+<p>SLElemental registers a custom stat <strong>"SL Element"</strong> directly into MMOItems&rsquo; item editor.</p>
+
+<h3>Method 1: Via /mi browse (SL Element Stat)</h3>
+<div class="flow">
+  <span class="step">/mi browse</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Select type (SWORD, BOW...)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Select item</span>
+  <span class="arrow">&rarr;</span>
+  <span class="result">Find "SL Element" (Blaze Powder)</span>
+</div>
+
+<ol style="padding-left:20px;color:var(--text2)">
+  <li>Navigate to the <strong>ELEMENTAL</strong> page in the item editor</li>
+  <li>Find <strong>"SL Element"</strong> stat (Blaze Powder icon)</li>
+  <li><strong>Left-Click</strong> &rarr; type element ID in chat (e.g. <code>fire</code>)</li>
+  <li><strong>Right-Click</strong> &rarr; remove element</li>
+</ol>
+
+<div class="warn"><strong>Note:</strong> The "SL Element" stat is separate from MMOItems' built-in "Elements" (Fire Damage, Water Defense, etc). They do not conflict.</div>
+
+<h3>Method 2: Via Admin Panel GUI</h3>
+<p>Use <code>/element admin</code> &rarr; <strong>Set Item Element</strong> for a visual click-picker with toggle support (up to 2 elements). See <a href="#item-assign" style="color:var(--accent2)">Item Element Assignment</a> above.</p>
+
+<h3>Item Lore Format</h3>
+<p>Customize how the element appears on item lore in <code>config.yml</code>:</p>
+<pre><code><span class="key">integration:</span>
+  <span class="key">mmoitems:</span>
+    <span class="key">lore-format:</span> <span class="string">"&7Element: {element_name}"</span>   <span class="comment"># Placeholders: {element_name}, {element_color}</span></code></pre>
+
+<h3>NBT Tags</h3>
+<table>
+  <thead><tr><th>Tag</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>MMOITEMS_SL_ELEMENT</code></td><td>Primary element ID</td><td><code>fire</code></td></tr>
+    <tr><td><code>MMOITEMS_SL_ELEMENT_SECONDARY</code></td><td>Secondary element (dual-type)</td><td><code>ice</code></td></tr>
+  </tbody>
+</table>
+
+<!-- MYTHICMOBS MECHANIC -->
+<h2 id="mythicmobs">MythicMobs Mechanic</h2>
+
+<p>Use the <code>slelemental</code> mechanic in MythicMobs skill files:</p>
+
+<pre><code><span class="key">Skills:</span>
+  - <span class="value">slelemental{element=fire;power=2.0}</span> <span class="value">@target</span> ~onAttack
+  - <span class="value">slelemental{element=ice,water;power=1.5}</span> <span class="value">@target</span> ~onDamaged</code></pre>
+
+<table>
+  <thead><tr><th>Parameter</th><th>Description</th><th>Default</th></tr></thead>
+  <tbody>
+    <tr><td><code>element</code></td><td>Element ID(s), comma-separated</td><td>&mdash;</td></tr>
+    <tr><td><code>power</code></td><td>Damage multiplier</td><td>1.0</td></tr>
+  </tbody>
+</table>
+
+<!-- PAPI -->
+<h2 id="papi">PlaceholderAPI</h2>
+
+<table>
+  <thead><tr><th>Placeholder</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>%slelemental_weapon_element%</code></td><td>Primary weapon element name</td></tr>
+    <tr><td><code>%slelemental_weapon_elements%</code></td><td>All weapon elements, comma-separated</td></tr>
+    <tr><td><code>%slelemental_weapon_color%</code></td><td>Hex color of primary element</td></tr>
+    <tr><td><code>%slelemental_total_elements%</code></td><td>Total registered elements count</td></tr>
+    <tr><td><code>%slelemental_strong_multiplier%</code></td><td>Strong multiplier value</td></tr>
+    <tr><td><code>%slelemental_weak_multiplier%</code></td><td>Weak multiplier value</td></tr>
+  </tbody>
+</table>
+
+<!-- ALL ELEMENTS -->
+<h2 id="all-elements">Built-in Elements (15)</h2>
+
+<div class="elem-grid">
+  <div class="elem-card"><div class="name" style="color:#FF6B35">Fire</div><div class="meta">RED_DYE &middot; #FF6B35 &middot; On-Hit: Burn</div><div class="matchups"><span class="matchup-strong">Strong: Ice, Poison, Wind</span><br><span class="matchup-weak">Weak: Water, Earth</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#4A90D9">Water</div><div class="meta">BLUE_DYE &middot; #4A90D9 &middot; On-Hit: Drench</div><div class="matchups"><span class="matchup-strong">Strong: Fire, Earth, Metal</span><br><span class="matchup-weak">Weak: Lightning, Poison</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#8B6914">Earth</div><div class="meta">BROWN_DYE &middot; #8B6914 &middot; On-Hit: Tremor</div><div class="matchups"><span class="matchup-strong">Strong: Lightning, Metal, Poison</span><br><span class="matchup-weak">Weak: Water, Wind</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#90EE90">Wind</div><div class="meta">LIME_DYE &middot; #90EE90 &middot; On-Hit: Gust</div><div class="matchups"><span class="matchup-strong">Strong: Earth, Poison, Arcane</span><br><span class="matchup-weak">Weak: Fire, Ice</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#FFD700">Lightning</div><div class="meta">YELLOW_DYE &middot; #FFD700 &middot; On-Hit: Stun</div><div class="matchups"><span class="matchup-strong">Strong: Water, Wind, Metal</span><br><span class="matchup-weak">Weak: Earth, Arcane</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#87CEEB">Ice</div><div class="meta">LIGHT_BLUE_DYE &middot; #87CEEB &middot; On-Hit: Freeze</div><div class="matchups"><span class="matchup-strong">Strong: Wind, Water, Draconic</span><br><span class="matchup-weak">Weak: Fire, Metal</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#FFFACD">Light</div><div class="meta">WHITE_DYE &middot; #FFFACD &middot; On-Hit: Purify</div><div class="matchups"><span class="matchup-strong">Strong: Dark, Demonic, Void</span><br><span class="matchup-weak">Weak: Arcane, Draconic</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#9999cc">Dark</div><div class="meta">BLACK_DYE &middot; #2F2F4F &middot; On-Hit: Blind</div><div class="matchups"><span class="matchup-strong">Strong: Light, Arcane, Celestial</span><br><span class="matchup-weak">Weak: Light, Demonic</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#9932CC">Poison</div><div class="meta">PURPLE_DYE &middot; #9932CC &middot; On-Hit: Toxin</div><div class="matchups"><span class="matchup-strong">Strong: Water, Wind, Earth</span><br><span class="matchup-weak">Weak: Fire, Light</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#C0C0C0">Metal</div><div class="meta">LIGHT_GRAY_DYE &middot; #C0C0C0 &middot; On-Hit: Shatter</div><div class="matchups"><span class="matchup-strong">Strong: Ice, Wind, Arcane</span><br><span class="matchup-weak">Weak: Fire, Lightning, Earth</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#DA70D6">Arcane</div><div class="meta">MAGENTA_DYE &middot; #DA70D6 &middot; On-Hit: Silence</div><div class="matchups"><span class="matchup-strong">Strong: Lightning, Light, Wind</span><br><span class="matchup-weak">Weak: Dark, Metal</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#8888bb">Void</div><div class="meta">GRAY_DYE &middot; #1C1C2E &middot; On-Hit: Void Mark</div><div class="matchups"><span class="matchup-strong">Strong: Celestial, Arcane, Light</span><br><span class="matchup-weak">Weak: Light, Draconic</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#ff4444">Demonic</div><div class="meta">INK_SAC &middot; #8B0000 &middot; On-Hit: Curse</div><div class="matchups"><span class="matchup-strong">Strong: Dark, Arcane, Metal</span><br><span class="matchup-weak">Weak: Light, Celestial</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#FFD700">Celestial</div><div class="meta">GLOWSTONE_DUST &middot; #FFD700 &middot; On-Hit: Judgment</div><div class="matchups"><span class="matchup-strong">Strong: Demonic, Dark, Void</span><br><span class="matchup-weak">Weak: Arcane, Draconic</span></div></div>
+  <div class="elem-card"><div class="name" style="color:#4169E1">Draconic</div><div class="meta">CYAN_DYE &middot; #4169E1 &middot; On-Hit: Dragon Fear</div><div class="matchups"><span class="matchup-strong">Strong: Fire, Water, Earth, Wind</span><br><span class="matchup-weak">Weak: Ice, Lightning, Void</span></div></div>
+</div>
+
+<!-- BALANCE TESTING -->
+<h2 id="balance">Balance Testing Workflow</h2>
+
+<ol style="padding-left:20px;color:var(--text2);line-height:2.2">
+  <li>Edit values in <code>config.yml</code></li>
+  <li>Run <code>/element admin reload</code></li>
+  <li>Test in-game</li>
+  <li>Repeat until balanced</li>
+</ol>
+
+<div class="warn"><strong>No restart needed.</strong> All multipliers, toggles, damage values, durability multipliers, and PvP caps are reloaded instantly.</div>
+
+<div style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text3)">
+  SLElemental &mdash; Built by SalyVN &middot; MC 1.20 &mdash; 1.21.1
+</div>
+
+</main>
+</div>
+
+<script>
+// Sidebar active link tracking
+const sections = document.querySelectorAll('h2[id], .quick-start[id]');
+const navLinks = document.querySelectorAll('.sidebar nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+// Smooth scroll
+navLinks.forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>
