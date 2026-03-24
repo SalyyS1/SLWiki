@@ -189,6 +189,7 @@ pre code{background:none;padding:0;color:var(--text2)}
     <div class="section-label">Integrations</div>
     <a href="#mmoitems">MMOItems</a>
     <a href="#mythicmobs">MythicMobs Mechanic</a>
+    <a href="#mythicmobs-yaml">MythicMobs YAML Auto-Assign</a>
     <a href="#papi">PlaceholderAPI</a>
     <div class="section-label">Reference</div>
     <a href="#all-elements">All Elements</a>
@@ -250,10 +251,11 @@ pre code{background:none;padding:0;color:var(--text2)}
 <!-- CONFIG.YML -->
 <h2 id="config">config.yml &mdash; Main Settings</h2>
 
-<h3>Weapon Effectiveness</h3>
+<h3>Type Effectiveness (Mob Defense Only)</h3>
+<p>These multipliers apply when a player attacks a <strong>mob</strong> with elemental weapons. They do <strong>NOT</strong> apply to player armor defense &mdash; that uses the Armor Element System below.</p>
 <pre><code><span class="key">effectiveness:</span>
-  <span class="key">strong-multiplier:</span> <span class="value">1.25</span>   <span class="comment"># +25% damage when strong</span>
-  <span class="key">weak-multiplier:</span> <span class="value">0.75</span>     <span class="comment"># -25% damage when weak</span></code></pre>
+  <span class="key">strong-multiplier:</span> <span class="value">1.25</span>   <span class="comment"># +25% damage when strong vs mob</span>
+  <span class="key">weak-multiplier:</span> <span class="value">0.75</span>     <span class="comment"># -25% damage when weak vs mob</span></code></pre>
 
 <h3>Visual Effects Toggles</h3>
 <pre><code><span class="key">visual:</span>
@@ -261,6 +263,7 @@ pre code{background:none;padding:0;color:var(--text2)}
   <span class="key">sounds:</span> <span class="value">true</span>               <span class="comment"># Element-specific hit sounds</span>
   <span class="key">effects:</span> <span class="value">true</span>              <span class="comment"># On-hit potion effects</span>
   <span class="key">head-indicator:</span> <span class="value">true</span>       <span class="comment"># Element name above target</span>
+  <span class="key">head-indicator-targets:</span> <span class="value">ALL</span> <span class="comment"># ALL, MOBS_ONLY, PLAYERS_ONLY</span>
   <span class="key">weapon-aura:</span> <span class="value">true</span>          <span class="comment"># Ambient particles on weapon</span>
   <span class="key">effectiveness-text:</span> <span class="value">true</span>   <span class="comment"># Floating damage text</span></code></pre>
 
@@ -277,15 +280,21 @@ pre code{background:none;padding:0;color:var(--text2)}
   <span class="key">aura-spread-ratio:</span> <span class="value">0.30</span>       <span class="comment"># 30% of on-hit spread</span>
   <span class="key">aura-speed-ratio:</span> <span class="value">0.50</span>        <span class="comment"># 50% of on-hit speed</span></code></pre>
 
-<h3>Armor Element System</h3>
+<h3>Armor Element System (Defense Only)</h3>
+<p>Armor only modifies <strong>incoming damage</strong> to the player. It does <strong>NOT</strong> affect damage the player deals.</p>
 <pre><code><span class="key">armor-element:</span>
   <span class="key">enabled:</span> <span class="value">true</span>
   <span class="key">mode:</span> <span class="value">dominant</span>             <span class="comment"># Majority element across 4 pieces</span>
 
+  <span class="comment"># Per-piece counting with diminishing returns</span>
+  <span class="comment"># Formula: totalBonus = base &times; (1 + diminishing-rate &times; (pieceCount - 1))</span>
+  <span class="comment"># Final:   damage = baseDmg &times; (1.0 + weakTotal - strongTotal - sameTotal)</span>
   <span class="key">damage:</span>
-    <span class="key">strong-reduction:</span> <span class="value">0.80</span>   <span class="comment"># Armor resists = 20% less damage</span>
-    <span class="key">weak-increase:</span> <span class="value">1.20</span>      <span class="comment"># Armor weak = 20% more damage</span>
-    <span class="key">same-element:</span> <span class="value">0.90</span>       <span class="comment"># Same element = 10% resistance</span>
+    <span class="key">strong-reduction:</span> <span class="value">0.80</span>   <span class="comment"># 20% less damage per strong piece</span>
+    <span class="key">weak-increase:</span> <span class="value">1.20</span>      <span class="comment"># 20% more damage per weak piece</span>
+    <span class="key">same-element:</span> <span class="value">0.90</span>       <span class="comment"># 10% resistance per same-element piece</span>
+    <span class="key">diminishing-rate:</span> <span class="value">0.20</span>   <span class="comment"># Each extra piece adds base &times; 20%</span>
+    <span class="key">dual-element-decay:</span> <span class="value">0.40</span> <span class="comment"># For weapons with 2 elements</span>
 
   <span class="key">durability:</span>
     <span class="key">enabled:</span> <span class="value">true</span>
@@ -375,15 +384,15 @@ pre code{background:none;padding:0;color:var(--text2)}
   <thead><tr><th>Category</th><th>Count</th><th>Source File</th></tr></thead>
   <tbody>
     <tr><td>Weapon effectiveness</td><td>2 values</td><td><code>config.yml</code></td></tr>
-    <tr><td>Visual on/off toggles</td><td>6 switches</td><td><code>config.yml</code></td></tr>
+    <tr><td>Visual on/off toggles</td><td>7 switches</td><td><code>config.yml</code></td></tr>
     <tr><td>Visual timing &amp; sizing</td><td>7 values</td><td><code>config.yml</code></td></tr>
-    <tr><td>Armor damage modifiers</td><td>3 values</td><td><code>config.yml</code></td></tr>
+    <tr><td>Armor damage modifiers</td><td>5 values</td><td><code>config.yml</code></td></tr>
     <tr><td>Armor durability modifiers</td><td>4 values</td><td><code>config.yml</code></td></tr>
     <tr><td>PvP overrides</td><td>3 values</td><td><code>config.yml</code></td></tr>
     <tr><td>Set bonus</td><td>3 values</td><td><code>config.yml</code></td></tr>
     <tr><td>Per-element visuals</td><td>7 values each</td><td><code>elements.yml</code></td></tr>
     <tr><td>Per-element effects</td><td>3+ values each</td><td><code>elements.yml</code></td></tr>
-    <tr><td>Per-element matchups</td><td>2 lists each</td><td><code>elements.yml</code></td></tr>
+    <tr><td>Per-element matchups</td><td>3 lists + icon</td><td><code>elements.yml</code></td></tr>
     <tr><td>Matchup overrides</td><td>unlimited</td><td><code>type-chart.yml</code></td></tr>
     <tr><td>Mob assignments</td><td>unlimited</td><td><code>mob-elements.yml</code></td></tr>
   </tbody>
@@ -400,6 +409,8 @@ pre code{background:none;padding:0;color:var(--text2)}
     <span class="key">color:</span> <span class="string">"#FF6B35"</span>               <span class="comment"># Hex color used everywhere</span>
     <span class="key">strong-against:</span> <span class="value">[ice, poison]</span>    <span class="comment"># Elements this beats</span>
     <span class="key">weak-to:</span> <span class="value">[water, earth]</span>          <span class="comment"># Elements that beat this</span>
+    <span class="key">immune-to:</span> <span class="value">[ghost]</span>               <span class="comment"># Takes 0 damage from these</span>
+    <span class="key">icon:</span> <span class="string">"&#x1F525;"</span>                      <span class="comment"># Custom icon for GUI/hologram</span>
     <span class="key">gui-material:</span> <span class="value">RED_DYE</span>            <span class="comment"># Material in GUI menus</span>
     <span class="key">description:</span>
       - <span class="string">"&lt;color:#FF6B35&gt;Burns enemies&lt;/color&gt;"</span>
@@ -415,6 +426,7 @@ pre code{background:none;padding:0;color:var(--text2)}
       <span class="key">on-strong:</span> <span class="value">ENTITY_GENERIC_EXPLODE</span>
       <span class="key">on-weak:</span> <span class="value">BLOCK_FIRE_EXTINGUISH</span></code></pre>
 
+<div class="tip"><strong>New fields:</strong> <code>immune-to</code> sets 0.0 damage from listed elements (shorthand for type-chart override). <code>icon</code> sets a custom display character for GUI/hologram.</div>
 <div class="tip"><strong>Adding custom elements:</strong> Copy any element block, change the ID and properties, and reload. No code changes needed.</div>
 
 <!-- MOB-ELEMENTS.YML -->
@@ -445,35 +457,80 @@ pre code{background:none;padding:0;color:var(--text2)}
 <!-- COMBAT FLOW -->
 <h2 id="combat">Combat Flow</h2>
 
-<h3>Weapon vs Mob (Offensive)</h3>
+<div class="warn"><strong>Key Design:</strong> TypeChart and ArmorModifier are <strong>fully separated</strong>. TypeChart applies only when attacking mobs. ArmorModifier applies only when a player receives damage. They never double-dip.</div>
+
+<h3>Weapon vs Mob (Offensive &mdash; TypeChart)</h3>
 <div class="flow">
   <span class="step">Player (Fire sword)</span>
   <span class="arrow">&rarr;</span>
   <span class="step">Ice Mob</span>
   <span class="arrow">=</span>
-  <span class="result">base_damage x 1.25</span>
+  <span class="result">base_damage &times; 1.25</span>
 </div>
-<p>Triggers: on-hit effect (Burn), particle burst, sound, floating text "Strong! +25%", element name above target.</p>
+<p>Uses <code>effectiveness.strong-multiplier</code>. Triggers: on-hit effect, particle burst, sound, floating text, element name above target.</p>
 
-<h3>Boss vs Player Armor (Defensive)</h3>
+<h3>Mob vs Player Armor (Defensive &mdash; Per-Piece ArmorModifier)</h3>
 <div class="flow">
-  <span class="step">Fire Boss</span>
+  <span class="step">Water Mob (ATK 10)</span>
   <span class="arrow">&rarr;</span>
-  <span class="step">Player (Water armor)</span>
+  <span class="step">Player (2&times; Lightning armor)</span>
   <span class="arrow">=</span>
-  <span class="result">base_damage x 0.80</span>
+  <span class="result">10 &times; (1.0 &minus; 0.24) = 7.6</span>
 </div>
-<p>Water is strong against Fire, so the player takes 20% less damage. Each Water armor piece also loses 30% less durability.</p>
+<p>Each armor piece is checked independently. 2 strong pieces = 20% &times; (1 + 0.20 &times; 1) = <strong>24% reduction</strong>. Durability of each piece also reduced by 30%.</p>
+
+<h3>MythicLib Pipeline Order</h3>
+<div class="flow">
+  <span class="step">Base ATK (stats)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Elemental &times; modifier</span>
+  <span class="arrow">&rarr;</span>
+  <span class="step">Defense / PvE Reduction</span>
+  <span class="arrow">&rarr;</span>
+  <span class="result">Final HP lost</span>
+</div>
+<p>SLElemental hooks into MythicLib's <code>AttackEvent</code> via <code>DamageMetadata.multiplicativeModifier()</code>. Defense and PvE reduction are applied <strong>after</strong> the elemental modifier by MythicLib's own pipeline.</p>
 
 <h2 id="armor">Armor Element System</h2>
 
-<p>The system reads each of the 4 armor pieces and calculates a <strong>dominant element</strong> based on majority.</p>
+<p>Each of the 4 armor pieces is checked <strong>independently</strong> against the attacker's element and categorized as <strong>weak</strong>, <strong>strong</strong>, <strong>same</strong>, or <strong>neutral</strong>.</p>
+
+<h3>Formula</h3>
+<pre><code><span class="comment"># Per-category diminishing returns:</span>
+<span class="key">totalBonus</span> = <span class="value">baseBonusPerPiece</span> &times; (1 + <span class="value">diminishingRate</span> &times; (<span class="value">pieceCount</span> - 1))
+
+<span class="comment"># Final modifier:</span>
+<span class="key">modifier</span> = 1.0 + <span class="value">weakTotal</span> - <span class="value">strongTotal</span> - <span class="value">sameTotal</span>
+<span class="key">damage</span>   = <span class="value">baseDmg</span> &times; <span class="key">modifier</span></code></pre>
+
+<h3>Diminishing Returns Table (base=20%, rate=0.20)</h3>
+<table>
+  <thead><tr><th>Pieces</th><th>Weak Bonus</th><th>Strong Reduction</th><th>Same Resist</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>+20%</td><td>&minus;20%</td><td>&minus;10%</td></tr>
+    <tr><td>2</td><td>+24%</td><td>&minus;24%</td><td>&minus;12%</td></tr>
+    <tr><td>3</td><td>+28%</td><td>&minus;28%</td><td>&minus;14%</td></tr>
+    <tr><td>4</td><td>+32%</td><td>&minus;32%</td><td>&minus;16%</td></tr>
+  </tbody>
+</table>
+
+<h3>Example: Water Mob (ATK 10) vs Various Armor Sets</h3>
+<table>
+  <thead><tr><th>Set</th><th>Composition</th><th>Final Mod</th><th>PvE Damage</th><th>PvP Damage</th></tr></thead>
+  <tbody>
+    <tr><td>Full Fire (weak)</td><td>4&times; Fire</td><td>1.22</td><td><strong>12.2</strong></td><td>11.5 (capped)</td></tr>
+    <tr><td>Full Water (same)</td><td>4&times; Water</td><td>0.74</td><td><strong>7.4</strong></td><td>8.5 (floored)</td></tr>
+    <tr><td>Full Lightning (strong)</td><td>4&times; Lightning</td><td>0.58</td><td><strong>5.8</strong></td><td>8.5 (floored)</td></tr>
+    <tr><td>Mixed</td><td>2&times; Fire + 2&times; Lightning</td><td>1.00</td><td><strong>10.0</strong></td><td>10.0</td></tr>
+    <tr><td>Rainbow</td><td>Fire+Water+Lightning+Earth</td><td>0.90</td><td><strong>9.0</strong></td><td>9.0</td></tr>
+  </tbody>
+</table>
 
 <table>
   <thead><tr><th>Layer</th><th>How it Works</th><th>Values</th></tr></thead>
   <tbody>
-    <tr><td><strong>Damage Modifier</strong></td><td>Dominant element vs attacker</td><td>Strong: 0.80 / Weak: 1.20 / Same: 0.90</td></tr>
-    <tr><td><strong>Durability Drain</strong></td><td>Each piece individually</td><td>Strong: x0.70 / Weak: x1.50 / Same: x0.85</td></tr>
+    <tr><td><strong>Damage Modifier</strong></td><td>Per-piece counting + diminishing returns</td><td>Strong: &minus;20%/pc / Weak: +20%/pc / Same: &minus;10%/pc</td></tr>
+    <tr><td><strong>Durability Drain</strong></td><td>Each piece individually</td><td>Strong: &times;0.70 / Weak: &times;1.50 / Same: &times;0.85</td></tr>
     <tr><td><strong>Set Bonus</strong></td><td>All 4 pieces match</td><td>Extra 10% damage reduction</td></tr>
     <tr><td><strong>PvP Caps</strong></td><td>Player vs Player limits</td><td>Damage: 0.85 &mdash; 1.15 / Durability: 60%</td></tr>
   </tbody>
@@ -560,15 +617,53 @@ pre code{background:none;padding:0;color:var(--text2)}
   </tbody>
 </table>
 
+<!-- MYTHICMOBS YAML AUTO-ASSIGN -->
+<h2 id="mythicmobs-yaml">MythicMobs YAML Auto-Assign</h2>
+
+<p>Assign elements directly in your MythicMobs mob YAML files. Elements are automatically applied when the mob spawns &mdash; no GUI or commands needed.</p>
+
+<pre><code><span class="comment"># In mobs/FireDragon.yml:</span>
+<span class="key">FireDragon:</span>
+  <span class="key">Type:</span> <span class="value">ENDER_DRAGON</span>
+  <span class="key">Options:</span>
+    <span class="key">SLElement:</span> <span class="value">fire,dark</span>        <span class="comment"># Dual-type assignment</span>
+
+<span class="comment"># Alternative: top-level key</span>
+<span class="key">IceGolem:</span>
+  <span class="key">Type:</span> <span class="value">IRON_GOLEM</span>
+  <span class="key">SLElement:</span> <span class="value">ice</span>                <span class="comment"># Single element</span></code></pre>
+
+<div class="tip"><strong>Priority:</strong> YAML <code>Options.SLElement</code> &gt; top-level <code>SLElement</code> &gt; mob-elements.yml mapping &gt; vanilla EntityType mapping.</div>
+
 <!-- PAPI -->
 <h2 id="papi">PlaceholderAPI</h2>
 
+<h3>Weapon Placeholders</h3>
 <table>
   <thead><tr><th>Placeholder</th><th>Output</th></tr></thead>
   <tbody>
     <tr><td><code>%slelemental_weapon_element%</code></td><td>Primary weapon element name</td></tr>
     <tr><td><code>%slelemental_weapon_elements%</code></td><td>All weapon elements, comma-separated</td></tr>
     <tr><td><code>%slelemental_weapon_color%</code></td><td>Hex color of primary element</td></tr>
+  </tbody>
+</table>
+
+<h3>Armor Placeholders</h3>
+<table>
+  <thead><tr><th>Placeholder</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>%slelemental_armor_element%</code></td><td>Dominant armor element name</td></tr>
+    <tr><td><code>%slelemental_armor_elements%</code></td><td>All unique armor elements, comma-separated</td></tr>
+    <tr><td><code>%slelemental_armor_color%</code></td><td>Hex color of dominant element</td></tr>
+    <tr><td><code>%slelemental_armor_full_set%</code></td><td>"true" if all 4 pieces match</td></tr>
+    <tr><td><code>%slelemental_armor_set_element%</code></td><td>Full set element name, or "None"</td></tr>
+  </tbody>
+</table>
+
+<h3>General Placeholders</h3>
+<table>
+  <thead><tr><th>Placeholder</th><th>Output</th></tr></thead>
+  <tbody>
     <tr><td><code>%slelemental_total_elements%</code></td><td>Total registered elements count</td></tr>
     <tr><td><code>%slelemental_strong_multiplier%</code></td><td>Strong multiplier value</td></tr>
     <tr><td><code>%slelemental_weak_multiplier%</code></td><td>Weak multiplier value</td></tr>
