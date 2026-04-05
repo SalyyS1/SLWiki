@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Items & Systems — SLMMOEnchant Wiki</title>
+<title>Items &amp; Systems — OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.8</span></div></div></div>
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
     <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
     <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
     <a href="items.html" class="nav-link active"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
-    <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands &amp; API</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&gt;</span>Commands &amp; API</a>
+    <a href="lore-format.html" class="nav-link"><span class="nav-icon">&#9776;</span>Lore Format</a>
     <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
   </nav>
   <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
@@ -29,7 +30,7 @@
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <span class="hero-badge">Items & Systems</span>
+    <span class="hero-badge">Items &amp; Systems</span>
     <h1 class="hero-title">Items &amp; Systems</h1>
     <p class="hero-subtitle">All custom items, souls system, set enchants, trak counters, and enchant slots.</p>
   </div>
@@ -52,7 +53,7 @@
     </div>
     <div class="enchant-card rarity-epic">
       <div class="enchant-header"><span class="enchant-name">Protection Stone</span><span class="enchant-rarity rarity-tag-epic">CONSUMABLE</span></div>
-      <p class="enchant-desc">Drag onto item to protect once from destruction on enchant failure. Material: TOTEM_OF_UNDYING</p>
+      <p class="enchant-desc">Drag onto item to protect from destruction on enchant failure. Supports stacking charges. Material: TOTEM_OF_UNDYING</p>
       <p class="enchant-meta">ID: <code>protection_stone</code></p>
     </div>
     <div class="enchant-card rarity-rare">
@@ -72,21 +73,21 @@
     </div>
     <div class="enchant-card rarity-rare">
       <div class="enchant-header"><span class="enchant-name">Trak Stones</span><span class="enchant-rarity rarity-tag-rare">PASSIVE</span></div>
-      <p class="enchant-desc">Attach to item to count kills/blocks. Three types: Block tracker, Kill tracker, Mob kill tracker</p>
+      <p class="enchant-desc">Attach to item to count kills/blocks. Three types: Block, Kill, Mob Kill</p>
       <p class="enchant-meta">ID: <code>trak_block</code>, <code>trak_kill</code>, <code>trak_mob</code></p>
     </div>
     <div class="enchant-card rarity-epic">
       <div class="enchant-header"><span class="enchant-name">Enchant Orb</span><span class="enchant-rarity rarity-tag-epic">ORB</span></div>
-      <p class="enchant-desc">Purchased from Tier Shop. Right-click to reveal a random enchant book of the corresponding tier with randomized success/failure rates</p>
+      <p class="enchant-desc">Purchased from Tier Shop. Right-click to reveal random enchant book with randomized rates</p>
       <p class="enchant-meta">Obtained via: <code>/sle shop</code></p>
     </div>
   </div>
 </section>
 
-<!-- SOULS SYSTEM -->
+<!-- SOULS -->
 <section class="section" id="souls">
   <h2 class="section-title">Souls System</h2>
-  <p class="section-desc">Kill mobs/players to increase soul points on a weapon. Soul points affect enchants with <code>soul-cost</code> — each enchant activation deducts soul points.</p>
+  <p class="section-desc">Kill mobs/players to increase soul points on a weapon. Soul points fuel enchants with <code>soul-cost</code>.</p>
   <div class="rarity-table-wrap">
     <table class="rarity-table">
       <thead><tr><th>Placeholder</th><th>Description</th></tr></thead>
@@ -99,14 +100,14 @@
   </div>
   <div class="info-box" style="margin-top:.75rem">
     <div class="info-icon">i</div>
-    <p><strong>Soul Economy:</strong> Use Soul Stones to enable tracking → gain souls from kills → enchants with <code>soul-cost</code> consume souls. Players must manage their soul budget wisely.</p>
+    <p><strong>Soul Economy:</strong> Soul Stone enables tracking &rarr; gain souls from kills &rarr; enchants with <code>soul-cost</code> consume souls. 10% loss on death (configurable).</p>
   </div>
 </section>
 
 <!-- SET ENCHANTS -->
 <section class="section" id="sets">
   <h2 class="section-title">Set Enchants</h2>
-  <p class="section-desc">Enchants with bonuses when wearing 2/4/6 items with the same enchant. Like MMO item set bonuses.</p>
+  <p class="section-desc">Enchants with bonuses when wearing 2/4/6 items with the same enchant.</p>
   <div class="enchant-grid">
     <div class="enchant-card rarity-legendary">
       <div class="enchant-header"><span class="enchant-name">King</span><span class="enchant-rarity rarity-tag-legendary">SET</span></div>
@@ -126,8 +127,8 @@
 <!-- ENCHANT SLOTS -->
 <section class="section" id="slots">
   <h2 class="section-title">Enchant Slots</h2>
-  <p class="section-desc">Each item has limited enchant slots. Shown on item lore: <code>Enchant: x/max</code>. Use Slot Increaser to add more.</p>
-  <div class="mc-lore" style="max-width:400px">
+  <p class="section-desc">Each item has limited enchant slots. Shown on item lore: <code>Enchant: x/max</code>.</p>
+  <div class="mc-lore" style="max-width:380px">
     <div class="lore-line"><span class="mc-gold">Divine III</span></div>
     <div class="lore-line"><span class="mc-green">Aegis II</span></div>
     <div class="lore-line">&nbsp;</div>
@@ -135,16 +136,15 @@
   </div>
   <div class="info-box" style="margin-top:.75rem">
     <div class="info-icon">i</div>
-    <p><strong>Base:</strong> <code>config.yml → max-enchants-per-item: 6</code><br>
+    <p><strong>Base:</strong> <code>config.yml &rarr; max-enchants-per-item: 5</code><br>
     <strong>Extra:</strong> Slot Increaser adds +1 per use (up to <code>extra-slot-limit</code>)<br>
-    <strong>Example:</strong> Base=6, Extra=3 → Item accepts max 9 enchants.</p>
+    <strong>Example:</strong> Base=5, Extra=3 &rarr; Item accepts max 8 enchants.</p>
   </div>
 </section>
 
 <!-- CONFLICT PAIRS -->
 <section class="section" id="conflict-pairs">
   <h2 class="section-title">Current Conflict Pairs</h2>
-  <p class="section-desc">Enchants that cannot coexist on the same item:</p>
   <div class="rarity-table-wrap">
     <table class="rarity-table">
       <thead><tr><th>Group</th><th>Enchant A</th><th>Enchant B</th><th>Slot Type</th></tr></thead>
@@ -158,10 +158,13 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.8 — by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
-document.getElementById('mobileToggle').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');this.classList.toggle('active')});
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  this.classList.toggle('active');
+});
 </script>
 </body>
 </html>

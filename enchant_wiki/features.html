@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Features Setup — SLMMOEnchant Wiki</title>
+<title>Features — OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">SLE</span><div><h1>SLMMOEnchant</h1><span class="version-badge">v1.2.8</span></div></div></div>
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
     <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
     <a href="features.html" class="nav-link active"><span class="nav-icon">&#9654;</span>Features</a>
     <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
-    <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands &amp; API</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&gt;</span>Commands &amp; API</a>
+    <a href="lore-format.html" class="nav-link"><span class="nav-icon">&#9776;</span>Lore Format</a>
     <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
   </nav>
   <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
@@ -31,111 +32,187 @@
   <div class="hero-content">
     <span class="hero-badge">Admin Guide</span>
     <h1 class="hero-title">Feature Setup &amp; Mechanics</h1>
-    <p class="hero-subtitle">Setup guide for each feature — drag-drop, protection stone, tier shop GUI, extraction, fusion, grindstone, enchant table, soul tracking, trak system.</p>
+    <p class="hero-subtitle">Setup guide for each feature &mdash; from drag-drop enchanting to soul tracking and set bonuses.</p>
   </div>
 </section>
 
-<!-- DRAG & DROP -->
+<!-- ==================== DRAG & DROP ==================== -->
 <section class="section" id="dragdrop">
-  <h2 class="section-title">📦 Drag &amp; Drop Enchanting</h2>
-  <p class="section-desc">The primary mechanic for applying enchants to MMOItems. Players drag enchant books onto items in their inventory.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Internal Processing Flow</span></div>
-    <pre class="code-block"><span class="c"># 1. Player drags enchant book → drops onto MMOItems item</span>
-<span class="c"># 2. Plugin checks:</span>
-<span class="c">#    ✓ applicable-to: is the item type valid?</span>
-<span class="c">#    ✓ conflicts: does it conflict with existing enchants?</span>
-<span class="c">#    ✓ max-enchants: has the limit been reached? (base + extra slots)</span>
-<span class="c">#    ✓ allow-stacking: does this enchant already exist?</span>
-<span class="c"># 3. Roll success-rate (from book + Lucky Dust bonus)</span>
-<span class="c"># 4. Success → Apply enchant + stats + lore</span>
-<span class="c"># 5. Failure → Roll failure-rate →</span>
-<span class="c">#    Hit + has Protection Stone → consume protection</span>
-<span class="c">#    Hit + no protection → DESTROY item</span>
-<span class="c">#    Miss → only lose the book</span></pre>
+  <h2 class="section-title">Drag &amp; Drop Enchanting</h2>
+  <p class="section-desc">The primary way to apply enchants. Players drag enchant books onto MMOItems in their inventory.</p>
+
+  <div class="feature-box">
+    <h4>How it works</h4>
+    <ul class="step-list">
+      <li>Player drags an <strong>Enchant Book</strong> from inventory &rarr; drops onto a compatible MMOItems item</li>
+      <li>Plugin validates: <strong>applicable-to</strong> (item type), <strong>conflicts</strong>, <strong>max-enchants</strong>, and <strong>stacking rules</strong></li>
+      <li>Rolls the book's <strong>success rate</strong> (base % + Lucky Dust bonus)</li>
+      <li>On <strong>success</strong>: enchant applied, stats recalculated, lore updated instantly</li>
+      <li>On <strong>failure</strong>: rolls destroy chance &mdash; Protection Stone may save the item</li>
+    </ul>
   </div>
+
   <div class="info-box">
-    <div class="info-icon">⚙️</div>
-    <p><strong>Config:</strong> <code>settings/application.yml</code> → <code>drag-drop</code> section<br>
+    <div class="info-icon">i</div>
+    <p><strong>Config:</strong> <code>settings/application.yml</code> &rarr; <code>drag-drop</code> section<br>
     <strong>Toggle:</strong> <code>drag-drop.enabled: true/false</code><br>
-    <strong>Important:</strong> Slot limit = <code>config.yml → max-enchants-per-item</code> + <code>NBT SLENCHANT_EXTRA_SLOTS</code> (from Slot Increaser)</p>
+    <strong>Slot limit:</strong> <code>config.yml &rarr; max-enchants-per-item</code> + extra slots from Slot Increaser</p>
   </div>
 </section>
 
-<!-- PROTECTION STONE -->
+<!-- ==================== PROTECTION STONE ==================== -->
 <section class="section" id="protection">
-  <h2 class="section-title">🛡️ Protection Stone</h2>
-  <p class="section-desc">An item that protects gear from being destroyed when enchant application fails. Each item can hold 1 protection.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">How to Set Up</span></div>
-    <pre class="code-block"><span class="c"># Create Protection Stone for player:</span>
-<span class="v">/sle give &lt;player&gt; protection 1</span>
+  <h2 class="section-title">Protection Stone</h2>
+  <p class="section-desc">Protects gear from being destroyed when enchant application fails. Supports stacking charges.</p>
 
-<span class="c"># Player drags Protection Stone onto item → lore shows "Protected: 1x"</span>
-<span class="c"># When enchant application fails + destroy roll hits:</span>
-<span class="c">#   → Protection consumed, item is saved</span>
-<span class="c">#   → Message: protection-saved (from messages.yml)</span>
-
-<span class="c"># Default material: TOTEM_OF_UNDYING</span>
-<span class="c"># NBT tag: SLENCHANT_PROTECTED = 1</span></pre>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Setup</h4>
+      <p>Give to player: <code>/sle give &lt;player&gt; protection 1</code><br>
+      Drag stone onto item &rarr; lore shows <strong>"Protected: 1x"</strong><br>
+      Multiple stones stack charges (e.g. "Protected: 3x")</p>
+    </div>
+    <div class="feature-card">
+      <h4>Behavior</h4>
+      <p>When enchant fails + destroy roll hits &rarr; <strong>1 charge consumed</strong>, item saved.<br>
+      Message from <code>messages.yml &rarr; protection-saved</code><br>
+      Default material: <code>TOTEM_OF_UNDYING</code></p>
+    </div>
   </div>
 </section>
 
-<!-- TIER SHOP GUI -->
+<!-- ==================== TIER SHOP ==================== -->
 <section class="section" id="tiershop">
-  <h2 class="section-title">🏪 Tier Shop GUI</h2>
-  <p class="section-desc">GUI shop where players buy Enchant Orbs by rarity tier. Fully customizable: slots, materials, prices, lore.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setup Tier Shop</span></div>
-    <pre class="code-block"><span class="c"># 1. Config: settings/tier-shop.yml</span>
-<span class="c"># 2. Open GUI: /sle shop</span>
-<span class="c"># 3. Flow:</span>
-<span class="c">#    Player clicks tier button → currency deducted → receives Orb item</span>
-<span class="c">#    Player right-clicks Orb → reveals random enchant book</span>
-<span class="c">#    Book has RANDOMIZED success/failure rate:</span>
-<span class="c">#      success = base ±15%</span>
-<span class="c">#      failure = 0 to 2× base</span>
+  <h2 class="section-title">Tier Shop GUI</h2>
+  <p class="section-desc">GUI shop where players buy Enchant Orbs by rarity tier. Open: <code>/sle shop</code> &bull; Config: <code>settings/tier-shop.yml</code></p>
 
-<span class="c"># Currency: EXP (default), VAULT, POINTS (PlayerPoints)</span>
-<span class="c"># Change: tier-shop.yml → currency: VAULT</span></pre>
+  <div class="feature-box">
+    <h4>Purchase Flow</h4>
+    <ul class="step-list">
+      <li>Player opens shop GUI and clicks a <strong>tier button</strong> (Common, Rare, Epic, etc.)</li>
+      <li>Currency deducted (EXP, Level, Vault, or PlayerPoints)</li>
+      <li>Player receives an <strong>Enchant Orb</strong> in inventory</li>
+      <li>Right-click the Orb &rarr; reveals a <strong>random enchant book</strong> from that tier</li>
+      <li>Book has randomized rates: success = base &plusmn;15%, failure = 0 to 2&times; base</li>
+    </ul>
   </div>
-  <div class="info-box">
-    <div class="info-icon">!</div>
-    <p><strong>Customize GUI:</strong> See <a href="configuration.html#tier-shop" style="color:var(--accent)">Configuration → tier-shop.yml</a> to customize slots, materials, prices, lore for each tier. DeluxeMenus-like style.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>EXP <span style="color:var(--text-dim);font-weight:400">(default)</span></h4>
+      <p>Uses total experience points with vanilla formula</p>
+    </div>
+    <div class="feature-card">
+      <h4>LEVEL</h4>
+      <p>Deducts player levels directly</p>
+    </div>
+    <div class="feature-card">
+      <h4>VAULT</h4>
+      <p>Uses Vault economy balance</p>
+    </div>
+    <div class="feature-card">
+      <h4>POINTS</h4>
+      <p>Uses PlayerPoints</p>
+    </div>
   </div>
 </section>
 
-<!-- EXTRACTION -->
+<!-- ==================== BROWSER ==================== -->
+<section class="section" id="browser">
+  <h2 class="section-title">Enchant Browser GUI</h2>
+  <p class="section-desc">Paginated GUI to browse all available enchants. Open: <code>/sle browser</code> &bull; Config: <code>settings/enchant-browser.yml</code></p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Browse</h4>
+      <p>Paginated display of all loaded enchants with full details</p>
+    </div>
+    <div class="feature-card">
+      <h4>Sort</h4>
+      <p>Sort by: name, rarity, level, item type</p>
+    </div>
+    <div class="feature-card">
+      <h4>Filter</h4>
+      <p>Filter by: All, Sword, Axe, Pickaxe, Bow, Armor, Hoe</p>
+    </div>
+    <div class="feature-card">
+      <h4>Details</h4>
+      <p>Click enchant &rarr; full stats, abilities, max level preview</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DUST CRAFTING ==================== -->
+<section class="section" id="dust-crafting">
+  <h2 class="section-title">Dust Crafting System</h2>
+  <p class="section-desc">Convert unwanted enchant books into Lucky Dust, then use dust to boost success rates. Open: <code>/sle dust</code></p>
+
+  <div class="feature-box">
+    <h4>How it works</h4>
+    <ul class="step-list">
+      <li>Place enchant books in the Dust Crafting GUI &rarr; converted to <strong>Lucky Dust</strong></li>
+      <li>Higher tier books give more dust (see table below)</li>
+      <li>Drag Lucky Dust onto an enchant book &rarr; <strong>increases success rate</strong></li>
+    </ul>
+  </div>
+
+  <div class="feature-box" style="margin-top:0.75rem">
+    <h4>Dust Yield by Tier</h4>
+    <table class="tier-table">
+      <thead><tr><th>Tier</th><th>Success Boost</th></tr></thead>
+      <tbody>
+        <tr><td class="tier-common">Common</td><td>1 &ndash; 5%</td></tr>
+        <tr><td class="tier-uncommon">Uncommon</td><td>3 &ndash; 8%</td></tr>
+        <tr><td class="tier-rare">Rare</td><td>5 &ndash; 12%</td></tr>
+        <tr><td class="tier-epic">Epic</td><td>8 &ndash; 18%</td></tr>
+        <tr><td class="tier-legendary">Legendary</td><td>12 &ndash; 25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== EXTRACTION ==================== -->
 <section class="section" id="extraction">
-  <h2 class="section-title">🔬 Extraction System</h2>
-  <p class="section-desc">Remove enchants from items and convert them back into enchant books. May require an Extraction Scroll.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setup &amp; Usage</span></div>
-    <pre class="code-block"><span class="c"># Config: settings/extraction.yml</span>
-<span class="c"># Extract commands:</span>
-<span class="v">/sle extract</span>                      <span class="c"># Remove random enchant</span>
-<span class="v">/sle extract &lt;enchant_id&gt;</span>          <span class="c"># Remove specific enchant</span>
+  <h2 class="section-title">Extraction System</h2>
+  <p class="section-desc">Remove enchants from items and convert them back into books. Config: <code>settings/extraction.yml</code></p>
 
-<span class="c"># Create Extraction Scroll for player:</span>
-<span class="v">/sle give &lt;player&gt; scroll 1</span>
+  <div class="feature-box">
+    <h4>Usage</h4>
+    <ul class="step-list">
+      <li><code>/sle extract</code> &mdash; remove a random enchant from held item</li>
+      <li><code>/sle extract &lt;enchant_id&gt;</code> &mdash; remove a specific enchant</li>
+      <li>If <code>require-scroll: true</code>, player needs an Extraction Scroll in off-hand</li>
+      <li>Give scroll: <code>/sle give &lt;player&gt; scroll 1</code></li>
+    </ul>
+  </div>
 
-<span class="c"># If require-scroll: true → player needs scroll in off-hand</span>
-<span class="c"># success-rate: 100 → always succeeds (lower for risk)</span>
-<span class="c"># level-penalty: 0 → keeps level (set 1 to reduce by 1)</span></pre>
+  <h3 class="subsection-title">3 Possible Outcomes</h3>
+  <div class="outcome-grid">
+    <div class="outcome-card outcome-success">
+      <h5 style="color:var(--success)">Success</h5>
+      <p>Enchant extracted into a book</p>
+    </div>
+    <div class="outcome-card outcome-fail">
+      <h5 style="color:var(--warning)">Fail</h5>
+      <p>Nothing happens, scroll consumed</p>
+    </div>
+    <div class="outcome-card outcome-destroy">
+      <h5 style="color:var(--danger)">Destroy</h5>
+      <p>Enchant and scroll both lost</p>
+    </div>
   </div>
 </section>
 
-<!-- FUSION -->
+<!-- ==================== FUSION ==================== -->
 <section class="section" id="fusion">
-  <h2 class="section-title">🔀 Fusion System</h2>
-  <p class="section-desc">Combine multiple enchant books to create a more powerful enchant. Requires recipes defined in config.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Create Fusion Recipe</span></div>
-    <pre class="code-block"><span class="c"># Config: settings/fusion.yml</span>
-<span class="c"># Open GUI: /sle fusion</span>
+  <h2 class="section-title">Fusion System</h2>
+  <p class="section-desc">Combine multiple enchant books to create a more powerful enchant. Open: <code>/sle fusion</code> &bull; Config: <code>settings/fusion.yml</code></p>
 
-<span class="c"># Example recipe: 3× Strength I → 1× Strength II</span>
-<span class="k">recipes:</span>
+  <div class="feature-box">
+    <h4>Example: Strength I &times;3 &rarr; Strength II</h4>
+    <div class="config-block" style="margin-top:0.5rem">
+      <div class="config-header"><span class="config-file">settings/fusion.yml</span></div>
+      <pre class="code-block"><span class="k">recipes:</span>
   <span class="k">strength_2:</span>
     <span class="k">result:</span>
       <span class="k">enchant:</span> <span class="v">strength</span>
@@ -144,112 +221,141 @@
       - <span class="k">enchant:</span> <span class="v">strength</span>
         <span class="k">level:</span> <span class="v">1</span>
         <span class="k">amount:</span> <span class="v">3</span></pre>
+    </div>
   </div>
 </section>
 
-<!-- GRINDSTONE -->
+<!-- ==================== GRINDSTONE & ANVIL ==================== -->
 <section class="section" id="grindstone">
-  <h2 class="section-title">🪨 Grindstone Integration</h2>
-  <p class="section-desc">Vanilla Grindstone <strong>automatically integrates</strong> with SLE enchants. No config needed.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Behavior</span></div>
-    <pre class="code-block"><span class="c"># Grindstone works automatically:</span>
-<span class="c"># 1. Item with both vanilla + custom enchants → removes all</span>
-<span class="c"># 2. Item with only custom enchants (no vanilla) → still removable</span>
-<span class="c">#    Plugin auto-creates result for grindstone</span>
-<span class="c"># 3. Lore cleaned immediately in preview (no interval scan)</span>
-<span class="c"># 4. Stats recalculated instantly when taking item from result slot</span>
+  <h2 class="section-title">Grindstone &amp; Anvil</h2>
+  <p class="section-desc">Vanilla integration &mdash; no extra config needed.</p>
 
-<span class="c"># ⚠️ v1.2.8 FIX: Items placed then taken back (not from result)</span>
-<span class="c">#    → enchants are PRESERVED, not lost</span>
-<span class="c">#    Plugin saves input items and restores on close/take from input slot</span></pre>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Grindstone</h4>
+      <p>Removes all custom enchants. Works with custom-only items. Lore + stats recalculated instantly. Items placed &amp; taken back = enchants preserved.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Anvil Combining</h4>
+      <p>Same enchant + same level &rarr; level+1. Different levels &rarr; higher wins. Conflict check enforced. Full durability on result.</p>
+    </div>
   </div>
 </section>
 
-<!-- ENCHANT TABLE -->
+<!-- ==================== ENCHANT TABLE ==================== -->
 <section class="section" id="enchant-table">
-  <h2 class="section-title">📖 Enchant Table Integration</h2>
-  <p class="section-desc">Custom enchants appear when using the vanilla enchanting table. Controlled via whitelist/blacklist and weight.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setup</span></div>
-    <pre class="code-block"><span class="c"># Config: settings/enchant-table.yml</span>
-<span class="c"># Enable: enabled: true</span>
-<span class="c"># Blacklist mode (default): all enchants appear except those listed</span>
-<span class="c"># Whitelist mode: only enchants in list appear</span>
+  <h2 class="section-title">Enchant Table Integration</h2>
+  <p class="section-desc">Custom enchants can appear from vanilla enchanting table. Config: <code>settings/enchant-table.yml</code></p>
 
-<span class="c"># Adjust weight for specific enchants:</span>
-<span class="k">enchants:</span>
-  <span class="k">telekinesis:</span>
-    <span class="k">weight:</span> <span class="v">3.0</span>  <span class="c"># 3× more likely than normal</span>
-  <span class="k">frenzy:</span>
-    <span class="k">weight:</span> <span class="v">0.1</span>  <span class="c"># Very rare from enchanting table</span></pre>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>Blacklist Mode <span style="color:var(--text-dim);font-weight:400">(default)</span></h4>
+      <p>All enchants appear from table <em>except</em> those in the blacklist</p>
+    </div>
+    <div class="feature-card">
+      <h4>Whitelist Mode</h4>
+      <p>Only listed enchants appear from table. Set <code>weight</code> per enchant.</p>
+    </div>
   </div>
 </section>
 
-<!-- SOUL SYSTEM -->
+<!-- ==================== SOUL SYSTEM ==================== -->
 <section class="section" id="soul-system">
-  <h2 class="section-title">💀 Soul System</h2>
-  <p class="section-desc">Enchants with <code>soul-cost</code> consume souls from the item each time they activate. Players collect souls using Soul Stone + Soul Booster.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setting Up Souls for Enchants</span></div>
-    <pre class="code-block"><span class="c"># In enchant YAML:</span>
-<span class="k">soul-cost:</span> <span class="v">5</span>                       <span class="c"># Costs 5 souls per activation</span>
+  <h2 class="section-title">Soul System</h2>
+  <p class="section-desc">Enchants with <code>soul-cost</code> consume souls each time they activate. Souls are tracked per-item via NBT.</p>
 
-<span class="c"># Create items for player:</span>
-<span class="v">/sle give &lt;player&gt; soul_pvp 1</span>     <span class="c"># Soul Stone (enables tracking)</span>
-<span class="v">/sle give &lt;player&gt; soul_booster_pvp 1</span>  <span class="c"># +Souls</span>
-<span class="v">/sle give &lt;player&gt; soul_booster_pve 1</span>  <span class="c"># +Souls</span>
+  <div class="feature-box">
+    <h4>Setup &amp; Flow</h4>
+    <ul class="step-list">
+      <li>Give <strong>Soul Stone</strong>: <code>/sle give &lt;player&gt; soul_pvp 1</code> &mdash; enables tracking on item</li>
+      <li>Drag Soul Stone onto weapon &rarr; starts soul tracking</li>
+      <li>Kill mobs/players &rarr; earn souls (configurable: <code>souls-per-kill</code>)</li>
+      <li>Give <strong>Soul Booster</strong>: <code>/sle give &lt;player&gt; soul_booster_pvp 1</code> to add bonus souls</li>
+      <li>Enchant activation &rarr; checks <code>soul-cost</code> &rarr; deducts if enough, skips if not</li>
+    </ul>
+  </div>
 
-<span class="c"># Flow:</span>
-<span class="c"># 1. Drag Soul Stone onto item → enables soul tracking</span>
-<span class="c"># 2. Drag Soul Booster onto item → +souls</span>
-<span class="c"># 3. Enchant activates → checks soul-cost → enough → deducts souls</span>
-<span class="c">#    Not enough souls → enchant DOES NOT activate</span></pre>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p><strong>Death penalty:</strong> lose 10% souls (configurable: <code>soul-death-loss-percent</code>)<br>
+    <strong>PAPI:</strong> <code>%slenchant_soul_pvp%</code>, <code>%slenchant_soul_pve%</code>, <code>%slenchant_soul%</code></p>
   </div>
 </section>
 
-<!-- TRAK SYSTEM -->
+<!-- ==================== TRAK SYSTEM ==================== -->
 <section class="section" id="trak-system">
-  <h2 class="section-title">📈 Trak System</h2>
-  <p class="section-desc">Counts blocks mined and mobs killed with an item. Displayed on item lore.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setup Trak</span></div>
-    <pre class="code-block"><span class="c"># Create Trak Stone for player:</span>
-<span class="v">/sle give &lt;player&gt; trak_block 1</span>   <span class="c"># Block tracker</span>
-<span class="v">/sle give &lt;player&gt; trak_kill 1</span>    <span class="c"># Kill tracker</span>
-<span class="v">/sle give &lt;player&gt; trak_mob 1</span>     <span class="c"># Mob kill tracker</span>
+  <h2 class="section-title">Trak System</h2>
+  <p class="section-desc">Counts blocks mined and mobs/players killed with an item. Displayed on item lore.</p>
 
-<span class="c"># Drag onto item → starts tracking</span>
-<span class="c"># Lore auto-shows counter: "⛏ Blocks: 1,234" or "💀 Kills: 567"</span>
-
-<span class="c"># PAPI Placeholders:</span>
-<span class="c"># %slenchant_trak_blocks% — total blocks mined</span>
-<span class="c"># %slenchant_trak_kills% — total kills</span>
-<span class="c"># %slenchant_trak_mob_kills% — total mob kills</span></pre>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h4>BlockTrak</h4>
+      <p><code>/sle give &lt;player&gt; trak_block 1</code><br>Tracks blocks mined per item.</p>
+    </div>
+    <div class="feature-card">
+      <h4>KillTrak</h4>
+      <p><code>/sle give &lt;player&gt; trak_kill 1</code><br>Tracks player kills per item.</p>
+    </div>
+    <div class="feature-card">
+      <h4>MobTrak</h4>
+      <p><code>/sle give &lt;player&gt; trak_mob 1</code><br>Tracks mob kills per item.</p>
+    </div>
   </div>
 </section>
 
-<!-- SLOT INCREASER -->
+<!-- ==================== SET BONUS ==================== -->
+<section class="section" id="set-bonus">
+  <h2 class="section-title">Set Bonus System</h2>
+  <p class="section-desc">Enchants with set bonuses activate when wearing multiple items with the same enchant.</p>
+
+  <div class="feature-box">
+    <h4>Tier Progression</h4>
+    <ul class="step-list">
+      <li><strong>2 pieces</strong> &rarr; Tier 1 bonus (e.g. +10% ATK DMG)</li>
+      <li><strong>4 pieces</strong> &rarr; Tier 2 bonus (e.g. +20% ATK DMG + ability)</li>
+      <li><strong>6 pieces</strong> &rarr; Full set bonus with powerful abilities</li>
+    </ul>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card" style="border-left:3px solid var(--legendary)">
+      <h4>King <span style="color:var(--legendary);font-size:0.75rem;font-weight:400">Legendary</span></h4>
+      <p>ATK-focused set with GOLEM_WRATH ability</p>
+    </div>
+    <div class="feature-card" style="border-left:3px solid var(--epic)">
+      <h4>Warlord <span style="color:var(--epic);font-size:0.75rem;font-weight:400">Epic</span></h4>
+      <p>DEF-focused set with HEAVY_CHARGE ability</p>
+    </div>
+    <div class="feature-card" style="border-left:3px solid var(--rare)">
+      <h4>Phantom <span style="color:var(--rare);font-size:0.75rem;font-weight:400">Rare</span></h4>
+      <p>Speed-focused set with BLINK ability</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SLOT INCREASER ==================== -->
 <section class="section" id="slot-increaser">
-  <h2 class="section-title">⬆️ Slot Increaser</h2>
-  <p class="section-desc">Increases the maximum number of enchants allowed on a single item.</p>
-  <div class="config-block">
-    <div class="config-header"><span class="config-file">Setup</span></div>
-    <pre class="code-block"><span class="c"># Create Slot Increaser:</span>
-<span class="v">/sle give &lt;player&gt; slot_increaser 1</span>
+  <h2 class="section-title">Slot Increaser</h2>
+  <p class="section-desc">Increases max enchant slots per item.</p>
 
-<span class="c"># Drag onto item → +1 max enchant slot</span>
-<span class="c"># Extra slot limit: application.yml → extra-slot-limit: 5</span>
-<span class="c"># E.g.: base=6, extra=3 → that item holds max 9 enchants</span>
-
-<span class="c"># NBT stored: SLENCHANT_EXTRA_SLOTS (integer)</span></pre>
+  <div class="feature-box">
+    <h4>Usage</h4>
+    <ul class="step-list">
+      <li>Give: <code>/sle give &lt;player&gt; slot_increaser 1</code></li>
+      <li>Drag onto item &rarr; <strong>+1 max enchant slot</strong></li>
+      <li>Extra slot limit: <code>application.yml &rarr; extra-slot-limit: 5</code></li>
+      <li>Example: base=5, extra=3 &rarr; that item holds max 8 enchants</li>
+    </ul>
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>SLMMOEnchant</strong> v1.2.8 — by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
-document.getElementById('mobileToggle').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');this.classList.toggle('active')});
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  this.classList.toggle('active');
+});
 </script>
 </body>
 </html>

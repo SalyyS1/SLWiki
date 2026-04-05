@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lore Format — OmniEnchant Wiki</title>
+  <meta name="description" content="How to configure the #omnienchant# lore placeholder in MMOItems to control enchant lore position.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&gt;</span>Commands &amp; API</a>
+    <a href="lore-format.html" class="nav-link active"><span class="nav-icon">&#9776;</span>Lore Format</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+
+<div class="content">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Admin Guide</span>
+    <h1 class="hero-title">Lore Format Guide</h1>
+    <p class="hero-subtitle">How to configure the <code>#omnienchant#</code> placeholder to control where enchant lore appears on your MMOItems.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-desc">
+    OmniEnchant uses a <strong>placeholder token</strong> in MMOItems item lore to determine where enchant information is rendered.
+    When the plugin renders an item, it finds the placeholder line and replaces it with the enchant lore block.
+  </p>
+
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">config.yml</span><span class="config-desc">Placeholder configuration</span></div>
+    <pre class="code-block"><span class="c"># Where enchant lore appears in MMOItems lore format.</span>
+<span class="c"># Add this string to your MMOItems lore where you want enchants to show.</span>
+<span class="c"># If not found, enchant lore always appears at the TOP (default).</span>
+<span class="k">lore-placeholder:</span> <span class="s">"#omnienchant#"</span>
+
+<span class="c"># Legacy tokens still accepted as aliases:</span>
+<span class="k">lore-placeholder-aliases:</span>
+  - <span class="s">"#slenchant#"</span>
+  - <span class="s">"#ominienchant#"</span>
+
+<span class="c"># Number of blank lines between enchant block and item base lore</span>
+<span class="k">lore-spacing:</span> <span class="v">0</span></pre>
+  </div>
+
+  <div class="info-box">
+    <div class="info-icon">!</div>
+    <p><strong>Default behavior:</strong> If no placeholder is found in item lore, enchant lines are inserted at the <strong>top</strong> of the lore, before any MMOItems stats.</p>
+  </div>
+</section>
+
+<!-- ADDING TO MMOITEMS -->
+<section class="section" id="adding">
+  <h2 class="section-title">Adding to MMOItems Lore Format</h2>
+  <p class="section-desc">Place the <code>#omnienchant#</code> token anywhere in your MMOItems item/type lore format. The plugin will replace this line with the enchant block.</p>
+
+  <h3 class="subsection-title">Method 1 — In MMOItems lore-format.yml</h3>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">MMOItems/lore-format.yml</span><span class="config-desc">Recommended approach</span></div>
+    <pre class="code-block"><span class="c"># Add the placeholder in your lore format template:</span>
+<span class="k">lore-format:</span>
+  - <span class="s">'&7&m                              '</span>     <span class="c"># Separator</span>
+  - <span class="s">'#omnienchant#'</span>                          <span class="c"># ← Enchant lore goes here</span>
+  - <span class="s">'&7&m                              '</span>     <span class="c"># Separator</span>
+  - <span class="s">'#item-stat#'</span>
+  - <span class="s">'#stat-gem#'</span>
+  - <span class="s">'&7'</span>
+  - <span class="s">'#item-lore#'</span></pre>
+  </div>
+
+  <h3 class="subsection-title">Method 2 — In individual item YAML</h3>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">MMOItems/item/SWORD/my_sword.yml</span><span class="config-desc">Per-item override</span></div>
+    <pre class="code-block"><span class="k">lore:</span>
+  - <span class="s">'&8&m                    '</span>
+  - <span class="s">'#omnienchant#'</span>                 <span class="c"># Enchant block inserted here</span>
+  - <span class="s">'&8&m                    '</span>
+  - <span class="s">'&7Damage: &f{attack-damage}'</span>
+  - <span class="s">'&7Speed: &f{attack-speed}'</span></pre>
+  </div>
+
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>The placeholder string is <strong>case-insensitive</strong>. It will be consumed (removed) and replaced with the rendered enchant lines. If the item has no enchants, the placeholder line is simply removed.</p>
+  </div>
+</section>
+
+<!-- VISUAL EXAMPLES -->
+<section class="section" id="visual">
+  <h2 class="section-title">Visual Result</h2>
+  <p class="section-desc">Here's what enchant lore looks like on a Minecraft item, with and without the placeholder.</p>
+
+  <div class="lore-format-visual">
+    <div class="lore-format-card">
+      <h4>Without Placeholder (Default — Top)</h4>
+      <div class="mc-lore">
+        <div class="lore-line"><span class="mc-gold">Divine III</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  Smites enemies with holy light,</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  healing 4.0 on attack (20% chance)</span></div>
+        <div class="lore-line"><span class="mc-green">Aegis II</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  +6.5% max health and +4.0% defense</span></div>
+        <div class="lore-line"><span class="mc-aqua">Enchant: 2/6</span></div>
+        <div class="lore-line">&nbsp;</div>
+        <div class="lore-line"><span class="mc-gray">Damage: </span><span class="mc-white">150</span></div>
+        <div class="lore-line"><span class="mc-gray">Speed: </span><span class="mc-white">1.2</span></div>
+      </div>
+    </div>
+
+    <div class="lore-format-card">
+      <h4>With <code>#omnienchant#</code> (Custom Position)</h4>
+      <div class="mc-lore">
+        <div class="lore-line"><span class="mc-gray">Damage: </span><span class="mc-white">150</span></div>
+        <div class="lore-line"><span class="mc-gray">Speed: </span><span class="mc-white">1.2</span></div>
+        <div class="lore-line"><span class="mc-dark-gray">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span></div>
+        <div class="lore-line"><span class="mc-gold">Divine III</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  Smites enemies with holy light,</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  healing 4.0 on attack (20% chance)</span></div>
+        <div class="lore-line"><span class="mc-green">Aegis II</span></div>
+        <div class="lore-line"><span class="mc-gray lore-desc">  +6.5% max health and +4.0% defense</span></div>
+        <div class="lore-line"><span class="mc-aqua">Enchant: 2/6</span></div>
+        <div class="lore-line"><span class="mc-dark-gray">&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OMINIMODIFIER -->
+<section class="section" id="modifier">
+  <h2 class="section-title">OmniModifier Placeholder</h2>
+  <p class="section-desc">If you use OmniModifier (SLMMOStatsApply), there's a separate placeholder for modifier lore sections.</p>
+
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">config.yml</span><span class="config-desc">Modifier lore section</span></div>
+    <pre class="code-block"><span class="c"># OmniModifier (SLMMOStatsApply) interop</span>
+<span class="k">modifier-lore:</span>
+  <span class="k">placeholder:</span> <span class="s">"#ominimodifier#"</span>
+  <span class="k">placeholder-aliases:</span>
+    - <span class="s">"#slmmostatsapply#"</span>
+    - <span class="s">"#ominimodifier#"</span>
+  <span class="k">prefix:</span> <span class="s">"&8[&bMod&8] &7"</span></pre>
+  </div>
+</section>
+
+<!-- EXTERNAL LORE -->
+<section class="section" id="external">
+  <h2 class="section-title">External Enchant Lore</h2>
+  <p class="section-desc">OmniEnchant v3.0.0 includes adapter support for rendering enchants from other plugins (EcoEnchants, AdvancedEnchant) within the unified lore block.</p>
+
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">config.yml</span><span class="config-desc">External enchant display</span></div>
+    <pre class="code-block"><span class="c"># External enchant lore section (EcoEnchants/AdvancedEnchant adapters)</span>
+<span class="k">external-lore:</span>
+  <span class="k">enabled:</span> <span class="v">true</span>
+  <span class="k">prefix:</span> <span class="s">"&8[&dExt&8] &7"</span></pre>
+  </div>
+
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>External enchants are appended <strong>after</strong> OmniEnchant enchants in the lore block. They inherit the same placeholder positioning.</p>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section class="section" id="spacing">
+  <h2 class="section-title">Lore Spacing</h2>
+  <p class="section-desc">Control the gap between the enchant block and adjacent lore content.</p>
+
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">config.yml</span></div>
+    <pre class="code-block"><span class="c"># Number of blank lines between enchant lore block and item base lore.</span>
+<span class="c"># Default: 0 (no gap), set to 1 for a single blank line separator.</span>
+<span class="k">lore-spacing:</span> <span class="v">0</span></pre>
+  </div>
+</section>
+
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
+</div>
+<script>
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  this.classList.toggle('active');
+});
+</script>
+</body>
+</html>

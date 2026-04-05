@@ -1,292 +1,190 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SLMMOEnchant Wiki — v1.2.8</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="mobile-toggle" id="mobileToggle">
-      <span></span><span></span><span></span>
-    </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniEnchant Wiki — v3.0.0</title>
+  <meta name="description" content="OmniEnchant — custom enchantment system for MMOItems. Rarity tiers, stat formulas, abilities, custom mechanics, fusion, extraction, soul tracker, set bonuses and 52+ sample enchants.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 
-    <div class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <span class="logo-icon">SLE</span>
-          <div>
-            <h1>SLMMOEnchant</h1>
-            <span class="version-badge">v1.2.8</span>
-          </div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <span class="logo-icon">OE</span>
+      <div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link active"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&gt;</span>Commands &amp; API</a>
+    <a href="lore-format.html" class="nav-link"><span class="nav-icon">&#9776;</span>Lore Format</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer">
+    <span>by <strong>SalyVn</strong></span>
+    <span>Paper 1.21+ &bull; Folia Ready</span>
+  </div>
+</div>
+
+<div class="content">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">MMOItems Addon &bull; Kotlin &bull; Folia Ready</span>
+      <h1 class="hero-title">OmniEnchant</h1>
+      <p class="hero-subtitle">
+        Custom enchantment system for MMOItems &mdash; rarity tiers, stat formulas, MythicLib abilities,
+        custom mechanics, conflict system, fusion, extraction, dust crafting, soul tracker,
+        set bonuses, trak counters and 52+ sample enchants.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-card"><span class="stat-number">52+</span><span class="stat-label">Enchants</span></div>
+        <div class="stat-card"><span class="stat-number">5</span><span class="stat-label">Rarity Tiers</span></div>
+        <div class="stat-card"><span class="stat-number">12+</span><span class="stat-label">Custom Items</span></div>
+        <div class="stat-card"><span class="stat-number">40+</span><span class="stat-label">Mechanics</span></div>
+        <div class="stat-card"><span class="stat-number">6</span><span class="stat-label">PAPI Holders</span></div>
+      </div>
+      <div class="hero-deps">
+        <span class="dep required">MMOItems &#9733;</span>
+        <span class="dep required">MythicLib &#9733;</span>
+        <span class="dep optional">MythicMobs</span>
+        <span class="dep optional">Vault</span>
+        <span class="dep optional">PlayerPoints</span>
+        <span class="dep optional">PlaceholderAPI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section class="section" id="install">
+    <h2 class="section-title">Installation</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Requirements</h3>
+          <p>Paper/Folia <strong>1.21+</strong> (Java 21)<br>MMOItems <strong>6.10.1+</strong> &bull; MythicLib <strong>1.7.1+</strong></p>
         </div>
       </div>
-      <nav class="sidebar-nav">
-        <a href="index.html" class="nav-link active"
-          ><span class="nav-icon">&#9670;</span>Overview</a
-        >
-        <a href="configuration.html" class="nav-link"
-          ><span class="nav-icon">&#9881;</span>Configuration</a
-        >
-        <a href="enchants.html" class="nav-link"
-          ><span class="nav-icon">&#9733;</span>Enchant System</a
-        >
-        <a href="features.html" class="nav-link"
-          ><span class="nav-icon">&#9654;</span>Features</a
-        >
-        <a href="items.html" class="nav-link"
-          ><span class="nav-icon">&#9632;</span>Items &amp; Systems</a
-        >
-        <a href="commands.html" class="nav-link"
-          ><span class="nav-icon">&#62;</span>Commands &amp; API</a
-        >
-        <a href="changelog.html" class="nav-link"
-          ><span class="nav-icon">&#9998;</span>Changelog</a
-        >
-      </nav>
-      <div class="sidebar-footer">
-        <span>by <strong>SalyVn</strong></span
-        ><span>Paper 1.21+ &bull; Folia Ready</span>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Install</h3>
+          <p>Place <code>OmniEnchant.jar</code> in the <code>plugins/</code> folder</p>
+        </div>
       </div>
-    </div>
-
-    <div class="content">
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-          <span class="hero-badge"
-            >MMOItems Addon &bull; Kotlin &bull; Folia Ready</span
-          >
-          <h1 class="hero-title">SLMMOEnchant</h1>
-          <p class="hero-subtitle">
-            Powerful custom enchantment system for MMOItems &mdash; rarity
-            tiers, stat formulas, MythicLib abilities, custom mechanics,
-            conflict system, fusion, extraction, protection stone, tier shop and
-            52 sample enchants.
-          </p>
-          <div class="hero-stats">
-            <div class="stat-card">
-              <span class="stat-number">52</span
-              ><span class="stat-label">Enchants</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number">5</span
-              ><span class="stat-label">Rarity Tiers</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number">8</span
-              ><span class="stat-label">Custom Items</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number">6</span
-              ><span class="stat-label">PAPI Placeholders</span>
-            </div>
-          </div>
-          <div class="hero-deps">
-            <span class="dep required">MMOItems &#9733;</span>
-            <span class="dep required">MythicLib &#9733;</span>
-            <span class="dep optional">MythicMobs</span>
-            <span class="dep optional">Vault</span>
-            <span class="dep optional">PlayerPoints</span>
-            <span class="dep optional">PlaceholderAPI</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- INSTALL -->
-      <section class="section" id="install">
-        <h2 class="section-title">Installation</h2>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-content">
-              <h3>Requirements</h3>
-              <p>
-                Paper/Folia <strong>1.21+</strong> (Java 21)<br />MMOItems
-                <strong>6.10.1+</strong> &bull; MythicLib
-                <strong>1.7.1+</strong>
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-content">
-              <h3>Install</h3>
-              <p>
-                Place <code>SLMMOEnchant.jar</code> in the
-                <code>plugins/</code> folder
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-content">
-              <h3>Start</h3>
-              <p>
-                Restart server &rarr; Plugin auto-generates configs in
-                <code>plugins/SLMMOEnchant/</code>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- QUICK LINKS -->
-      <section class="section" id="quicklinks">
-        <h2 class="section-title">Quick Links</h2>
-        <div class="arch-grid">
-          <a
-            href="configuration.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Configuration</h3>
-            <p>
-              config.yml, display.yml, application.yml, messages.yml,
-              vanilla-enchants.yml
-            </p>
-          </a>
-          <a
-            href="enchants.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Enchant System</h3>
-            <p>
-              YAML reference, formula engine, stats, abilities, mechanics,
-              placeholders
-            </p>
-          </a>
-          <a
-            href="features.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Features</h3>
-            <p>
-              Drag &amp; Drop, Extraction, Fusion, Protection Stone, Tier Shop,
-              Grindstone, Dust Crafting, Anvil Merge
-            </p>
-          </a>
-          <a
-            href="items.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Items &amp; Systems</h3>
-            <p>
-              Lucky Dust, Slot Increaser, Protection Stone, Soul Stones, Trak
-              Stones
-            </p>
-          </a>
-          <a
-            href="commands.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Commands &amp; API</h3>
-            <p>15+ commands, permissions, PAPI placeholders, developer API</p>
-          </a>
-          <a
-            href="changelog.html"
-            class="arch-card"
-            style="text-decoration: none; color: inherit"
-          >
-            <h3>Changelog</h3>
-            <p>Update history from v1.0.0 to v1.2.8</p>
-          </a>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="section" id="faq">
-        <h2 class="section-title">FAQ</h2>
-        <div class="faq-list">
-          <details class="faq-item">
-            <summary>Does the plugin support Folia?</summary>
-            <p>
-              Yes. Uses FoliaLib &mdash; compatible with both Paper and Folia.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>Create new enchants without coding?</summary>
-            <p>
-              Absolutely! Add a .yml file to <code>enchants/</code> then
-              <code>/sle reload</code>.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>Can enchants combine multiple types?</summary>
-            <p>
-              Yes! For example, Divine has stats + ability simultaneously.
-              Spirit has stats + heal ability.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>What if I apply the same book at the same level?</summary>
-            <p>
-              Automatically upgrades to level+1. Can be disabled in
-              <code>application.yml</code>.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>How does Protection Stone work?</summary>
-            <p>
-              Drag onto item &mdash; protects once. On enchant failure + destroy
-              roll &mdash; consumes protection instead of destroying item.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>What does the Tier Shop sell?</summary>
-            <p>
-              Buy Enchant Orbs by tier &mdash; right-click to open &mdash;
-              receive random enchant book with randomized success/destroy rates.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>Does Grindstone remove custom enchants?</summary>
-            <p>
-              Yes! Grindstone removes both vanilla and custom enchants, lore is
-              cleaned immediately.
-            </p>
-          </details>
-          <details class="faq-item">
-            <summary>Do enchants support conflict systems?</summary>
-            <p>
-              Yes! Use the <code>conflicts</code> field. E.g., Divine conflicts
-              with Umbra, Bulwark conflicts with Vitality.
-            </p>
-          </details>
-        </div>
-      </section>
-
-      <div class="footer">
-        <div class="footer-content">
-          <p>
-            <strong>SLMMOEnchant</strong> v1.2.8 &mdash; by
-            <strong>SalyVn</strong>
-          </p>
-          <p class="footer-tech">
-            Kotlin &bull; Paper 1.21+ &bull; MMOItems &bull; MythicLib &bull;
-            FoliaLib &bull; PlaceholderAPI
-          </p>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Start</h3>
+          <p>Restart server &rarr; Plugin auto-generates configs in <code>plugins/OmniEnchant/</code></p>
         </div>
       </div>
     </div>
-    <script>
-      document
-        .getElementById("mobileToggle")
-        .addEventListener("click", function () {
-          document.getElementById("sidebar").classList.toggle("open");
-          this.classList.toggle("active");
-        });
-    </script>
-  </body>
+  </section>
+
+  <!-- QUICK LINKS -->
+  <section class="section" id="quicklinks">
+    <h2 class="section-title">Quick Links</h2>
+    <div class="arch-grid">
+      <a href="configuration.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Configuration</h3>
+        <p>config.yml, display.yml, application.yml, messages.yml, tier-shop.yml</p>
+      </a>
+      <a href="enchants.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Enchant System</h3>
+        <p>YAML reference, formula engine, stats, abilities, mechanics, placeholders</p>
+      </a>
+      <a href="features.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Features</h3>
+        <p>Drag &amp; Drop, Extraction, Fusion, Dust Crafting, Tier Shop, Browser GUI, Set Bonus</p>
+      </a>
+      <a href="items.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Items &amp; Systems</h3>
+        <p>Lucky Dust, Slot Increaser, Protection Stone, Soul Stones, Trak Stones</p>
+      </a>
+      <a href="commands.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Commands &amp; API</h3>
+        <p>15+ commands, permissions, PAPI placeholders, developer API</p>
+      </a>
+      <a href="lore-format.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Lore Format</h3>
+        <p>How to configure #omnienchant# placeholder in MMOItems lore</p>
+      </a>
+      <a href="changelog.html" class="arch-card" style="text-decoration:none;color:inherit">
+        <h3>Changelog</h3>
+        <p>Update history from v1.0.0 to v3.0.0</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <h2 class="section-title">FAQ</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Does the plugin support Folia?</summary>
+        <p>Yes. Uses FoliaLib &mdash; compatible with both Paper and Folia.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Create new enchants without coding?</summary>
+        <p>Absolutely! Add a .yml file to <code>enchants/</code> then <code>/sle reload</code>.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can enchants combine multiple types?</summary>
+        <p>Yes! For example, Divine has stats + ability simultaneously. Spirit has stats + heal ability.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What if I apply the same book at the same level?</summary>
+        <p>Automatically upgrades to level+1. Can be disabled in <code>application.yml</code>.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does Protection Stone work?</summary>
+        <p>Drag onto item &mdash; protects once. On enchant failure + destroy roll &mdash; consumes protection instead of destroying item. Supports stacking charges.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does the Tier Shop sell?</summary>
+        <p>Buy Enchant Orbs by tier &mdash; right-click to open &mdash; receive random enchant book with randomized success/destroy rates.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does Grindstone remove custom enchants?</summary>
+        <p>Yes! Grindstone removes both vanilla and custom enchants, lore is cleaned immediately.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where do enchant lore lines appear on items?</summary>
+        <p>By default at the top. Use <code>#omnienchant#</code> placeholder in your MMOItems lore format to control exact position. See the <a href="lore-format.html">Lore Format</a> page.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What changed from SLMMOEnchant to OmniEnchant?</summary>
+        <p>Plugin was rebranded in v3.0.0. All legacy placeholders (<code>#slenchant#</code>, <code>#ominienchant#</code>) and permission nodes (<code>slenchant.*</code>) still work. Existing item data is preserved.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="footer-content">
+      <p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p>
+      <p class="footer-tech">Kotlin &bull; Paper 1.21+ &bull; MMOItems &bull; MythicLib &bull; FoliaLib &bull; PlaceholderAPI</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  this.classList.toggle('active');
+});
+</script>
+</body>
 </html>
