@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni Plugins — Wiki</title>
+    <style>
+        /* ======================= RESET & BASE ======================= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-code: #1c2129;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-dim: #8b949e;
+            --text-bright: #f0f6fc;
+            --accent-green: #3fb950;
+            --accent-blue: #58a6ff;
+            --accent-purple: #bc8cff;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-cyan: #56d4dd;
+            --font: 'Segoe UI', -apple-system, sans-serif;
+            --mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ======================= LAYOUT ======================= */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 24px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-logo h1 {
+            font-size: 18px;
+            color: var(--accent-green);
+            letter-spacing: 1px;
+        }
+
+        .sidebar-logo span {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .nav-section {
+            padding: 8px 20px 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 6px 20px 6px 28px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            transition: all .15s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            color: var(--accent-blue);
+            background: rgba(88,166,255,.08);
+            border-left-color: var(--accent-blue);
+        }
+
+        /* Main content */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            max-width: 860px;
+            padding: 40px 48px 80px;
+        }
+
+        /* ======================= TYPOGRAPHY ======================= */
+        h2 {
+            font-size: 24px;
+            color: var(--text-bright);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        h2:first-child { margin-top: 0; }
+
+        h3 {
+            font-size: 18px;
+            color: var(--accent-blue);
+            margin: 32px 0 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            color: var(--accent-purple);
+            margin: 20px 0 8px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        strong { color: var(--text-bright); }
+        code {
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent-cyan);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        pre .comment { color: var(--text-dim); }
+        pre .key { color: var(--accent-blue); }
+        pre .string { color: var(--accent-green); }
+        pre .value { color: var(--accent-orange); }
+        pre .placeholder { color: var(--accent-purple); }
+
+        /* Info boxes */
+        .box {
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-left: 4px solid;
+            font-size: 14px;
+        }
+        .box-info {
+            background: rgba(88,166,255,.08);
+            border-left-color: var(--accent-blue);
+        }
+        .box-warn {
+            background: rgba(210,153,34,.08);
+            border-left-color: var(--accent-orange);
+        }
+        .box-tip {
+            background: rgba(63,185,80,.08);
+            border-left-color: var(--accent-green);
+        }
+        .box-danger {
+            background: rgba(248,81,73,.08);
+            border-left-color: var(--accent-red);
+        }
+        .box strong { display: block; margin-bottom: 4px; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 14px;
+        }
+        th {
+            text-align: left;
+            padding: 10px 12px;
+            background: var(--bg-code);
+            color: var(--text-bright);
+            border-bottom: 2px solid var(--border);
+            font-weight: 600;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:hover td { background: rgba(255,255,255,.02); }
+
+        /* Numbered steps */
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        .steps li {
+            counter-increment: step-counter;
+            padding: 12px 0 12px 48px;
+            position: relative;
+            border-left: 2px solid var(--border);
+            margin-left: 16px;
+        }
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            color: var(--bg);
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .steps li:last-child { border-left-color: transparent; }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-green { background: rgba(63,185,80,.15); color: var(--accent-green); }
+        .badge-orange { background: rgba(210,153,34,.15); color: var(--accent-orange); }
+        .badge-purple { background: rgba(188,140,255,.15); color: var(--accent-purple); }
+        .badge-blue { background: rgba(88,166,255,.15); color: var(--accent-blue); }
+
+        /* ======================= RESPONSIVE ======================= */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <!-- ============ SIDEBAR ============ -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <h1>Omni Plugins</h1>
+            <span>Documentation &amp; Wiki</span>
+        </div>
+
+        <div class="nav-section">OmniTotalStats</div>
+        <a href="#ots-overview">Overview</a>
+        <a href="#ots-install">Installation</a>
+        <a href="#ots-quickstart">Quick Start</a>
+        <a href="#ots-stat-types">Stat Types</a>
+        <a href="#ots-lore-format">Lore Format Setup</a>
+        <a href="#ots-stats-yml">Stats.yml Display</a>
+        <a href="#ots-finding-tokens">Finding Stat Tokens</a>
+        <a href="#ots-item-types">Item Type Filtering</a>
+        <a href="#ots-formulas">Custom Formulas</a>
+        <a href="#ots-commands">Commands</a>
+
+        <div class="nav-section" style="margin-top:20px">OmniSpawner</div>
+        <a href="#os-overview">Overview</a>
+        <a href="#os-install">Installation</a>
+        <a href="#os-creating">Creating Spawners</a>
+        <a href="#os-stacking">Stacking System</a>
+        <a href="#os-drops">Spawner Drops</a>
+        <a href="#os-config">Configuration</a>
+        <a href="#os-commands">Commands & Perms</a>
+    </nav>
+
+    <!-- ============ CONTENT ============ -->
+    <main class="content">
+
+        <!-- ################################################################# -->
+        <!--                      OMNI TOTAL STATS                             -->
+        <!-- ################################################################# -->
+
+        <h2 id="ots-overview">OmniTotalStats — Overview</h2>
+        <p>
+            OmniTotalStats displays <strong>real-time total stat values</strong> on item lore.
+            It reads from MythicLib's StatMap which already aggregates <em>everything</em>:
+            vanilla base values, MMOCore class bonuses, MMOInventory equipment, enchantments, buffs — all sources combined.
+        </p>
+        <p>
+            Each stat you define in the config automatically becomes an <strong>MMOItems stat</strong> that you can:
+        </p>
+        <ul>
+            <li>Enable/disable per item via the MMOItems GUI editor</li>
+            <li>Position in item lore using <code>#your-key#</code> tokens</li>
+            <li>Customize the display format in <code>stats.yml</code></li>
+        </ul>
+
+        <div class="box box-info">
+            <strong>How it works</strong>
+            When a player holds or equips an item, OmniTotalStats calculates the total value from the player's
+            entire StatMap and displays it live on the item's lore. The value updates when equipment changes.
+        </div>
+
+        <!-- ======== INSTALL ======== -->
+        <h2 id="ots-install">Installation</h2>
+        <ol class="steps">
+            <li>
+                <strong>Requirements:</strong> Paper 1.21+, MMOItems, MythicLib, MMOCore (optional), MMOInventory (optional).
+            </li>
+            <li>
+                Drop <code>OmniTotalStats-1.0.jar</code> into your <code>plugins/</code> folder.
+            </li>
+            <li>
+                Restart the server. The plugin generates <code>plugins/OmniTotalStats/config.yml</code>.
+            </li>
+            <li>
+                Configure stats in <code>config.yml</code>, then set up lore tokens in MMOItems files.
+            </li>
+        </ol>
+
+        <!-- ======== QUICK START ======== -->
+        <h2 id="ots-quickstart">Quick Start — 3-Step Setup</h2>
+        <p>Let's add "Total PvE Damage" to show on swords. Here are the 3 files you need to touch:</p>
+
+        <h3>Step 1: Define the stat in <code>config.yml</code></h3>
+<pre><span class="comment"># plugins/OmniTotalStats/config.yml</span>
+<span class="key">stats</span>:
+  <span class="key">melee-pve</span>:                     <span class="comment"># ← This is the stat ID</span>
+    <span class="key">type</span>: <span class="string">damage</span>
+    <span class="key">damage-type</span>: <span class="string">melee</span>
+    <span class="key">context</span>: <span class="string">pve</span>
+    <span class="key">show-enable</span>: <span class="value">true</span>
+    <span class="key">item-types</span>: <span class="string">[sword, dagger]</span>
+    <span class="key">material</span>: <span class="string">DIAMOND_SWORD</span></pre>
+
+        <h3>Step 2: Add the lore token in <code>lore-format.yml</code></h3>
+<pre><span class="comment"># plugins/MMOItems/language/lore-format.yml</span>
+<span class="key">lore-format</span>:
+  - <span class="string">'{bar}'</span>
+  - <span class="string">'{attack_damage}'</span>
+  - <span class="placeholder">'#melee-pve#'</span>        <span class="comment"># ← uses the stat ID wrapped in #</span>
+  - <span class="string">'{bar}'</span></pre>
+
+        <div class="box box-warn">
+            <strong>The token format is <code>#stat-id#</code></strong>
+            The ID inside the <code>#</code> markers must exactly match the key you defined in <code>config.yml</code>.
+            In this case: <code>melee-pve</code> in config → <code>#melee-pve#</code> in lore-format.
+        </div>
+
+        <h3>Step 3: Define the display text in <code>stats.yml</code></h3>
+<pre><span class="comment"># plugins/MMOItems/language/stats.yml</span>
+<span class="key">melee-pve</span>: <span class="string">"&7Total PvE Dmg: &f{value}"</span></pre>
+
+        <p>
+            The <code>{value}</code> placeholder is replaced by the calculated total at runtime.
+            Use any color codes you want: <code>&a</code>, <code>&e</code>, <code>&#55FF55</code> (hex), etc.
+        </p>
+
+        <div class="box box-tip">
+            <strong>Result</strong>
+            Your sword will now show something like:<br>
+            <code style="color:#aaa">Total PvE Dmg: <span style="color:#fff">42.5</span></code><br>
+            The value updates live based on the player's full equipment + bonuses.
+        </div>
+
+        <!-- ======== STAT TYPES ======== -->
+        <h2 id="ots-stat-types">Stat Types Reference</h2>
+
+        <table>
+            <thead>
+                <tr><th>Type</th><th>Description</th><th>Key Options</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge badge-green">stat</span></td>
+                    <td>Reads a single stat directly from the player's StatMap</td>
+                    <td><code>stat: MAX_HEALTH</code></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-orange">damage</span></td>
+                    <td>Calculates total weapon damage: <code>ATK × (1 + bonuses/100)</code></td>
+                    <td><code>damage-type:</code> + <code>context:</code></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-purple">element</span></td>
+                    <td>Elemental damage bonus: <code>ELE_DMG × (1 + ELE_DMG%/100)</code></td>
+                    <td><code>element: FIRE</code></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-blue">damage-element</span></td>
+                    <td>Combined: weapon damage + elemental bonus</td>
+                    <td><code>damage-type:</code> + <code>element:</code></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-green">formula</span></td>
+                    <td>Custom math expression with stat placeholders</td>
+                    <td><code>formula: "..."</code> + <code>decimals:</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ======== LORE FORMAT ======== -->
+        <h2 id="ots-lore-format">Lore Format Setup (<code>lore-format.yml</code>)</h2>
+        <p>
+            The <code>lore-format.yml</code> file in <code>plugins/MMOItems/language/</code> controls
+            the order and layout of stats on item lore. To add your OmniTotalStats entries,
+            place <code>#your-stat-id#</code> tokens wherever you want them to appear.
+        </p>
+
+<pre><span class="comment"># plugins/MMOItems/language/lore-format.yml</span>
+<span class="key">lore-format</span>:
+  - <span class="string">'{bar}'</span>
+  <span class="comment"># Vanilla stats</span>
+  - <span class="string">'{attack_damage}'</span>
+  - <span class="string">'{attack_speed}'</span>
+  - <span class="string">'{critical_strike_chance}'</span>
+  - <span class="string">'{bar}'</span>
+
+  <span class="comment"># === OmniTotalStats entries ===</span>
+  - <span class="placeholder">'#melee-pve#'</span>           <span class="comment"># Total melee PvE damage</span>
+  - <span class="placeholder">'#fire-damage#'</span>         <span class="comment"># Total fire elemental damage</span>
+  - <span class="placeholder">'#melee-fire-pve#'</span>      <span class="comment"># Total melee + fire combined</span>
+  - <span class="placeholder">'#total-max-health#'</span>    <span class="comment"># Total max HP</span>
+  - <span class="placeholder">'#total-defense#'</span>       <span class="comment"># Total defense</span>
+  <span class="comment"># You can add ANY stat ID from config.yml here</span>
+
+  - <span class="string">'{bar}'</span>
+  - <span class="string">'{can-identify}'</span>
+  - <span class="string">'{can-deconstruct}'</span></pre>
+
+        <div class="box box-info">
+            <strong>Only shows when enabled</strong>
+            A <code>#stat-id#</code> token only shows on items where that stat is enabled in the MMOItems GUI editor.
+            If the stat is disabled (or the item type doesn't match <code>item-types</code>), the line is silently hidden.
+        </div>
+
+        <!-- ======== STATS.YML ======== -->
+        <h2 id="ots-stats-yml">Stats.yml — Display Format</h2>
+        <p>
+            The <code>stats.yml</code> file in <code>plugins/MMOItems/language/</code> controls how each stat's
+            value is displayed. Add one entry per stat ID, using <code>{value}</code> as the placeholder:
+        </p>
+
+<pre><span class="comment"># plugins/MMOItems/language/stats.yml</span>
+
+<span class="comment"># Damage types</span>
+<span class="key">melee-pve</span>: <span class="string">"&7Total PvE Dmg: &f{value}"</span>
+<span class="key">melee-pvp</span>: <span class="string">"&7Total PvP Dmg: &f{value}"</span>
+<span class="key">magic-pve</span>: <span class="string">"&7Total Magic Dmg: &f{value}"</span>
+
+<span class="comment"># Elemental</span>
+<span class="key">fire-damage</span>: <span class="string">"&c Fire Damage: &f{value}"</span>
+<span class="key">ice-damage</span>: <span class="string">"&b Ice Damage: &f{value}"</span>
+<span class="key">earth-damage</span>: <span class="string">"&2 Earth Damage: &f{value}"</span>
+
+<span class="comment"># Combined (melee + element)</span>
+<span class="key">melee-fire-pve</span>: <span class="string">"&c Total Fire Hit: &f{value}"</span>
+
+<span class="comment"># Defensive stats</span>
+<span class="key">total-max-health</span>: <span class="string">"&c Total HP: &f{value}"</span>
+<span class="key">total-defense</span>: <span class="string">"&e Total Defense: &f{value}"</span>
+<span class="key">total-armor</span>: <span class="string">"&8 Total Armor: &f{value}"</span>
+
+<span class="comment"># Resources</span>
+<span class="key">total-max-mana</span>: <span class="string">"&9 Total Mana: &f{value}"</span>
+<span class="key">total-max-stamina</span>: <span class="string">"&e Total Stamina: &f{value}"</span></pre>
+
+        <!-- ======== FINDING TOKENS ======== -->
+        <h2 id="ots-finding-tokens">Finding Stat Tokens (MythicLib)</h2>
+        <p>
+            When you define a stat with <code>type: stat</code>, you need to know the
+            <strong>MythicLib stat key</strong>. Here's how to find them:
+        </p>
+
+        <h3>Method 1: Check MythicLib's source code / wiki</h3>
+        <p>
+            MythicLib registers all stat keys in its <code>StatType</code> enum. Common ones:
+        </p>
+
+        <table>
+            <thead><tr><th>Key</th><th>Description</th><th>Category</th></tr></thead>
+            <tbody>
+                <tr><td><code>ATTACK_DAMAGE</code></td><td>Base attack damage</td><td>Offense</td></tr>
+                <tr><td><code>ATTACK_SPEED</code></td><td>Attack speed</td><td>Offense</td></tr>
+                <tr><td><code>MAX_HEALTH</code></td><td>Max HP (includes vanilla 20)</td><td>HP</td></tr>
+                <tr><td><code>HEALTH_REGENERATION</code></td><td>HP regen per second</td><td>HP</td></tr>
+                <tr><td><code>MAX_MANA</code></td><td>Max mana pool</td><td>Resources</td></tr>
+                <tr><td><code>MANA_REGENERATION</code></td><td>Mana regen/s</td><td>Resources</td></tr>
+                <tr><td><code>MAX_STAMINA</code></td><td>Max stamina</td><td>Resources</td></tr>
+                <tr><td><code>STAMINA_REGENERATION</code></td><td>Stamina regen/s</td><td>Resources</td></tr>
+                <tr><td><code>DEFENSE</code></td><td>MMO defense stat</td><td>Defense</td></tr>
+                <tr><td><code>ARMOR</code></td><td>Minecraft armor value</td><td>Defense</td></tr>
+                <tr><td><code>ARMOR_TOUGHNESS</code></td><td>Armor toughness</td><td>Defense</td></tr>
+                <tr><td><code>DAMAGE_REDUCTION</code></td><td>% damage reduction</td><td>Defense</td></tr>
+                <tr><td><code>CRITICAL_STRIKE_CHANCE</code></td><td>Crit chance %</td><td>Combat</td></tr>
+                <tr><td><code>CRITICAL_STRIKE_POWER</code></td><td>Crit damage multiplier</td><td>Combat</td></tr>
+                <tr><td><code>SPELL_CRITICAL_STRIKE_CHANCE</code></td><td>Spell crit %</td><td>Combat</td></tr>
+                <tr><td><code>SPELL_CRITICAL_STRIKE_POWER</code></td><td>Spell crit power</td><td>Combat</td></tr>
+                <tr><td><code>COOLDOWN_REDUCTION</code></td><td>CDR %</td><td>Utility</td></tr>
+                <tr><td><code>LIFESTEAL</code></td><td>% of dmg restored as HP</td><td>Combat</td></tr>
+                <tr><td><code>SPELL_VAMPIRISM</code></td><td>% of spell dmg as HP</td><td>Combat</td></tr>
+                <tr><td><code>MOVEMENT_SPEED</code></td><td>Move speed modifier</td><td>Movement</td></tr>
+                <tr><td><code>KNOCKBACK_RESISTANCE</code></td><td>KB resistance</td><td>Movement</td></tr>
+                <tr><td><code>LUCK</code></td><td>Luck stat</td><td>Utility</td></tr>
+                <tr><td><code>DODGE_RATING</code></td><td>Dodge chance</td><td>Defense</td></tr>
+                <tr><td><code>BLOCK_POWER</code></td><td>Block damage absorb</td><td>Defense</td></tr>
+                <tr><td><code>BLOCK_RATING</code></td><td>Block chance</td><td>Defense</td></tr>
+                <tr><td><code>PARRY_RATING</code></td><td>Parry chance</td><td>Defense</td></tr>
+                <tr><td><code>WEAPON_DAMAGE</code></td><td>% bonus weapon damage</td><td>Offense</td></tr>
+                <tr><td><code>MAGIC_DAMAGE</code></td><td>% bonus magic damage</td><td>Offense</td></tr>
+                <tr><td><code>PHYSICAL_DAMAGE</code></td><td>% bonus physical damage</td><td>Offense</td></tr>
+                <tr><td><code>PVE_DAMAGE</code></td><td>% bonus PvE damage</td><td>Offense</td></tr>
+                <tr><td><code>PVP_DAMAGE</code></td><td>% bonus PvP damage</td><td>Offense</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Method 2: In-game debug command</h3>
+<pre>/ots reload   <span class="comment"># Reloads config and lists all registered stat IDs</span></pre>
+        <p>Check the console output — it prints all loaded stat keys.</p>
+
+        <h3>Method 3: MythicLib StatMap dump</h3>
+        <p>
+            Run <code>/mythiclib debug player &lt;name&gt;</code> in-game (if available) to see all active
+            stat values for a player. The key names shown there are exactly what you use in the <code>stat:</code> field.
+        </p>
+
+        <h3>Element Keys</h3>
+        <p>For <code>type: element</code> and <code>type: damage-element</code>, the element names are:</p>
+
+        <table>
+            <thead><tr><th>Element</th><th>Stat Keys Used</th></tr></thead>
+            <tbody>
+                <tr><td><code>FIRE</code></td><td><code>FIRE_DAMAGE</code>, <code>FIRE_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>ICE</code></td><td><code>ICE_DAMAGE</code>, <code>ICE_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>EARTH</code></td><td><code>EARTH_DAMAGE</code>, <code>EARTH_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>WIND</code></td><td><code>WIND_DAMAGE</code>, <code>WIND_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>THUNDER</code></td><td><code>THUNDER_DAMAGE</code>, <code>THUNDER_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>WATER</code></td><td><code>WATER_DAMAGE</code>, <code>WATER_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>DARKNESS</code></td><td><code>DARKNESS_DAMAGE</code>, <code>DARKNESS_DAMAGE_PERCENT</code></td></tr>
+                <tr><td><code>LIGHTNESS</code></td><td><code>LIGHTNESS_DAMAGE</code>, <code>LIGHTNESS_DAMAGE_PERCENT</code></td></tr>
+            </tbody>
+        </table>
+
+        <!-- ======== ITEM TYPES ======== -->
+        <h2 id="ots-item-types">Item Type Filtering</h2>
+        <p>
+            The <code>item-types</code> option controls which MMOItems item types show this stat in their GUI editor.
+            This prevents clutter — damage stats only show on weapons, defense on armor, etc.
+        </p>
+
+        <table>
+            <thead><tr><th>Value</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>all</code></td><td>Show on all item types</td></tr>
+                <tr><td><code>weapon</code></td><td>All weapon types (sword, bow, staff, etc.)</td></tr>
+                <tr><td><code>armor</code></td><td>All armor types (helmet, chestplate, etc.)</td></tr>
+                <tr><td><code>equipment</code></td><td>Armor + accessory</td></tr>
+                <tr><td><code>handheld</code></td><td>Weapons + tools + offhand</td></tr>
+                <tr><td><code>sword</code></td><td>Specific type by name</td></tr>
+                <tr><td><code>!block</code></td><td>Exclude a specific type (prefix with <code>!</code>)</td></tr>
+            </tbody>
+        </table>
+
+<pre><span class="comment"># Examples</span>
+<span class="key">item-types</span>: <span class="string">[sword, dagger, spear]</span>       <span class="comment"># Only melee weapons</span>
+<span class="key">item-types</span>: <span class="string">[armor, accessory]</span>           <span class="comment"># Defensive gear</span>
+<span class="key">item-types</span>: <span class="string">[all, !block, !miscellaneous]</span> <span class="comment"># Everything except blocks/misc</span>
+<span class="key">item-types</span>: <span class="string">[weapon]</span>                     <span class="comment"># All weapon types</span></pre>
+
+        <!-- ======== FORMULAS ======== -->
+        <h2 id="ots-formulas">Custom Formulas</h2>
+        <p>
+            For advanced users, the <code>formula</code> type lets you write arbitrary math expressions:
+        </p>
+
+<pre><span class="comment"># Effective HP = MaxHP × (1 + Armor/100 + DmgReduction/100)</span>
+<span class="key">effective-hp</span>:
+  <span class="key">type</span>: <span class="string">formula</span>
+  <span class="key">formula</span>: <span class="string">"{player.MAX_HEALTH} * (1 + {player.ARMOR}/100 + {player.DAMAGE_REDUCTION}/100)"</span>
+  <span class="key">decimals</span>: <span class="value">0</span>
+  <span class="key">show-enable</span>: <span class="value">true</span>
+  <span class="key">item-types</span>: <span class="string">[armor]</span>
+  <span class="key">material</span>: <span class="string">TOTEM_OF_UNDYING</span>
+
+<span class="comment"># Melee DPS = Total Damage × Attack Speed</span>
+<span class="key">melee-dps</span>:
+  <span class="key">type</span>: <span class="string">formula</span>
+  <span class="key">formula</span>: <span class="string">"{player.ATTACK_DAMAGE} * (1 + {player.WEAPON_DAMAGE}/100) * {player.ATTACK_SPEED}"</span>
+  <span class="key">decimals</span>: <span class="value">1</span>
+  <span class="key">item-types</span>: <span class="string">[weapon]</span></pre>
+
+        <h4>Available Placeholders</h4>
+        <table>
+            <thead><tr><th>Placeholder</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>{player.&lt;STAT&gt;}</code></td><td>Total stat from the player's StatMap (all sources combined)</td></tr>
+                <tr><td><code>{item.&lt;STAT&gt;}</code></td><td>Base stat from the item's NBT only (ignoring other equipment)</td></tr>
+            </tbody>
+        </table>
+        <p>Supported operators: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>^</code> <code>( )</code></p>
+
+        <!-- ======== COMMANDS ======== -->
+        <h2 id="ots-commands">Commands</h2>
+        <table>
+            <thead><tr><th>Command</th><th>Permission</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>/ots reload</code></td><td><code>omnitotalstats.admin</code></td><td>Reload config and re-register stats</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ################################################################# -->
+        <!--                      OMNI SPAWNER                                 -->
+        <!-- ################################################################# -->
+
+        <h2 id="os-overview" style="margin-top:64px; border-top: 2px solid var(--accent-purple); padding-top:32px;">
+            OmniSpawner — Overview
+        </h2>
+        <p>
+            OmniSpawner is a <strong>MythicMobs-native spawner system</strong> with stacking support for spawners,
+            entities, and item drops. Create custom spawner blocks for any MythicMob via a GUI-driven workflow.
+        </p>
+        <p>Features:</p>
+        <ul>
+            <li>Create spawners for any registered MythicMob</li>
+            <li>Stack identical spawners together (x1 → x128)</li>
+            <li>Automatic entity stacking (merge nearby same-type mobs)</li>
+            <li>Automatic drop stacking (merge nearby identical items)</li>
+            <li>Real-time hologram with countdown timer above spawners</li>
+            <li>Kill-all / Kill-one modes for stacked mob deaths</li>
+            <li>Full GUI management system</li>
+        </ul>
+
+        <h2 id="os-install">Installation</h2>
+        <ol class="steps">
+            <li>
+                <strong>Requirements:</strong> Paper 1.21+, MythicMobs 5.x Premium.
+            </li>
+            <li>
+                Drop <code>OmniSpawner-1.0.jar</code> into <code>plugins/</code>.
+            </li>
+            <li>
+                Restart the server. Config generates at <code>plugins/OmniSpawner/config.yml</code>.
+            </li>
+        </ol>
+
+        <h2 id="os-creating">Creating Spawners</h2>
+        <ol class="steps">
+            <li>Run <code>/ospawner</code> (or <code>/os</code>) to open the Spawner Manager GUI.</li>
+            <li>Click the <strong style="color:var(--accent-green)">Create New Spawner</strong> button.</li>
+            <li>Browse or search for the MythicMob you want. Click it.</li>
+            <li>The <strong>Edit GUI</strong> opens — configure spawn rate, limit, radius, stacking.</li>
+            <li>Click the <strong>Get Spawner Item</strong> button to receive the spawner.</li>
+            <li>Place the spawner block in the world. A hologram appears above it.</li>
+        </ol>
+
+        <h2 id="os-stacking">Stacking System</h2>
+        <h3>Spawner Stacking</h3>
+        <p>
+            Hold the same spawner type and <strong>left-click</strong> a placed spawner to stack them.
+            Shift+left-click adds the entire held stack at once. The hologram updates with the new count.
+        </p>
+
+        <h3>Entity Stacking</h3>
+        <p>
+            When enabled, nearby mobs of the same MythicMob type are merged into a single entity
+            with a count display (e.g. "Zombie x15"). Configured in the <code>entity-stacking</code> section.
+        </p>
+
+        <h3>Kill Modes</h3>
+        <table>
+            <thead><tr><th>Mode</th><th>Behavior</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><code>kill-one</code></td>
+                    <td>Each kill reduces stack by 1, drops loot once. Stack: 100→99→98...</td>
+                </tr>
+                <tr>
+                    <td><code>kill-all</code></td>
+                    <td>One kill destroys entire stack, drops loot × stack count.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="os-config">Configuration</h2>
+<pre><span class="comment"># config.yml — Key settings</span>
+
+<span class="key">spawner-stacking</span>:
+  <span class="key">enabled</span>: <span class="value">true</span>
+  <span class="key">max-stack</span>: <span class="value">128</span>
+
+<span class="key">entity-stacking</span>:
+  <span class="key">enabled</span>: <span class="value">true</span>
+  <span class="key">max-stack</span>: <span class="value">256</span>
+  <span class="key">kill-mode</span>: <span class="string">"kill-one"</span>
+
+<span class="key">spawn-mode</span>: <span class="string">"multiply"</span>       <span class="comment"># multiply or single</span>
+
+<span class="key">drop-stacking</span>:
+  <span class="key">enabled</span>: <span class="value">true</span>
+  <span class="key">max-stack</span>: <span class="value">1024</span>
+
+<span class="key">hologram</span>:
+  <span class="key">enabled</span>: <span class="value">true</span>
+  <span class="key">format</span>:
+    - <span class="string">"&#55FF55{name}"</span>
+    - <span class="string">"&#555555x&#FFFFFF{stack} &#555555| &#FFAA00 {countdown}"</span></pre>
+
+        <h2 id="os-drops">Spawner Drops from Mobs</h2>
+        <p>
+            When a MythicMob is killed, if a <strong>spawner definition</strong> exists for that mob type,
+            there is a configurable chance to drop the spawner item. Only mobs that already have a
+            spawner definition will ever drop spawners — no random drops from undefined mobs.
+        </p>
+
+        <h3>How it works</h3>
+        <ul>
+            <li>The plugin checks if the killed mob's internal ID matches any spawner definition</li>
+            <li>If a match is found, it rolls the drop chance (default: 0.1%)</li>
+            <li>If successful, the spawner item drops at the mob's death location with a <strong>glow effect</strong></li>
+            <li>The killer receives a configurable notification message</li>
+        </ul>
+
+        <h3>Multiple Spawner Definitions</h3>
+        <p>
+            A single mob type can have <strong>multiple</strong> spawner definitions (e.g. "zombie-farm" and "zombie-grinder").
+            When that mob dies, each spawner definition rolls its drop chance <strong>independently</strong>,
+            so there are no conflicts.
+        </p>
+
+        <h3>Config</h3>
+<pre><span class="comment"># config.yml</span>
+<span class="key">spawner-drop</span>:
+  <span class="key">enabled</span>: <span class="value">true</span>
+  <span class="key">default-chance</span>: <span class="value">0.1</span>               <span class="comment"># 0.1% default drop chance</span>
+  <span class="key">drop-message</span>: <span class="string">"&#55FF55A rare spawner dropped!"</span></pre>
+
+        <h3>Per-Spawner Override</h3>
+        <p>
+            You can override the drop chance for a specific spawner in <code>spawners.yml</code>.
+            If not set, the global <code>default-chance</code> is used.
+        </p>
+
+<pre><span class="comment"># spawners.yml (auto-generated)</span>
+<span class="key">spawners</span>:
+  <span class="key">skeleton-king</span>:
+    <span class="key">mob-id</span>: <span class="string">SkeletonKing</span>
+    <span class="key">display-name</span>: <span class="string">"&#FF5555Skeleton King Spawner"</span>
+    <span class="key">spawn-rate</span>: <span class="value">600</span>
+    <span class="key">drop-chance</span>: <span class="value">0.5</span>             <span class="comment"># 0.5% for this spawner specifically</span>
+
+  <span class="key">skeleton-basic</span>:
+    <span class="key">mob-id</span>: <span class="string">SkeletonKing</span>         <span class="comment"># Same mob, different spawner — no conflict</span>
+    <span class="key">display-name</span>: <span class="string">"&#FFAA00Basic Skeleton Spawner"</span>
+    <span class="key">spawn-rate</span>: <span class="value">200</span>
+    <span class="comment"># No drop-chance set → uses global 0.1%</span></pre>
+
+        <div class="box box-info">
+            <strong>Drop chance values</strong>
+            The <code>drop-chance</code> value is a percentage. Common values:
+            <code>0.1</code> = 0.1% (1 in 1000), <code>0.5</code> = 0.5% (1 in 200),
+            <code>1.0</code> = 1% (1 in 100), <code>5.0</code> = 5% (1 in 20).
+        </div>
+
+        <h2 id="os-commands">Commands & Permissions</h2>
+        <table>
+            <thead><tr><th>Command</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>/ospawner</code></td><td>Open spawner manager GUI</td></tr>
+                <tr><td><code>/ospawner edit &lt;id&gt;</code></td><td>Open edit GUI for a spawner</td></tr>
+                <tr><td><code>/ospawner give &lt;id&gt; [player] [amount]</code></td><td>Give spawner items</td></tr>
+                <tr><td><code>/ospawner delete &lt;id&gt;</code></td><td>Delete a spawner definition</td></tr>
+                <tr><td><code>/ospawner reload</code></td><td>Reload config</td></tr>
+                <tr><td><code>/ospawner debug</code></td><td>Show debug info</td></tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead><tr><th>Permission</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>omnispawner.admin</code></td><td>op</td><td>Full admin access</td></tr>
+                <tr><td><code>omnispawner.place</code></td><td>true</td><td>Place spawner blocks</td></tr>
+                <tr><td><code>omnispawner.break</code></td><td>true</td><td>Break spawner blocks</td></tr>
+                <tr><td><code>omnispawner.stack</code></td><td>true</td><td>Stack spawners together</td></tr>
+                <tr><td><code>omnispawner.info</code></td><td>true</td><td>Open spawner info menu</td></tr>
+                <tr><td><code>omnispawner.retrieve</code></td><td>true</td><td>Retrieve spawners from stack</td></tr>
+            </tbody>
+        </table>
+
+    </main>
+</div>
+</body>
+</html>
