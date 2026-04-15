@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTooltips Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111;
+            color: #ccc;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        .wrap { max-width: 780px; margin: 0 auto; padding: 40px 24px 100px; }
+        h1 { font-size: 28px; font-weight: 700; color: #eee; margin-bottom: 6px; }
+        .subtitle { color: #777; margin-bottom: 40px; font-size: 13px; }
+        h2 {
+            font-size: 18px; font-weight: 600; color: #ddd;
+            margin: 48px 0 16px; padding-bottom: 8px;
+            border-bottom: 1px solid #222;
+        }
+        h3 { font-size: 15px; font-weight: 600; color: #bbb; margin: 28px 0 10px; }
+        p { margin-bottom: 12px; color: #999; }
+        a { color: #8b8bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { margin: 0 0 16px 20px; color: #999; }
+        li { margin-bottom: 4px; }
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            background: #1a1a1a;
+            color: #a8b2d1;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background: #0c0c0c;
+            border: 1px solid #1e1e1e;
+            border-radius: 6px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: #a8b2d1;
+        }
+        .note {
+            background: #161622;
+            border-left: 3px solid #555;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        th {
+            text-align: left;
+            padding: 8px 12px;
+            background: #161616;
+            color: #888;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #222;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #1a1a1a;
+            color: #999;
+        }
+        .toc { margin-bottom: 40px; }
+        .toc a { display: block; padding: 3px 0; color: #777; font-size: 13px; }
+        .toc a:hover { color: #ccc; }
+        hr { border: none; border-top: 1px solid #1e1e1e; margin: 40px 0; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>OmniTooltips</h1>
+<p class="subtitle">Multi-page tooltip system for MMOItems. Each item can have multiple tooltip pages with different stats, lore, abilities, and lore-format layouts.</p>
+
+<div class="toc">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#setup">Setup</a>
+    <a href="#page-yaml">Page YAML Config</a>
+    <a href="#per-page-fields">Per-Page Fields</a>
+    <a href="#lore-format">Per-Page Lore Format</a>
+    <a href="#full-example">Full Example</a>
+    <a href="#templates">Templates & Type Defaults</a>
+    <a href="#commands">Commands</a>
+</div>
+
+<hr>
+
+<!-- HOW IT WORKS -->
+<h2 id="how-it-works">How It Works</h2>
+<p>You define <code>page-1:</code>, <code>page-2:</code>, etc. sections inside your MMOItems item YAML. Each page lists which stats to display. Stats from all pages are merged into <code>base:</code> automatically — they always work regardless of which page is shown.</p>
+<p>Players cycle pages with <b>Shift + Right-Click</b> in inventory. Items always start on page 1 when given or picked up.</p>
+
+<hr>
+
+<!-- SETUP -->
+<h2 id="setup">Setup</h2>
+<ol>
+    <li>Drop <code>OmniTooltips.jar</code> into <code>plugins/</code></li>
+    <li>Requires Paper 1.21+, MMOItems 6.10+, MythicLib 1.7+</li>
+    <li>Start server — config generates automatically</li>
+    <li>Add page sections to your item YAML files in <code>plugins/MMOItems/item/</code></li>
+</ol>
+
+<hr>
+
+<!-- PAGE YAML -->
+<h2 id="page-yaml">Page YAML Config</h2>
+<p>Add <code>page-N:</code> sections to any item in <code>plugins/MMOItems/item/SWORD.yml</code> (or any type).</p>
+
+<pre>MY_SWORD:
+  base:
+    material: GOLDEN_SWORD
+    name: "&6Flame Blade"
+    tier: LEGENDARY
+
+  page-1:
+    attack-damage:
+      base: 85
+    critical-strike-chance:
+      base: 25
+    lore:
+      - "&7A blade of ancient fire."
+
+  page-2:
+    ability:
+      ability1:
+        type: SPARKLE
+        mode: RIGHT_CLICK
+    lore:
+      - "&7Skills and abilities."</pre>
+
+<div class="note">Each stat should only appear in ONE page. OmniTooltips merges all page stats into base so MMOItems can load them, but each stat only displays on its assigned page.</div>
+
+<hr>
+
+<!-- PER-PAGE FIELDS -->
+<h2 id="per-page-fields">Per-Page Fields</h2>
+<p>Each page supports all display toggles. By default everything is shown (same as base). Set any toggle to <code>false</code> to hide that section on a specific page.</p>
+
+<table>
+    <thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+        <tr><td><code>lore-format</code></td><td>String</td><td>default</td><td>Which lore-format file to use for this page</td></tr>
+        <tr><td><code>show-lore</code></td><td>Boolean</td><td>true</td><td>Show/hide the #lore# section</td></tr>
+        <tr><td><code>show-enchants</code></td><td>Boolean</td><td>true</td><td>Show/hide enchantments</td></tr>
+        <tr><td><code>show-tier</code></td><td>Boolean</td><td>true</td><td>Show/hide tier line</td></tr>
+        <tr><td><code>show-set-bonus</code></td><td>Boolean</td><td>true</td><td>Show/hide set bonus</td></tr>
+        <tr><td><code>show-upgrade</code></td><td>Boolean</td><td>true</td><td>Show/hide upgrade info</td></tr>
+        <tr><td><code>show-required-level</code></td><td>Boolean</td><td>true</td><td>Show/hide required level</td></tr>
+        <tr><td><code>show-item-level</code></td><td>Boolean</td><td>true</td><td>Show/hide item level</td></tr>
+        <tr><td><code>show-durability</code></td><td>Boolean</td><td>true</td><td>Show/hide durability</td></tr>
+        <tr><td><code>show-item-restriction</code></td><td>Boolean</td><td>true</td><td>Show/hide item type restriction</td></tr>
+        <tr><td><code>show-permission</code></td><td>Boolean</td><td>true</td><td>Show/hide permission requirement</td></tr>
+        <tr><td><code>show-displayed-type</code></td><td>Boolean</td><td>true</td><td>Show/hide displayed type</td></tr>
+        <tr><td><code>item-name-override</code></td><td>String</td><td>-</td><td>Override the item display name on this page</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- LORE FORMAT -->
+<h2 id="lore-format">Per-Page Lore Format</h2>
+<p>Each page can use a different lore-format file. This controls the layout order of stats, lore, tier, etc. in the tooltip.</p>
+
+<h3>Creating a custom format</h3>
+<p>Create a new <code>.yml</code> file in <code>plugins/MMOItems/language/lore-format/</code>:</p>
+
+<pre># plugins/MMOItems/language/lore-format/minimal.yml
+lore-format:
+  - '#item-name#'
+  - ''
+  - '#lore#'
+  - ''
+  - '#page-indicator#'</pre>
+
+<h3>Using it in a page</h3>
+<pre>page-2:
+  lore-format: minimal
+  ability:
+    ability1:
+      type: SPARKLE
+      mode: RIGHT_CLICK</pre>
+
+<p>The format name is the filename without <code>.yml</code>. The default format (<code>lore-format.yml</code>) is named <code>default</code>.</p>
+
+<hr>
+
+<!-- FULL EXAMPLE -->
+<h2 id="full-example">Full Example</h2>
+<p>A 3-page sword with different formats, toggles, and name overrides per page:</p>
+
+<pre># plugins/MMOItems/item/SWORD.yml
+DAWNBREAKER_BLADE:
+  base:
+    material: GOLDEN_SWORD
+    name: "&6&lDawnbreaker Blade"
+    tier: LEGENDARY
+    custom-model-data: 7001
+    unbreakable: true
+    hide-enchants: true
+    enchants:
+      sharpness: 5
+      fire-aspect: 2
+    required-level: 30
+
+  # Page 1 — Combat stats, default format, everything visible
+  page-1:
+    lore-format: default
+    show-tier: true
+    show-enchants: true
+    show-required-level: true
+    attack-damage:
+      base: 85
+      scale: 3.5
+    critical-strike-chance:
+      base: 25
+    critical-strike-power:
+      base: 150
+    max-health:
+      base: 40
+    lore:
+      - "&7Forged in the first light of dawn."
+
+  # Page 2 — Gems, different format, hide tier and enchants
+  page-2:
+    lore-format: minimal
+    show-tier: false
+    show-enchants: false
+    show-upgrade: false
+    show-required-level: false
+    item-name-override: "&6&lDawnbreaker Blade &7(Gems)"
+    attack-speed:
+      base: 1.4
+    armor:
+      base: 5
+    gem-sockets:
+      - "Offensive"
+      - "Offensive"
+      - "Defensive"
+    lore:
+      - "&7Socket loadout page."
+
+  # Page 3 — Abilities only, clean layout
+  page-3:
+    lore-format: default
+    show-tier: false
+    show-enchants: false
+    show-set-bonus: false
+    show-upgrade: false
+    show-required-level: false
+    show-item-level: false
+    show-durability: false
+    show-displayed-type: false
+    item-name-override: "&d&lDawnbreaker Blade &7(Skills)"
+    ability:
+      ability1:
+        type: SPARKLE
+        mode: RIGHT_CLICK
+        cooldown: 8
+        mana: 25
+        damage: 120
+      ability2:
+        type: FIRE_METEOR
+        mode: SHIFT_RIGHT_CLICK
+        cooldown: 15
+        mana: 60
+        damage: 250
+    lore:
+      - "&7Active abilities."</pre>
+
+<hr>
+
+<!-- TEMPLATES -->
+<h2 id="templates">Templates & Type Defaults</h2>
+<p>Instead of defining pages per-item, you can create templates in <code>config.yml</code> and assign them to item types.</p>
+
+<h3>Template definition</h3>
+<pre># In config.yml
+templates:
+  combat:
+    name: "Combat"
+    lore-format: default
+    stats:
+      - ATTACK_DAMAGE
+      - ATTACK_SPEED
+      - CRITICAL_STRIKE_CHANCE
+    skills: ["*"]
+    lore: true
+
+  full-weapon:
+    pages:
+      - combat
+      - story</pre>
+
+<h3>Type defaults</h3>
+<p>All items of a given type will use the specified template automatically:</p>
+<pre>type-defaults:
+  SWORD: full-weapon
+  BOW: full-weapon
+  ARMOR: full-armor</pre>
+
+<p>Items with an explicit <code>TOOLTIP_PAGES</code> stat override their type default.</p>
+
+<hr>
+
+<!-- COMMANDS -->
+<h2 id="commands">Commands</h2>
+<p>Permission: <code>omnitooltips.admin</code> — Alias: <code>/ott</code></p>
+
+<table>
+    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+    <tbody>
+        <tr><td><code>/ott reload</code></td><td>Reload all config, templates, and lore-formats</td></tr>
+        <tr><td><code>/ott setpage &lt;player&gt; &lt;slot&gt; &lt;page&gt;</code></td><td>Force set a specific page on an item</td></tr>
+        <tr><td><code>/ott preview &lt;template&gt; [page]</code></td><td>Preview a template's page list</td></tr>
+        <tr><td><code>/ott info [slot]</code></td><td>Debug info for the held or specified item</td></tr>
+        <tr><td><code>/ott templates</code></td><td>List all loaded templates</td></tr>
+    </tbody>
+</table>
+
+</div>
+</body>
+</html>
