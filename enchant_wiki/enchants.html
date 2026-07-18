@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enchant System — OmniEnchant Wiki</title>
+<title>Enchant System â€” OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -43,23 +43,23 @@
   <div class="config-block">
     <div class="config-header"><span class="config-file">Directory Structure</span></div>
     <pre class="code-block"><span class="c">plugins/OmniEnchant/</span>
-├── config.yml                <span class="c"># General settings</span>
-├── enchant.yml               <span class="c"># Display &amp; rarity config</span>
-├── settings/
-│   ├── application.yml       <span class="c"># Drag-drop, success/failure rate</span>
-│   ├── display.yml           <span class="c"># Rarity colors, display mode</span>
-│   ├── dust.yml              <span class="c"># Lucky Dust config</span>
-│   ├── enchant-browser.yml   <span class="c"># Enchant Browser GUI</span>
-│   ├── enchant-table.yml     <span class="c"># Custom Enchant Table</span>
-│   ├── extraction.yml        <span class="c"># Extraction Scroll config</span>
-│   ├── fusion.yml            <span class="c"># Fusion recipes</span>
-│   ├── tier-shop.yml         <span class="c"># Tier Shop GUI</span>
-│   └── vanilla-enchants.yml  <span class="c"># Vanilla enchant overrides</span>
-└── enchants/
-    ├── aegis.yml             <span class="c"># Each file = 1 enchant</span>
-    ├── divine.yml
-    ├── frenzy.yml
-    └── ...</pre>
+â”œâ”€â”€ config.yml                <span class="c"># General settings</span>
+â”œâ”€â”€ enchant.yml               <span class="c"># Display &amp; rarity config</span>
+â”œâ”€â”€ settings/
+â”‚   â”œâ”€â”€ application.yml       <span class="c"># Drag-drop, success/failure rate</span>
+â”‚   â”œâ”€â”€ display.yml           <span class="c"># Rarity colors, display mode</span>
+â”‚   â”œâ”€â”€ dust.yml              <span class="c"># Lucky Dust config</span>
+â”‚   â”œâ”€â”€ enchant-browser.yml   <span class="c"># Enchant Browser GUI</span>
+â”‚   â”œâ”€â”€ enchant-table.yml     <span class="c"># Custom Enchant Table</span>
+â”‚   â”œâ”€â”€ extraction.yml        <span class="c"># Extraction Scroll config</span>
+â”‚   â”œâ”€â”€ fusion.yml            <span class="c"># Fusion recipes</span>
+â”‚   â”œâ”€â”€ tier-shop.yml         <span class="c"># Tier Shop GUI</span>
+â”‚   â””â”€â”€ vanilla-enchants.yml  <span class="c"># Vanilla enchant overrides</span>
+â””â”€â”€ enchants/
+    â”œâ”€â”€ aegis.yml             <span class="c"># Each file = 1 enchant</span>
+    â”œâ”€â”€ divine.yml
+    â”œâ”€â”€ frenzy.yml
+    â””â”€â”€ ...</pre>
   </div>
 </section>
 
@@ -148,8 +148,8 @@
 
 <!-- ABILITIES -->
 <section class="section" id="abilities">
-  <h2 class="section-title">Abilities &mdash; MythicLib Skills</h2>
-  <p class="section-desc">Attach MythicLib skills to enchants with configurable modifiers.</p>
+  <h2 class="section-title">Abilities &mdash; MythicMobs Runtime</h2>
+  <p class="section-desc">Attach MythicMobs mechanics to enchants with formula modifiers and item-aware RPG context.</p>
   <div class="config-block">
     <div class="config-header"><span class="config-file">Example: Divine Heal Ability</span></div>
     <pre class="code-block"><span class="k">ability:</span>
@@ -164,7 +164,37 @@
   </div>
   <div class="info-box">
     <div class="info-icon">i</div>
-    <p><strong>type</strong> is the MythicLib SkillHandler ID: <code>FIREBALL</code>, <code>SPARKLE</code>, <code>HEAL</code>, <code>EARTH_SPIKE</code>, <code>FIRE_METEOR</code>, <code>ARCANE_HAIL</code>, <code>FREEZING_CURSE</code>, <code>POWER_MARK</code>, <code>SHULKER_MISSILE</code>...</p>
+    <p><strong>type</strong> is a MythicMobs mechanic line root, for example <code>HEAL</code>, <code>LIGHTNING</code>, <code>IGNITE</code>, or a mechanic supplied by an installed MythicMobs addon.</p>
+  </div>
+
+  <h3 class="subsection-title">RPG Skill Context</h3>
+  <p>Every ability is dispatched with the actual caster, target, equipped item, and equipment slot. MythicMobs mechanics can read the following variable registry keys:</p>
+  <div class="perm-table-wrap">
+    <table class="perm-table">
+      <thead><tr><th>Key</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>omi_enchant_id</code></td><td>Stable OmniEnchant ID</td></tr>
+        <tr><td><code>omi_enchant_name</code>, <code>omi_enchant_rarity</code></td><td>Configured display data</td></tr>
+        <tr><td><code>omi_enchant_level</code>, <code>omi_enchant_max_level</code></td><td>Current and maximum enchant level</td></tr>
+        <tr><td><code>omi_slot</code>, <code>omi_trigger</code></td><td>Equipment slot and runtime trigger</td></tr>
+        <tr><td><code>omi_damage</code>, <code>omi_final_damage</code></td><td>Bukkit damage before and after event modifiers</td></tr>
+        <tr><td><code>omi_item</code>, <code>omi_target</code></td><td>Metadata objects for compatible custom mechanics</td></tr>
+        <tr><td><code>omi_projectile</code>, <code>omi_projectile_id</code></td><td>Launch projectile object and opaque correlation id during projectile casts</td></tr>
+        <tr><td><code>omi_lifecycle_action</code></td><td><code>APPLY</code> or <code>REMOVE</code> during a committed item lifecycle cast</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>Combat modes: <code>ATTACK</code>/<code>ON_HIT</code>, <code>WHEN_HIT</code>/<code>ON_DEFEND</code>/<code>DAMAGED</code>/<code>DAMAGED_BY_ENTITY</code>, and <code>KILL</code>/<code>ON_KILL</code>. Projectile modes: <code>SHOOT</code>/<code>SHOOT_BOW</code> and <code>PROJECTILE_HIT</code>/<code>IMPACT</code>. Lifecycle modes: <code>APPLY</code>/<code>ENCHANT_APPLY</code>, <code>REMOVE</code>/<code>ENCHANT_REMOVE</code>, <code>EQUIP</code>/<code>ON_EQUIP</code>, and <code>UNEQUIP</code>/<code>ON_UNEQUIP</code>. If MythicMobs is unavailable, OmniEnchant uses its native fallback where one exists.</p>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>Projectile casts provide <code>@omiShotProjectile</code>, <code>@omiProjectileOrigin</code>, and <code>@omiProjectileDestination</code>. They are intentionally empty outside an OmniEnchant projectile cast. Impact keeps the source item/enchant snapshot from launch, even after a weapon swap.</p>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>For production diagnostics, enable <code>debug-skill-trace: true</code> in <code>config.yml</code>, reload, then run <code>/sle debug skill [count]</code>. The bounded trace reports a redacted mechanic root and dispatch outcome without retaining NBT, mechanic parameters, player identity, or exception text.</p>
   </div>
 </section>
 
@@ -190,7 +220,7 @@
     <tr><td><code>MULTIPLY_DROPS</code></td><td><code>BREAK_BLOCK</code></td><td>Multiply block drops</td></tr>
     <tr><td><code>SMELTING</code></td><td><code>BREAK_BLOCK</code></td><td>Auto-smelt ore drops</td></tr>
     <tr><td><code>AUTO_REPLANT</code></td><td><code>BREAK_BLOCK</code></td><td>Auto-replant crops</td></tr>
-    <tr><td><code>EXPLOSIVE</code></td><td><code>BREAK_BLOCK</code></td><td>Mine in a 3×3 area</td></tr>
+    <tr><td><code>EXPLOSIVE</code></td><td><code>BREAK_BLOCK</code></td><td>Mine in a 3Ã—3 area</td></tr>
     <tr><td><code>LIFESTEAL</code></td><td><code>ATTACK</code></td><td>Heal on each hit</td></tr>
     <tr><td><code>CRITICAL_BOOST</code></td><td><code>ATTACK</code></td><td>Random crit buff</td></tr>
     <tr><td><code>THORNS</code></td><td><code>DEFEND</code></td><td>Reflect damage</td></tr>
@@ -248,7 +278,7 @@
     <thead><tr><th>Placeholder</th><th>Source</th><th>Description</th></tr></thead>
     <tbody>
     <tr><td><code>{KEY}</code></td><td>stat/ability</td><td>Formula value at current level</td></tr>
-    <tr><td><code>{DUR}</code></td><td>conditional stat/trigger</td><td>Duration (seconds, auto ÷20)</td></tr>
+    <tr><td><code>{DUR}</code></td><td>conditional stat/trigger</td><td>Duration (seconds, auto Ã·20)</td></tr>
     <tr><td><code>{CD}</code></td><td>conditional stat/trigger</td><td>Cooldown (seconds)</td></tr>
     <tr><td><code>{CHANCE}</code></td><td>conditional stat/ability</td><td>Activation chance (%)</td></tr>
     <tr><td><code>{CHANCE_ENCHANT}</code></td><td>base field</td><td>Success rate</td></tr>
@@ -263,7 +293,7 @@
   <h2 class="section-title">Full Example &mdash; Complete Enchant</h2>
   <div class="config-block">
     <div class="config-header"><span class="config-file">enchants/frenzy.yml</span><span class="config-desc">Trade-off enchant</span></div>
-    <pre class="code-block"><span class="c"># Frenzy — High damage at the cost of defense</span>
+    <pre class="code-block"><span class="c"># Frenzy â€” High damage at the cost of defense</span>
 <span class="k">name:</span> <span class="s">"&amp;cFrenzy"</span>
 <span class="k">lore:</span>
   - <span class="s">"&amp;8Increases attack by &amp;a{AD_PCT}% &amp;8and crit"</span>
@@ -286,7 +316,7 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
 document.getElementById('mobileToggle').addEventListener('click', function() {

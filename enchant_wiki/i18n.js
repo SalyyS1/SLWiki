@@ -1,1 +1,1 @@
-// i18n.js removed — wiki is now English-only
+// deleted — wiki is English only, no i18n needed

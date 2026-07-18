@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniEnchant Wiki — v3.0.0</title>
-  <meta name="description" content="OmniEnchant — custom enchantment system for MMOItems. Rarity tiers, stat formulas, abilities, custom mechanics, fusion, extraction, soul tracker, set bonuses and 52+ sample enchants.">
+  <title>OmniEnchant Wiki â€” v3.1.1</title>
+  <meta name="description" content="OmniEnchant â€” custom enchantment system for MMOItems. Rarity tiers, stat formulas, abilities, custom mechanics, fusion, extraction, soul tracker, set bonuses and 52+ sample enchants.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
   <div class="sidebar-header">
     <div class="logo">
       <span class="logo-icon">OE</span>
-      <div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div>
+      <div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div>
     </div>
   </div>
   <nav class="sidebar-nav">
@@ -53,7 +53,7 @@
         <div class="stat-card"><span class="stat-number">5</span><span class="stat-label">Rarity Tiers</span></div>
         <div class="stat-card"><span class="stat-number">12+</span><span class="stat-label">Custom Items</span></div>
         <div class="stat-card"><span class="stat-number">40+</span><span class="stat-label">Mechanics</span></div>
-        <div class="stat-card"><span class="stat-number">6</span><span class="stat-label">PAPI Holders</span></div>
+        <div class="stat-card"><span class="stat-number">9</span><span class="stat-label">PAPI Holders</span></div>
       </div>
       <div class="hero-deps">
         <span class="dep required">MMOItems &#9733;</span>
@@ -120,11 +120,11 @@
       </a>
       <a href="lore-format.html" class="arch-card" style="text-decoration:none;color:inherit">
         <h3>Lore Format</h3>
-        <p>How to configure #omnienchant# placeholder in MMOItems lore</p>
+        <p>How to configure #omnienchant# and #enchantslots# placeholders in MMOItems lore</p>
       </a>
       <a href="changelog.html" class="arch-card" style="text-decoration:none;color:inherit">
         <h3>Changelog</h3>
-        <p>Update history from v1.0.0 to v3.0.0</p>
+        <p>Update history from v1.0.0 to v3.1.1</p>
       </a>
     </div>
   </section>
@@ -163,7 +163,7 @@
       </details>
       <details class="faq-item">
         <summary>Where do enchant lore lines appear on items?</summary>
-        <p>By default at the top. Use <code>#omnienchant#</code> placeholder in your MMOItems lore format to control exact position. See the <a href="lore-format.html">Lore Format</a> page.</p>
+        <p>Use <code>#enchantslots#</code> for ordered MMOItems enchant slots. Legacy <code>#omnienchant#</code> still works for a single combined block. Existing items without the token must be rebuilt for exact placement. See the <a href="lore-format.html">Lore Format</a> page.</p>
       </details>
       <details class="faq-item">
         <summary>What changed from SLMMOEnchant to OmniEnchant?</summary>
@@ -174,7 +174,7 @@
 
   <div class="footer">
     <div class="footer-content">
-      <p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p>
+      <p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p>
       <p class="footer-tech">Kotlin &bull; Paper 1.21+ &bull; MMOItems &bull; MythicLib &bull; FoliaLib &bull; PlaceholderAPI</p>
     </div>
   </div>

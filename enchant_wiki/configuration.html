@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configuration — OmniEnchant Wiki</title>
+<title>Configuration â€” OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link active"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -44,8 +44,10 @@
     <div class="config-header"><span class="config-file">config.yml</span></div>
     <pre class="code-block"><span class="k">version:</span> <span class="v">1</span>                         <span class="c"># Do not edit (auto migration)</span>
 <span class="k">debug:</span> <span class="v">false</span>                        <span class="c"># Enable detailed logging (dev only)</span>
+<span class="k">debug-skill-trace:</span> <span class="v">false</span>            <span class="c"># Retain redacted Mythic skill dispatches</span>
+<span class="k">debug-skill-trace-capacity:</span> <span class="v">30</span>       <span class="c"># Bounded to 10-100 entries</span>
 <span class="k">book-material:</span> <span class="v">ENCHANTED_BOOK</span>       <span class="c"># Material used for enchant books</span>
-<span class="k">max-enchants-per-item:</span> <span class="v">5</span>            <span class="c"># Maximum enchants per item (base)</span>
+<span class="k">max-enchants-per-item:</span> <span class="v">5</span>            <span class="c"># Fallback OmniEnchant slots when ENCHANTSLOTS is absent</span>
 <span class="k">inventory-interval:</span> <span class="v">200</span>            <span class="c"># Ticks between inventory scans (200=10s)</span>
 <span class="k">economy-provider:</span> <span class="v">vault</span>            <span class="c"># vault | playerpoints</span>
 
@@ -57,7 +59,7 @@
 <span class="c"># Activity/Achievement system</span>
 <span class="k">activity-enabled:</span> <span class="v">false</span>
 
-<span class="c"># Lore placeholder — see Lore Format page for details</span>
+<span class="c"># Lore placeholder â€” see Lore Format page for details</span>
 <span class="k">lore-placeholder:</span> <span class="s">"#omnienchant#"</span>
 <span class="k">lore-placeholder-aliases:</span>
   - <span class="s">"#slenchant#"</span>
@@ -81,7 +83,11 @@
   </div>
   <div class="info-box">
     <div class="info-icon">!</div>
-    <p><code>max-enchants-per-item</code> is the BASE value. <strong>Slot Increaser</strong> items add extra slots on top. E.g.: base=5, extra=3 &rarr; max=8.</p>
+    <p><code>max-enchants-per-item</code> is now the fallback slot count for items without MMOItems <code>ENCHANTSLOTS</code>. For new MMOItems items, prefer the stat path: <code>enchantslots: ["1","2","3"]</code> plus <code>#enchantslots#</code> in lore-format.</p>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>When skill tracing is enabled, use <code>/sle debug skill [count]</code> in-game or from console. Trace entries keep only the mechanic root and outcome; NBT, mechanic parameters, player identity, and exception messages are never retained.</p>
   </div>
 </section>
 
@@ -95,7 +101,7 @@
   <span class="k">enabled:</span> <span class="v">true</span>                    <span class="c"># Enable/disable drag-drop enchanting</span>
   <span class="k">base-success-rate:</span> <span class="v">85</span>            <span class="c"># Default success % rate</span>
   <span class="k">base-failure-rate:</span> <span class="v">10</span>            <span class="c"># % chance to destroy item on failure</span>
-  <span class="k">allow-upgrade-on-apply:</span> <span class="v">true</span>     <span class="c"># Same enchant+level → auto upgrade</span>
+  <span class="k">allow-upgrade-on-apply:</span> <span class="v">true</span>     <span class="c"># Same enchant+level â†’ auto upgrade</span>
   <span class="k">unique-activation:</span> <span class="v">true</span>         <span class="c"># Keep only highest level for duplicates</span>
 
 <span class="k">extra-slot-limit:</span> <span class="v">5</span>               <span class="c"># Max extra slots from Slot Increaser</span>
@@ -112,7 +118,14 @@
   <h2 class="section-title">settings/display.yml &mdash; Rarity &amp; Colors</h2>
   <div class="config-block">
     <div class="config-header"><span class="config-file">settings/display.yml</span></div>
-    <pre class="code-block"><span class="k">chars-per-line:</span> <span class="v">40</span>                <span class="c"># Compact mode: auto line wrap</span>
+    <pre class="code-block"><span class="k">chars-per-line:</span> <span class="v">40</span>                <span class="c"># Compact mode: show all enchants and auto-wrap</span>
+<span class="k">slot-name-format:</span> <span class="s">"&amp;eEnchant Slot {slot}: {rarity_color}{name} {level_roman}"</span>
+<span class="k">slot-empty-format:</span> <span class="s">"&amp;8Enchant Slot {slot}: Empty"</span>
+<span class="k">slot-desc-format:</span>
+  - <span class="s">"&amp;7| {desc}"</span>
+<span class="k">show-empty-slots:</span> <span class="v">true</span>
+<span class="k">show-slot-counter:</span> <span class="v">true</span>
+<span class="k">slot-counter-format:</span> <span class="s">"&amp;bEnchant Slot: &amp;a{used}&amp;7/&amp;f{max}"</span>
 <span class="k">rarities:</span>
   <span class="k">COMMON:</span>      { <span class="k">color:</span> <span class="s">"&amp;7"</span>, <span class="k">display-name:</span> <span class="s">"Common"</span> }
   <span class="k">UNCOMMON:</span>    { <span class="k">color:</span> <span class="s">"&amp;a"</span>, <span class="k">display-name:</span> <span class="s">"Uncommon"</span> }
@@ -133,8 +146,11 @@
 <span class="k">orb-material:</span> <span class="v">MAGMA_CREAM</span>
 
 <span class="k">gui:</span>
-  <span class="k">title:</span> <span class="s">"&amp;5&amp;l✦ Enchant Shop"</span>
+  <span class="k">title:</span> <span class="s">"&amp;5&amp;lâœ¦ Enchant Shop"</span>
   <span class="k">rows:</span> <span class="v">3</span>
+  <span class="k">filler-material:</span> <span class="v">BLACK_STAINED_GLASS_PANE</span>
+  <span class="k">filler-name:</span> <span class="s">" "</span>
+  <span class="k">recipe-start-slot:</span> <span class="v">0</span>
   <span class="k">background:</span>
     <span class="k">slots:</span> <span class="v">[0,1,2,...,26]</span>
     <span class="k">material:</span> <span class="v">BLACK_STAINED_GLASS_PANE</span>
@@ -143,7 +159,7 @@
 <span class="k">tiers:</span>
   <span class="k">COMMON:</span>
     <span class="k">slot:</span> <span class="v">10</span>
-    <span class="k">display-name:</span> <span class="s">"&amp;f✦ Common Orb"</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;fâœ¦ Common Orb"</span>
     <span class="k">material:</span> <span class="v">WHITE_DYE</span>
     <span class="k">price:</span> <span class="v">10</span>
     <span class="k">description:</span>
@@ -152,7 +168,7 @@
       - <span class="s">"&amp;eClick to purchase!"</span>
   <span class="k">LEGENDARY:</span>
     <span class="k">slot:</span> <span class="v">16</span>
-    <span class="k">display-name:</span> <span class="s">"&amp;6✦ Legendary Orb"</span>
+    <span class="k">display-name:</span> <span class="s">"&amp;6âœ¦ Legendary Orb"</span>
     <span class="k">material:</span> <span class="v">ORANGE_DYE</span>
     <span class="k">price:</span> <span class="v">75</span></pre>
   </div>
@@ -170,7 +186,7 @@
   <span class="k">list:</span> <span class="v">[]</span>
 <span class="k">enchants:</span>
   <span class="k">aegis:</span>
-    <span class="k">weight:</span> <span class="v">2.0</span>                   <span class="c"># 2× appearance rate</span>
+    <span class="k">weight:</span> <span class="v">2.0</span>                   <span class="c"># 2Ã— appearance rate</span>
     <span class="k">min-level:</span> <span class="v">1</span>
     <span class="k">max-level:</span> <span class="v">2</span>
   <span class="k">frenzy:</span>
@@ -198,18 +214,20 @@
     <div class="config-header"><span class="config-file">settings/fusion.yml</span></div>
     <pre class="code-block"><span class="k">enabled:</span> <span class="v">true</span>
 <span class="k">gui:</span>
-  <span class="k">title:</span> <span class="s">"&amp;d&amp;l✦ Enchant Fusion"</span>
+  <span class="k">title:</span> <span class="s">"&amp;d&amp;lâœ¦ Enchant Fusion"</span>
   <span class="k">rows:</span> <span class="v">3</span>
 <span class="k">recipes:</span>
-  <span class="k">strength_2:</span>
-    <span class="k">result:</span>
-      <span class="k">enchant:</span> <span class="v">strength</span>
-      <span class="k">level:</span> <span class="v">2</span>
-    <span class="k">ingredients:</span>
-      - <span class="k">enchant:</span> <span class="v">strength</span>
-        <span class="k">level:</span> <span class="v">1</span>
-        <span class="k">amount:</span> <span class="v">3</span></pre>
+  <span class="k">fire_upgrade:</span>
+    <span class="k">input:</span>
+      - <span class="k">enchant:</span> <span class="v">fire_aspect</span>
+        <span class="k">level:</span> <span class="v">3</span>
+      - <span class="k">enchant:</span> <span class="v">fire_aspect</span>
+        <span class="k">level:</span> <span class="v">3</span>
+    <span class="k">output:</span>
+      <span class="k">enchant:</span> <span class="v">inferno</span>
+      <span class="k">level:</span> <span class="v">1</span></pre>
   </div>
+  <p class="section-desc">List duplicate inputs multiple times to require multiple matching books. The Fusion GUI aggregates them and shows owned/required count.</p>
 </section>
 
 <!-- vanilla-enchants.yml -->
@@ -269,7 +287,7 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
 document.getElementById('mobileToggle').addEventListener('click', function() {

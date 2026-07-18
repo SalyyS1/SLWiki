@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Features — OmniEnchant Wiki</title>
+<title>Features â€” OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -56,7 +56,7 @@
     <div class="info-icon">i</div>
     <p><strong>Config:</strong> <code>settings/application.yml</code> &rarr; <code>drag-drop</code> section<br>
     <strong>Toggle:</strong> <code>drag-drop.enabled: true/false</code><br>
-    <strong>Slot limit:</strong> <code>config.yml &rarr; max-enchants-per-item</code> + extra slots from Slot Increaser</p>
+    <strong>Slot limit:</strong> MMOItems <code>ENCHANTSLOTS</code> stat + extra slots from Slot Increaser; <code>max-enchants-per-item</code> is the fallback for items without the stat.</p>
   </div>
 </section>
 
@@ -150,7 +150,7 @@
   <div class="feature-box">
     <h4>How it works</h4>
     <ul class="step-list">
-      <li>Place enchant books in the Dust Crafting GUI &rarr; converted to <strong>Lucky Dust</strong></li>
+      <li>Place enchant books in the Dust Crafting GUI &rarr; each craft consumes <strong>1 book</strong> and creates <strong>Lucky Dust</strong></li>
       <li>Higher tier books give more dust (see table below)</li>
       <li>Drag Lucky Dust onto an enchant book &rarr; <strong>increases success rate</strong></li>
     </ul>
@@ -209,19 +209,21 @@
   <p class="section-desc">Combine multiple enchant books to create a more powerful enchant. Open: <code>/sle fusion</code> &bull; Config: <code>settings/fusion.yml</code></p>
 
   <div class="feature-box">
-    <h4>Example: Strength I &times;3 &rarr; Strength II</h4>
+    <h4>Example: Fire Aspect III &times;2 &rarr; Inferno I</h4>
     <div class="config-block" style="margin-top:0.5rem">
       <div class="config-header"><span class="config-file">settings/fusion.yml</span></div>
       <pre class="code-block"><span class="k">recipes:</span>
-  <span class="k">strength_2:</span>
-    <span class="k">result:</span>
-      <span class="k">enchant:</span> <span class="v">strength</span>
-      <span class="k">level:</span> <span class="v">2</span>
-    <span class="k">ingredients:</span>
-      - <span class="k">enchant:</span> <span class="v">strength</span>
-        <span class="k">level:</span> <span class="v">1</span>
-        <span class="k">amount:</span> <span class="v">3</span></pre>
+  <span class="k">fire_upgrade:</span>
+    <span class="k">input:</span>
+      - <span class="k">enchant:</span> <span class="v">fire_aspect</span>
+        <span class="k">level:</span> <span class="v">3</span>
+      - <span class="k">enchant:</span> <span class="v">fire_aspect</span>
+        <span class="k">level:</span> <span class="v">3</span>
+    <span class="k">output:</span>
+      <span class="k">enchant:</span> <span class="v">inferno</span>
+      <span class="k">level:</span> <span class="v">1</span></pre>
     </div>
+    <p class="section-desc" style="margin-top:0.75rem">Duplicate inputs are counted by quantity. If the same book appears twice, the GUI shows owned/required count and blocks fusion until both books exist.</p>
   </div>
 </section>
 
@@ -349,7 +351,7 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
 document.getElementById('mobileToggle').addEventListener('click', function() {

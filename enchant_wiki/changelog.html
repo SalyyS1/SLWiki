@@ -19,7 +19,7 @@
     <div class="sidebar-header">
       <div class="logo"><span class="logo-icon">OE</span>
         <div>
-          <h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span>
+          <h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
       <div class="hero-content">
         <span class="hero-badge">Update History</span>
         <h1 class="hero-title">Changelog</h1>
-        <p class="hero-subtitle">Complete version history for OmniEnchant (formerly SLMMOEnchant) &mdash; from v1.0.0 to v3.0.0.</p>
+        <p class="hero-subtitle">Complete version history for OmniEnchant (formerly SLMMOEnchant) &mdash; from v1.0.0 to v3.1.1.</p>
       </div>
     </section>
 
@@ -51,6 +51,17 @@
       <div class="cl-timeline">
         <h3>Version Timeline</h3>
         <div class="cl-timeline-grid">
+          <a href="#v3-1-1" class="cl-timeline-item"><strong>v3.1.1</strong> &mdash; Mythic Skill Diagnostics</a>
+          <a href="#v3-1-0" class="cl-timeline-item"><strong>v3.1.0</strong> &mdash; Equipment Lifecycle Skills</a>
+          <a href="#v3-0-9" class="cl-timeline-item"><strong>v3.0.9</strong> &mdash; Projectile and Lifecycle Skills</a>
+          <a href="#v3-0-8" class="cl-timeline-item"><strong>v3.0.8</strong> &mdash; MythicMobs RPG Skill Runtime</a>
+          <a href="#v3-0-7" class="cl-timeline-item"><strong>v3.0.7</strong> &mdash; Slot Position Ownership, Orphan Cleanup</a>
+          <a href="#v3-0-6" class="cl-timeline-item"><strong>v3.0.6</strong> &mdash; Lore Ownership, Marker Cleanup, Slot Counter Refresh</a>
+          <a href="#v3-0-5" class="cl-timeline-item"><strong>v3.0.5</strong> &mdash; Slot Limit Clamp, Lore Placement, Full Compact Display</a>
+          <a href="#v3-0-4" class="cl-timeline-item"><strong>v3.0.4</strong> &mdash; MMOItems Enchant Slots, Slot Lore, Compact Command</a>
+          <a href="#v3-0-3" class="cl-timeline-item"><strong>v3.0.3</strong> &mdash; Command Registration, Browser Alias, Permission Defaults</a>
+          <a href="#v3-0-2" class="cl-timeline-item"><strong>v3.0.2</strong> &mdash; Fusion Counts, Dust Stack Safety, Editor Guard</a>
+          <a href="#v3-0-1" class="cl-timeline-item"><strong>v3.0.1</strong> &mdash; MMOItems Lore Format Fix, Folia Hardening</a>
           <a href="#v2-0-0" class="cl-timeline-item"><strong>v3.0.0</strong> &mdash; OmniEnchant Rebrand, Lore Orchestrator, External Adapters</a>
           <a href="#v1-2-7" class="cl-timeline-item"><strong>v1.2.7</strong> &mdash; Anvil Merge, Dust GUI, Rarity Fix</a>
           <a href="#v1-2-6" class="cl-timeline-item"><strong>v1.2.6</strong> &mdash; Extraction Scroll, Enchant Preview</a>
@@ -78,9 +89,222 @@
         </div>
       </div>
 
+      <!-- ==================== v3.1.1 ==================== -->
+      <div class="cl-entry" id="v3-1-1">
+        <div class="cl-header"><span class="cl-ver">v3.1.1</span><span class="cl-date">2026-07-19</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Mythic Skill Diagnostics</h4>
+          <ul>
+            <li>Added opt-in, bounded skill dispatch tracing through <code>debug-skill-trace</code> and <code>debug-skill-trace-capacity</code>.</li>
+            <li><code>/sle debug skill [count]</code> now shows recent MythicMobs dispatch results from either in-game chat or server console.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Safe Operational Data</h4>
+          <ul>
+            <li>Trace records expose only a mechanic root and concise outcome; they never retain item NBT, mechanic parameters, player identity, or exception messages.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.1.0 ==================== -->
+      <div class="cl-entry" id="v3-1-0">
+        <div class="cl-header"><span class="cl-ver">v3.1.0</span><span class="cl-date">2026-07-18</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Equipment Lifecycle Skills</h4>
+          <ul>
+            <li>Added <code>EQUIP</code>/<code>ON_EQUIP</code> and <code>UNEQUIP</code>/<code>ON_UNEQUIP</code> ability modes for all six player equipment slots.</li>
+            <li>Equipment transitions are coalesced after inventory transactions and are reconciled by the existing inventory scan for compatibility with external inventory plugins.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Equipment Proc Integrity</h4>
+          <ul>
+            <li>Upgrading or removing an enchant on the same MMOItem does not generate a false equipment transition.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.9 ==================== -->
+      <div class="cl-entry" id="v3-0-9">
+        <div class="cl-header"><span class="cl-ver">v3.0.9</span><span class="cl-date">2026-07-18</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Projectile and Lifecycle Runtime</h4>
+          <ul>
+            <li><code>SHOOT</code>/<code>SHOOT_BOW</code> and <code>PROJECTILE_HIT</code>/<code>IMPACT</code> abilities now preserve the launch item, enchant, level, slot, and origin through projectile impact.</li>
+            <li>Added <code>@omiShotProjectile</code>, <code>@omiProjectileOrigin</code>, and <code>@omiProjectileDestination</code> for MythicMobs projectile casts.</li>
+            <li>Committed apply/remove flows now support <code>APPLY</code>/<code>ENCHANT_APPLY</code> and <code>REMOVE</code>/<code>ENCHANT_REMOVE</code> abilities.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Source Integrity</h4>
+          <ul>
+            <li>Swapping a weapon after firing can no longer change which enchant executes at projectile impact.</li>
+            <li>Projectile correlations use bounded, opaque PDC ids with cleanup on hit, quit, shutdown, and expiry.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.8 ==================== -->
+      <div class="cl-entry" id="v3-0-8">
+        <div class="cl-header"><span class="cl-ver">v3.0.8</span><span class="cl-date">2026-07-18</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> MythicMobs RPG Skill Runtime</h4>
+          <ul>
+            <li>Enchant abilities now construct direct MythicMobs metadata with the real item, equipment slot, enchant ID and level, target, trigger, damage, and final damage.</li>
+            <li>Added the <code>omi_*</code> variable contract for RPG skill packs: enchant identity, level, rarity, slot, trigger, combat values, item, and target.</li>
+            <li>Mythic mechanic parsing is cached with a bounded cache and reset by <code>/sle reload</code> or plugin shutdown.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Ability Trigger Coverage</h4>
+          <ul>
+            <li><code>DAMAGED</code> and <code>DAMAGED_BY_ENTITY</code> armor abilities now execute.</li>
+            <li><code>KILL</code> and <code>ON_KILL</code> weapon abilities now execute with the killed entity as target.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.7 ==================== -->
+      <div class="cl-entry" id="v3-0-7">
+        <div class="cl-header"><span class="cl-ver">v3.0.7</span><span class="cl-date">2026-07-18</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Deterministic Slot Placement</h4>
+          <ul>
+            <li><code>ENCHANTSLOTS</code> now owns the exact position of <code>#enchantslots#</code>, even when a legacy <code>SLENCHANT</code> block appears earlier in the same MMOItems tooltip.</li>
+            <li>Lore refresh removes both marker types and preserves the slot-owned insertion point, preventing the remaining top-of-tooltip jump after a duplicate cleanup.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Orphaned Enchant Cleanup</h4>
+          <ul>
+            <li>Added <code>/sle cleanse</code> (alias: <code>/sle cleanseorphaned</code>) to remove only enchant IDs whose definitions were intentionally removed from configuration.</li>
+            <li>Cleanup is manual and admin-only; config reloads never delete player enchant data automatically.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.6 ==================== -->
+      <div class="cl-entry" id="v3-0-6">
+        <div class="cl-header"><span class="cl-ver">v3.0.6</span><span class="cl-date">2026-07-18</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> MMOItems Enchant Slot Ownership</h4>
+          <ul>
+            <li>Fixed the remaining duplicate lore path when <code>SLENCHANT</code> and <code>ENCHANTSLOTS</code> are both present on the same MMOItems item.</li>
+            <li>Legacy <code>SLENCHANT</code> preview lore is now written as a managed block and replaced by the slot-aware renderer after build.</li>
+            <li>Managed lore markers now use invisible zero-width sentinels, while old section-code marker blocks are still recognized and removed.</li>
+            <li>Refresh now scrubs stale unmarked OmniEnchant artifact lines, including old compact 2-enchant blocks and fallback <code>Enchant Slot: 0/5</code> sections.</li>
+            <li>Items with empty <code>ENCHANTSLOTS</code> now render the configured counter inside <code>#enchantslots#</code> immediately, for example <code>Enchant Slot: 0/3</code>.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Lore Repair</h4>
+          <ul>
+            <li>Lore repair now checks managed markers and slot models instead of guessing from the first enchant display name.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.5 ==================== -->
+      <div class="cl-entry" id="v3-0-5">
+        <div class="cl-header"><span class="cl-ver">v3.0.5</span><span class="cl-date">2026-07-05</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> MMOItems Enchant Slot Lore</h4>
+          <ul>
+            <li><code>#enchantslots#</code> no longer duplicates OmniEnchant lore at the top of MMOItems tooltips; the initial slot block is now managed and replaced in-place.</li>
+            <li>Legacy overfilled data is clamped to the effective slot list, so an item with 5 slots no longer renders or activates 24 custom enchants.</li>
+            <li>Runtime stat, effect, set bonus, mechanic, packet lore, tracker, extraction, anvil, and enchant-table paths now read the same slot-aware effective enchant map.</li>
+            <li>Compact lore renders every enchant and wraps by <code>chars-per-line</code> instead of truncating long lists.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Slot Counter Defaults</h4>
+          <ul>
+            <li><code>show-slot-counter</code> is enabled by default.</li>
+            <li>Default counter format is now <code>&amp;bEnchant Slot: &amp;a{used}&amp;7/&amp;f{max}</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.4 ==================== -->
+      <div class="cl-entry" id="v3-0-4">
+        <div class="cl-header"><span class="cl-ver">v3.0.4</span><span class="cl-date">2026-07-05</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> MMOItems Enchant Slots</h4>
+          <ul>
+            <li>Added native MMOItems <code>ENCHANTSLOTS</code> stat for ordered OmniEnchant slots.</li>
+            <li>Added <code>#enchantslots#</code> lore-format placement, matching MMOItems gem-slot style usage.</li>
+            <li>Added slot display formats in <code>settings/display.yml</code> for filled slots, empty slots, descriptions, and optional slot counter.</li>
+            <li>Added <code>/sle compact</code> and <code>/sle compress</code> to move filled slots upward after removals.</li>
+            <li>Added PlaceholderAPI slot counters: <code>%slenchant_slots_used%</code>, <code>%slenchant_slots_max%</code>, and <code>%slenchant_slots_empty%</code>.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Slot State Pipeline</h4>
+          <ul>
+            <li>Drag-drop, admin add/remove, enchant table, and anvil merge now share the ordered slot-state writer.</li>
+            <li>Removing an enchant leaves its slot empty until compacted instead of reshuffling lore unexpectedly.</li>
+            <li>Windows Gradle wrapper now exits cleanly in shells where <code>%OS%</code> is not defined.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.3 ==================== -->
+      <div class="cl-entry" id="v3-0-3">
+        <div class="cl-header"><span class="cl-ver">v3.0.3</span><span class="cl-date">2026-06-30</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Command UX</h4>
+          <ul>
+            <li><code>/sle browse</code> and <code>/sle browser</code> are now first-class Brigadier commands.</li>
+            <li><code>/sle shop</code>, <code>/sle dust</code>, <code>/sle version</code>, <code>/sle giverandom</code>, <code>/sle givescroll</code>, and no-arg admin commands now route through explicit Brigadier nodes.</li>
+            <li><code>/sle addenchant</code> and <code>/sle removeenchant</code> now match the wiki and use the shared NBT/lore update pipeline.</li>
+            <li><code>/sle version</code> reports plugin version, loaded enchant count, server version, and dependency status.</li>
+            <li>Player command permissions now match wiki defaults for info, browser, shop, dust, and activity commands.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.2 ==================== -->
+      <div class="cl-entry" id="v3-0-2">
+        <div class="cl-header"><span class="cl-ver">v3.0.2</span><span class="cl-date">2026-06-30</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">IMPROVED</span> GUI Safety</h4>
+          <ul>
+            <li>Fusion GUI aggregates duplicate book inputs and shows owned/required counts.</li>
+            <li>Fusion consumes exact required quantities and blocks crafting when duplicate inputs are missing.</li>
+            <li>Dust Crafting consumes one enchant book per craft instead of an entire stacked input.</li>
+            <li>MMOItems enchant editor requires Shift-click before clearing all enchants.</li>
+            <li>Fusion GUI honors <code>filler-material</code>, <code>filler-name</code>, and <code>recipe-start-slot</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.0.1 ==================== -->
+      <div class="cl-entry" id="v3-0-1">
+        <div class="cl-header"><span class="cl-ver">v3.0.1</span><span class="cl-date">2026-06-30</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> MMOItems Lore Format</h4>
+          <ul>
+            <li><code>#omnienchant#</code> is now resolved through native MMOItems stat insertion during item build.</li>
+            <li>Disabled delayed post-build MMOItems lore rendering because it could lose the original template position and fall back to the top.</li>
+            <li>Existing items with a managed OmniEnchant block keep their block position; items created without a token must be rebuilt for exact MMOItems lore-format placement.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Runtime Stability</h4>
+          <ul>
+            <li>ProtocolLib packet lore rendering is optional at startup.</li>
+            <li>Folia/Paper scheduled task paths now route through the compatibility wrapper.</li>
+            <li>Activity data remains dirty until async saves succeed.</li>
+            <li>Fusion validates output and payment before consuming ingredient books.</li>
+            <li>Config migration preserves existing live files and only creates missing defaults.</li>
+          </ul>
+        </div>
+      </div>
+
       <!-- ==================== v3.0.0 ==================== -->
       <div class="cl-entry" id="v2-0-0">
-        <div class="cl-header"><span class="cl-ver">v3.0.0</span><span class="cl-date">2026-04-06</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-header"><span class="cl-ver">v3.0.0</span><span class="cl-date">2026-04-06</span></div>
         <div class="cl-section">
           <h4><span class="cl-tag cl-tag-changed">REBRANDING</span> Plugin Rename</h4>
           <ul>
@@ -915,7 +1139,7 @@
 
     <div class="footer">
       <div class="footer-content">
-        <p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p>
+      <p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p>
       </div>
     </div>
   </div>

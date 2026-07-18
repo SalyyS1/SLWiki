@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Items &amp; Systems — OmniEnchant Wiki</title>
+<title>Items &amp; Systems â€” OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.0.0</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -127,18 +127,19 @@
 <!-- ENCHANT SLOTS -->
 <section class="section" id="slots">
   <h2 class="section-title">Enchant Slots</h2>
-  <p class="section-desc">Each item has limited enchant slots. Shown on item lore: <code>Enchant: x/max</code>.</p>
+  <p class="section-desc">MMOItems can define ordered OmniEnchant slots with the <code>ENCHANTSLOTS</code> stat. Render them with <code>#enchantslots#</code>.</p>
   <div class="mc-lore" style="max-width:380px">
-    <div class="lore-line"><span class="mc-gold">Divine III</span></div>
-    <div class="lore-line"><span class="mc-green">Aegis II</span></div>
-    <div class="lore-line">&nbsp;</div>
-    <div class="lore-line"><span class="mc-aqua">Enchant: 2/6</span></div>
+    <div class="lore-line"><span class="mc-gold">Enchant Slot 1: Divine III</span></div>
+    <div class="lore-line"><span class="mc-gray lore-desc">| Smites enemies with holy light</span></div>
+    <div class="lore-line"><span class="mc-green">Enchant Slot 2: Aegis II</span></div>
+    <div class="lore-line"><span class="mc-gray lore-desc">| +6.5% max health and +4.0% defense</span></div>
+    <div class="lore-line"><span class="mc-dark-gray">Enchant Slot 3: Empty</span></div>
   </div>
   <div class="info-box" style="margin-top:.75rem">
     <div class="info-icon">i</div>
-    <p><strong>Base:</strong> <code>config.yml &rarr; max-enchants-per-item: 5</code><br>
-    <strong>Extra:</strong> Slot Increaser adds +1 per use (up to <code>extra-slot-limit</code>)<br>
-    <strong>Example:</strong> Base=5, Extra=3 &rarr; Item accepts max 8 enchants.</p>
+    <p><strong>Item stat:</strong> <code>enchantslots: ["1","2","3"]</code><br>
+    <strong>Extra:</strong> Slot Increaser adds slots after the configured list<br>
+    <strong>Compact:</strong> <code>/sle compact</code> moves filled slots upward after removals.</p>
   </div>
 </section>
 
@@ -158,7 +159,7 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.0.0 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
 <script>
 document.getElementById('mobileToggle').addEventListener('click', function() {
