@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d0d">
+  <title>Configuration | OmniEnchant Wiki</title>
+  <meta name="description" content="Interactive OmniEnchant configuration explorer for global settings, application, display, dust, browser, table, extraction, fusion, shop, and vanilla enchant lore.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open navigation"></button>
+<aside class="sidebar" id="sidebar"><noscript><a href="index.html">OmniEnchant Wiki</a></noscript></aside>
+<main class="content">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Configuration registry / 10 files</span>
+      <h1 class="hero-title">Configuration</h1>
+      <p class="hero-subtitle">Browse the generated plugin directory as a file system. Each file opens a focused, copy-ready example and the operational constraints that matter when deploying it.</p>
+      <div class="hero-deps"><span class="dep required">Non-destructive migration</span><span class="dep optional">YAML</span><span class="dep optional">Reload-aware</span></div>
+    </div>
+  </section>
+  <section class="section">
+    <span class="eyebrow">Generated file map</span>
+    <h2 class="section-title">Select one ownership boundary</h2>
+    <p class="section-desc">The explorer separates global policy from feature-specific settings. Examples show the relevant branch instead of pretending to be a replacement for a customized production file.</p>
+    <div class="config-explorer" id="config-explorer"><noscript>JavaScript is required for the interactive explorer. The source YAML files are under <code>plugins/OmniEnchant/</code>.</noscript></div>
+  </section>
+  <section class="section">
+    <span class="eyebrow">Configuration safety</span>
+    <h2 class="section-title">Reload and upgrade rules</h2>
+    <div class="feature-grid">
+      <div class="feature-card"><h3>Missing keys only</h3><p>Version migrations add absent defaults but never overwrite an existing administrator value.</p></div>
+      <div class="feature-card"><h3>Defaults stay immutable</h3><p>Bundled enchant files are copied only when missing; revised defaults must be merged deliberately.</p></div>
+      <div class="feature-card"><h3>Fail closed</h3><p>Malformed mechanics and RPG conditions are rejected rather than bypassing a gate silently.</p></div>
+      <div class="feature-card"><h3>Trace before scaling</h3><p>Enable <code>debug-skill-trace</code> and validate one ability through <code>/sle debug skill</code> before chaining it.</p></div>
+    </div>
+  </section>
+<footer class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 by <strong>SalyVn</strong></p><p>Configuration examples follow runtime 3.17.0 contracts.</p></div></footer>
+</main>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
+</body>
+</html>
