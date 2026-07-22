@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enchant System â€” OmniEnchant Wiki</title>
+<title>Enchant System &mdash; OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -43,23 +43,23 @@
   <div class="config-block">
     <div class="config-header"><span class="config-file">Directory Structure</span></div>
     <pre class="code-block"><span class="c">plugins/OmniEnchant/</span>
-â”œâ”€â”€ config.yml                <span class="c"># General settings</span>
-â”œâ”€â”€ enchant.yml               <span class="c"># Display &amp; rarity config</span>
-â”œâ”€â”€ settings/
-â”‚   â”œâ”€â”€ application.yml       <span class="c"># Drag-drop, success/failure rate</span>
-â”‚   â”œâ”€â”€ display.yml           <span class="c"># Rarity colors, display mode</span>
-â”‚   â”œâ”€â”€ dust.yml              <span class="c"># Lucky Dust config</span>
-â”‚   â”œâ”€â”€ enchant-browser.yml   <span class="c"># Enchant Browser GUI</span>
-â”‚   â”œâ”€â”€ enchant-table.yml     <span class="c"># Custom Enchant Table</span>
-â”‚   â”œâ”€â”€ extraction.yml        <span class="c"># Extraction Scroll config</span>
-â”‚   â”œâ”€â”€ fusion.yml            <span class="c"># Fusion recipes</span>
-â”‚   â”œâ”€â”€ tier-shop.yml         <span class="c"># Tier Shop GUI</span>
-â”‚   â””â”€â”€ vanilla-enchants.yml  <span class="c"># Vanilla enchant overrides</span>
-â””â”€â”€ enchants/
-    â”œâ”€â”€ aegis.yml             <span class="c"># Each file = 1 enchant</span>
-    â”œâ”€â”€ divine.yml
-    â”œâ”€â”€ frenzy.yml
-    â””â”€â”€ ...</pre>
+|-- config.yml                <span class="c"># General settings</span>
+|-- enchant.yml               <span class="c"># Display &amp; rarity config</span>
+|-- settings/
+|   |-- application.yml       <span class="c"># Drag-drop, success/failure rate</span>
+|   |-- display.yml           <span class="c"># Rarity colors, display mode</span>
+|   |-- dust.yml              <span class="c"># Lucky Dust config</span>
+|   |-- enchant-browser.yml   <span class="c"># Enchant Browser GUI</span>
+|   |-- enchant-table.yml     <span class="c"># Custom Enchant Table</span>
+|   |-- extraction.yml        <span class="c"># Extraction Scroll config</span>
+|   |-- fusion.yml            <span class="c"># Fusion recipes</span>
+|   |-- tier-shop.yml         <span class="c"># Tier Shop GUI</span>
+|   \-- vanilla-enchants.yml  <span class="c"># Vanilla enchant overrides</span>
+\-- enchants/
+    |-- aegis.yml             <span class="c"># Each file = 1 enchant</span>
+    |-- divine.yml
+    |-- frenzy.yml
+    \-- ...</pre>
   </div>
 </section>
 
@@ -142,7 +142,7 @@
 
   <div class="info-box">
     <div class="info-icon">i</div>
-    <p><strong>mode</strong> uses MythicLib TriggerType: <code>ATTACK</code>, <code>WHEN_HIT</code>, <code>DAMAGED</code>, <code>KILL</code>, <code>RIGHT_CLICK</code>, <code>LEFT_CLICK</code>, <code>SNEAK</code>, <code>TIMER</code>, <code>LOGIN</code>, <code>SHOOT_BOW</code></p>
+    <p><strong>mode</strong> uses MythicLib TriggerType: <code>ATTACK</code>, <code>WHEN_HIT</code>, <code>DAMAGED</code>, <code>KILL</code>, <code>RIGHT_CLICK</code>, <code>LEFT_CLICK</code>, <code>SHIFT_RIGHT_CLICK</code>, <code>SHIFT_LEFT_CLICK</code>, <code>TIMER</code>, <code>LOGIN</code>, <code>SHOOT_BOW</code></p>
   </div>
 </section>
 
@@ -167,6 +167,58 @@
     <p><strong>type</strong> is a MythicMobs mechanic line root, for example <code>HEAL</code>, <code>LIGHTNING</code>, <code>IGNITE</code>, or a mechanic supplied by an installed MythicMobs addon.</p>
   </div>
 
+  <h3 class="subsection-title">Passive Timer Abilities</h3>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">Example: Equipped Regeneration</span></div>
+    <pre class="code-block"><span class="k">ability:</span>
+  <span class="k">passive_regeneration:</span>
+    <span class="k">type:</span> <span class="v">HEAL</span>
+    <span class="k">mode:</span> <span class="v">TIMER</span>
+    <span class="k">interval:</span>
+      <span class="k">formula:</span> <span class="s">"100"</span>             <span class="c"># 5 seconds</span>
+    <span class="k">chance:</span>
+      <span class="k">formula:</span> <span class="s">"35+{level}*5"</span>
+    <span class="k">amount:</span>
+      <span class="k">formula:</span> <span class="s">"1+{level}"</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p><code>TIMER</code> runs only while the item is equipped. The interval is a tick formula (default <code>100</code>, bounded to <code>20-72000</code>); static migration syntax <code>TIMER:200</code> is also supported. OmniEnchant rechecks the equipped item NBT and enchant level immediately before every proc, so removing or swapping gear cancels the passive safely.</p>
+  </div>
+
+  <h3 class="subsection-title">Active Interaction Abilities</h3>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">Example: Right-Click Rune</span></div>
+    <pre class="code-block"><span class="k">ability:</span>
+  <span class="k">rune_activation:</span>
+    <span class="k">type:</span> <span class="v">HEAL</span>
+    <span class="k">mode:</span> <span class="v">RIGHT_CLICK</span>          <span class="c"># USE / RIGHTCLICK / INTERACT also work</span>
+    <span class="k">amount:</span>
+      <span class="k">formula:</span> <span class="s">"1+{level}"</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">i</div>
+    <p>Right-click modes use the actual main or off hand. Left-click accepts <code>LEFT_CLICK</code>, <code>LEFTCLICK</code>, or <code>SWING</code>; <code>INTERACT</code> matches either click. <code>SHIFT_RIGHT_CLICK</code> and <code>SHIFT_LEFT_CLICK</code> run only while sneaking. Cancelled interactions never proc or spend souls.</p>
+  </div>
+
+  <h3 class="subsection-title">Conditions</h3>
+  <div class="config-block">
+    <div class="config-header"><span class="config-file">Guarded Ability</span></div>
+    <pre class="code-block"><span class="k">ability:</span>
+  <span class="k">guarded_strike:</span>
+    <span class="k">type:</span> <span class="v">LIGHTNING</span>
+    <span class="k">mode:</span> <span class="v">ATTACK</span>
+    <span class="k">condition-target:</span> <span class="v">CASTER</span>       <span class="c"># CASTER | TARGET | ORIGIN</span>
+    <span class="k">conditions:</span>
+      - <span class="s">"crouching true"</span>
+    <span class="k">damage:</span>
+      <span class="k">formula:</span> <span class="s">"2+{level}"</span></pre>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">!</div>
+    <p>Conditions are parsed when enchant configs reload. A malformed condition disables only that ability; a rejected, invalid, or unavailable condition never runs a native fallback. <code>CASTER</code> is the default and exposes the equipped item through the existing Mythic metadata, <code>TARGET</code> evaluates the active entity, and <code>ORIGIN</code> evaluates the captured trigger location.</p>
+  </div>
+
   <h3 class="subsection-title">RPG Skill Context</h3>
   <p>Every ability is dispatched with the actual caster, target, equipped item, and equipment slot. MythicMobs mechanics can read the following variable registry keys:</p>
   <div class="perm-table-wrap">
@@ -180,13 +232,16 @@
         <tr><td><code>omi_damage</code>, <code>omi_final_damage</code></td><td>Bukkit damage before and after event modifiers</td></tr>
         <tr><td><code>omi_item</code>, <code>omi_target</code></td><td>Metadata objects for compatible custom mechanics</td></tr>
         <tr><td><code>omi_projectile</code>, <code>omi_projectile_id</code></td><td>Launch projectile object and opaque correlation id during projectile casts</td></tr>
-        <tr><td><code>omi_lifecycle_action</code></td><td><code>APPLY</code> or <code>REMOVE</code> during a committed item lifecycle cast</td></tr>
+        <tr><td><code>omi_interact_action</code>, <code>omi_interact_block</code></td><td>Bukkit click action and clicked block material during an active interaction cast</td></tr>
+        <tr><td><code>omi_interaction_location</code></td><td>Clicked block location metadata/variable for compatible Mythic mechanics</td></tr>
+        <tr><td><code>omi_lifecycle_action</code></td><td>Committed action such as <code>APPLY</code>, <code>REMOVE</code>, <code>SLOT_FILLED</code>, or <code>SLOT_EMPTIED</code></td></tr>
+        <tr><td><code>omi_enchant_slot</code></td><td>Configured logical slot label during <code>SLOT_FILLED</code> or <code>SLOT_EMPTIED</code></td></tr>
       </tbody>
     </table>
   </div>
   <div class="info-box">
     <div class="info-icon">i</div>
-    <p>Combat modes: <code>ATTACK</code>/<code>ON_HIT</code>, <code>WHEN_HIT</code>/<code>ON_DEFEND</code>/<code>DAMAGED</code>/<code>DAMAGED_BY_ENTITY</code>, and <code>KILL</code>/<code>ON_KILL</code>. Projectile modes: <code>SHOOT</code>/<code>SHOOT_BOW</code> and <code>PROJECTILE_HIT</code>/<code>IMPACT</code>. Lifecycle modes: <code>APPLY</code>/<code>ENCHANT_APPLY</code>, <code>REMOVE</code>/<code>ENCHANT_REMOVE</code>, <code>EQUIP</code>/<code>ON_EQUIP</code>, and <code>UNEQUIP</code>/<code>ON_UNEQUIP</code>. If MythicMobs is unavailable, OmniEnchant uses its native fallback where one exists.</p>
+    <p>Combat modes: <code>ATTACK</code>/<code>ON_HIT</code>, <code>WHEN_HIT</code>/<code>ON_DEFEND</code>/<code>DAMAGED</code>/<code>DAMAGED_BY_ENTITY</code>, and <code>KILL</code>/<code>ON_KILL</code>. Projectile modes: <code>SHOOT</code>/<code>SHOOT_BOW</code> and <code>PROJECTILE_HIT</code>/<code>IMPACT</code>. Lifecycle modes: <code>APPLY</code>/<code>ENCHANT_APPLY</code>, <code>REMOVE</code>/<code>ENCHANT_REMOVE</code>, <code>EQUIP</code>/<code>ON_EQUIP</code>, <code>UNEQUIP</code>/<code>ON_UNEQUIP</code>, <code>SLOT_FILLED</code>/<code>ON_SLOT_FILLED</code>, and <code>SLOT_EMPTIED</code>/<code>ON_SLOT_EMPTIED</code>. Interaction modes: <code>RIGHT_CLICK</code>/<code>RIGHTCLICK</code>/<code>USE</code>, <code>LEFT_CLICK</code>/<code>LEFTCLICK</code>/<code>SWING</code>, shared <code>INTERACT</code>, and sneaking-only <code>SHIFT_RIGHT_CLICK</code>/<code>SHIFT_LEFT_CLICK</code>. Slot modes run only for an empty-to-occupied or occupied-to-empty logical slot transition; upgrading an existing enchant does not proc them. If MythicMobs is unavailable, OmniEnchant uses its native fallback where one exists.</p>
   </div>
   <div class="info-box">
     <div class="info-icon">i</div>
@@ -201,7 +256,7 @@
 <!-- MECHANICS -->
 <section class="section" id="mechanics">
   <h2 class="section-title">Mechanics &mdash; Custom Engine</h2>
-  <p class="section-desc">40+ custom-coded mechanics independent of MythicLib. Vein mining, telekinesis, auto replant, multiply drops, and more.</p>
+  <p class="section-desc">29 OmniEnchant-owned mechanics across mining, drops, economy, recovery, weapons, armor, and tools. Five additional item mechanics are registered directly into MythicMobs. See the <a href="reference.html">runtime reference</a> for every parameter, alias, hard limit, condition, and example.</p>
   <div class="config-block">
     <div class="config-header"><span class="config-file">Example: Telekinesis</span></div>
     <pre class="code-block"><span class="k">mechanics:</span>
@@ -212,20 +267,37 @@
   <h3 class="subsection-title">Available Mechanics</h3>
   <div class="perm-table-wrap">
   <table class="perm-table">
-    <thead><tr><th>Type</th><th>Mode</th><th>Description</th></tr></thead>
+    <thead><tr><th>Domain</th><th>Type</th><th>Mode</th><th>Description</th></tr></thead>
     <tbody>
-    <tr><td><code>TELEKINESIS</code></td><td><code>BREAK_BLOCK</code></td><td>Auto-send drops to inventory</td></tr>
-    <tr><td><code>VEIN_MINER</code></td><td><code>BREAK_BLOCK</code></td><td>Mine entire ore veins (BFS)</td></tr>
-    <tr><td><code>TREE_FELLER</code></td><td><code>BREAK_BLOCK</code></td><td>Chop entire trees</td></tr>
-    <tr><td><code>MULTIPLY_DROPS</code></td><td><code>BREAK_BLOCK</code></td><td>Multiply block drops</td></tr>
-    <tr><td><code>SMELTING</code></td><td><code>BREAK_BLOCK</code></td><td>Auto-smelt ore drops</td></tr>
-    <tr><td><code>AUTO_REPLANT</code></td><td><code>BREAK_BLOCK</code></td><td>Auto-replant crops</td></tr>
-    <tr><td><code>EXPLOSIVE</code></td><td><code>BREAK_BLOCK</code></td><td>Mine in a 3Ã—3 area</td></tr>
-    <tr><td><code>LIFESTEAL</code></td><td><code>ATTACK</code></td><td>Heal on each hit</td></tr>
-    <tr><td><code>CRITICAL_BOOST</code></td><td><code>ATTACK</code></td><td>Random crit buff</td></tr>
-    <tr><td><code>THORNS</code></td><td><code>DEFEND</code></td><td>Reflect damage</td></tr>
-    <tr><td><code>SOUL_HARVEST</code></td><td><code>KILL_ENTITY</code></td><td>Harvest souls from kills</td></tr>
-    <tr><td><code>EXP_BOOST</code></td><td><code>BREAK_BLOCK</code>/<code>KILL_ENTITY</code></td><td>Increase EXP drops</td></tr>
+    <tr><td>Mining</td><td><code>MULTIPLY_DROPS</code></td><td><code>BREAK_BLOCK</code>/<code>KILL_ENTITY</code></td><td>Multiply coordinated drops</td></tr>
+    <tr><td>Mining</td><td><code>AUTO_SMELT</code></td><td><code>BREAK_BLOCK</code></td><td>Smelt supported drops</td></tr>
+    <tr><td>Mining</td><td><code>BLAST_MINE</code></td><td><code>BREAK_BLOCK</code></td><td>Bounded configurable area mining</td></tr>
+    <tr><td>Mining</td><td><code>VEIN_MINE</code></td><td><code>BREAK_BLOCK</code></td><td>Connected block traversal</td></tr>
+    <tr><td>Mining</td><td><code>TREE_FELLER</code></td><td><code>BREAK_BLOCK</code></td><td>Protected nearby log traversal</td></tr>
+    <tr><td>Mining</td><td><code>HARVEST_AREA</code></td><td><code>BREAK_BLOCK</code></td><td>Mature crop area harvest</td></tr>
+    <tr><td>Mining</td><td><code>TELEKINESIS</code></td><td><code>BREAK_BLOCK</code>/<code>KILL_ENTITY</code></td><td>Inventory delivery with overflow</td></tr>
+    <tr><td>Mining</td><td><code>REPLANT</code></td><td><code>BREAK_BLOCK</code></td><td>Replant mature crops</td></tr>
+    <tr><td>Rewards</td><td><code>MULTIPLY_MOB_DROPS</code></td><td><code>KILL_ENTITY</code></td><td>Duplicate entity drops</td></tr>
+    <tr><td>Rewards</td><td><code>MULTIPLY_EXP</code></td><td><code>BREAK_BLOCK</code>/<code>KILL_ENTITY</code></td><td>Scale event XP</td></tr>
+    <tr><td>Rewards</td><td><code>HEAD_DROP</code></td><td><code>KILL_ENTITY</code></td><td>Add supported mob/player heads</td></tr>
+    <tr><td>Rewards</td><td><code>BONUS_MONEY</code></td><td><code>KILL_ENTITY</code></td><td>Vault economy reward</td></tr>
+    <tr><td>Recovery</td><td><code>MENDING_REPAIR</code></td><td><code>XP_GAIN</code></td><td>Convert bounded XP into repair</td></tr>
+    <tr><td>Recovery</td><td><code>SOULBOUND</code></td><td><code>DEATH</code></td><td>Charge-aware item recovery</td></tr>
+    <tr><td>Weapon</td><td><code>CLEAVE</code></td><td><code>ATTACK</code></td><td>Bounded area damage</td></tr>
+    <tr><td>Weapon</td><td><code>EXECUTE</code></td><td><code>ATTACK</code></td><td>Low-health damage scaling</td></tr>
+    <tr><td>Weapon</td><td><code>LIFESTEAL</code></td><td><code>ATTACK</code></td><td>Heal from final dealt damage</td></tr>
+    <tr><td>Weapon</td><td><code>KNOCKBACK</code></td><td><code>ATTACK</code></td><td>Directional target velocity</td></tr>
+    <tr><td>Weapon</td><td><code>CRITICAL_STRIKE</code></td><td><code>ATTACK</code></td><td>Bounded event damage multiplier</td></tr>
+    <tr><td>Armor</td><td><code>DAMAGE_REDUCTION</code></td><td><code>DAMAGED</code></td><td>Additive incoming reduction</td></tr>
+    <tr><td>Armor</td><td><code>DODGE</code></td><td><code>DAMAGED</code></td><td>Cancel admitted damage event</td></tr>
+    <tr><td>Armor</td><td><code>THORNS</code></td><td><code>DAMAGED</code></td><td>Guarded returned damage</td></tr>
+    <tr><td>Armor</td><td><code>PROJECTILE_WARD</code></td><td><code>DAMAGED</code></td><td>Projectile-only reduction</td></tr>
+    <tr><td>Armor</td><td><code>SECOND_WIND</code></td><td><code>DAMAGED</code></td><td>Predicted low-health recovery</td></tr>
+    <tr><td>Tool</td><td><code>DURABILITY_SHIELD</code></td><td><code>ITEM_DAMAGE</code></td><td>Reduce durability consumption</td></tr>
+    <tr><td>Tool</td><td><code>TOOL_REPAIR</code></td><td><code>BREAK_BLOCK</code></td><td>Repair after valid mining</td></tr>
+    <tr><td>Tool</td><td><code>MINING_HASTE</code></td><td><code>BREAK_BLOCK</code></td><td>Refresh bounded Haste</td></tr>
+    <tr><td>Tool</td><td><code>AUTO_TORCH</code></td><td><code>BREAK_BLOCK</code></td><td>Protection-aware torch placement</td></tr>
+    <tr><td>Tool</td><td><code>MINING_XP</code></td><td><code>BREAK_BLOCK</code></td><td>Add bounded block XP</td></tr>
     </tbody>
   </table>
   </div>
@@ -278,7 +350,7 @@
     <thead><tr><th>Placeholder</th><th>Source</th><th>Description</th></tr></thead>
     <tbody>
     <tr><td><code>{KEY}</code></td><td>stat/ability</td><td>Formula value at current level</td></tr>
-    <tr><td><code>{DUR}</code></td><td>conditional stat/trigger</td><td>Duration (seconds, auto Ã·20)</td></tr>
+    <tr><td><code>{DUR}</code></td><td>conditional stat/trigger</td><td>Duration (seconds, auto /20)</td></tr>
     <tr><td><code>{CD}</code></td><td>conditional stat/trigger</td><td>Cooldown (seconds)</td></tr>
     <tr><td><code>{CHANCE}</code></td><td>conditional stat/ability</td><td>Activation chance (%)</td></tr>
     <tr><td><code>{CHANCE_ENCHANT}</code></td><td>base field</td><td>Success rate</td></tr>
@@ -293,7 +365,7 @@
   <h2 class="section-title">Full Example &mdash; Complete Enchant</h2>
   <div class="config-block">
     <div class="config-header"><span class="config-file">enchants/frenzy.yml</span><span class="config-desc">Trade-off enchant</span></div>
-    <pre class="code-block"><span class="c"># Frenzy â€” High damage at the cost of defense</span>
+    <pre class="code-block"><span class="c"># Frenzy &mdash; High damage at the cost of defense</span>
 <span class="k">name:</span> <span class="s">"&amp;cFrenzy"</span>
 <span class="k">lore:</span>
   - <span class="s">"&amp;8Increases attack by &amp;a{AD_PCT}% &amp;8and crit"</span>
@@ -316,13 +388,10 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
-<script>
-document.getElementById('mobileToggle').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  this.classList.toggle('active');
-});
-</script>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
 </body>
 </html>

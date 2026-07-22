@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Items &amp; Systems â€” OmniEnchant Wiki</title>
+<title>Items &amp; Systems &mdash; OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -139,7 +139,8 @@
     <div class="info-icon">i</div>
     <p><strong>Item stat:</strong> <code>enchantslots: ["1","2","3"]</code><br>
     <strong>Extra:</strong> Slot Increaser adds slots after the configured list<br>
-    <strong>Compact:</strong> <code>/sle compact</code> moves filled slots upward after removals.</p>
+    <strong>Display:</strong> slot descriptions remain visible until a member enables <code>/sle compact</code>; <code>/sle compact off</code> restores them<br>
+    <strong>Slot order:</strong> <code>/sle compact slots</code> moves filled slots upward after removals and requires <code>slenchant.admin</code>.</p>
   </div>
 </section>
 
@@ -159,13 +160,10 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
-<script>
-document.getElementById('mobileToggle').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  this.classList.toggle('active');
-});
-</script>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Commands &amp; API â€” OmniEnchant Wiki</title>
+<title>Commands &amp; API &mdash; OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -48,13 +48,15 @@
     <div class="cmd-item"><span class="cmd">/sle giverandom &lt;player&gt; &lt;rarity&gt; [level] [amount]</span><span class="cmd-desc">Give random enchant book of rarity</span><span class="cmd-perm">slenchant.admin</span></div>
     <div class="cmd-item"><span class="cmd">/sle addenchant &lt;enchant&gt; &lt;level&gt;</span><span class="cmd-desc">Force-add enchant to held item (bypass checks)</span><span class="cmd-perm">slenchant.admin</span></div>
     <div class="cmd-item"><span class="cmd">/sle removeenchant &lt;enchant&gt;</span><span class="cmd-desc">Remove specific enchant from held item</span><span class="cmd-perm">slenchant.admin</span></div>
-    <div class="cmd-item"><span class="cmd">/sle compact</span><span class="cmd-desc">Move filled enchant slots upward on held item (alias: /sle compress)</span><span class="cmd-perm">slenchant.admin</span></div>
+    <div class="cmd-item"><span class="cmd">/sle compact [on|off|toggle|auto]</span><span class="cmd-desc">Toggle personal compact lore; names stay complete and descriptions are hidden (alias: /sle compress)</span><span class="cmd-perm">ALL</span></div>
+    <div class="cmd-item"><span class="cmd">/sle compact slots</span><span class="cmd-desc">Move filled enchant slots upward on held item</span><span class="cmd-perm">slenchant.admin</span></div>
     <div class="cmd-item"><span class="cmd">/sle cleanse</span><span class="cmd-desc">Remove orphaned enchant IDs from held item after a config removal</span><span class="cmd-perm">slenchant.admin</span></div>
     <div class="cmd-item"><span class="cmd">/sle extract [enchant]</span><span class="cmd-desc">Extract enchant from held item into book</span><span class="cmd-perm">slenchant.extract</span></div>
     <div class="cmd-item"><span class="cmd">/sle shop</span><span class="cmd-desc">Open Tier Shop GUI</span><span class="cmd-perm">slenchant.shop</span></div>
     <div class="cmd-item"><span class="cmd">/sle browse</span><span class="cmd-desc">Open Enchant Browser GUI (alias: /sle browser)</span><span class="cmd-perm">slenchant.browser</span></div>
     <div class="cmd-item"><span class="cmd">/sle dust</span><span class="cmd-desc">Open Dust Crafting GUI</span><span class="cmd-perm">slenchant.dust</span></div>
     <div class="cmd-item"><span class="cmd">/sle fusion</span><span class="cmd-desc">Open Fusion GUI</span><span class="cmd-perm">slenchant.fusion</span></div>
+    <div class="cmd-item"><span class="cmd">/sle show [auto|detail|compact|off|toggle]</span><span class="cmd-desc">Set the same personal lore mode; no argument toggles detailed and compact directly</span><span class="cmd-perm">ALL</span></div>
     <div class="cmd-item"><span class="cmd">/sle info &lt;enchant&gt;</span><span class="cmd-desc">View enchant details in chat</span><span class="cmd-perm">slenchant.info</span></div>
     <div class="cmd-item"><span class="cmd">/sle list [page]</span><span class="cmd-desc">List all loaded enchants</span><span class="cmd-perm">slenchant.info</span></div>
     <div class="cmd-item"><span class="cmd">/sle debug</span><span class="cmd-desc">Inspect the held item and active modifiers</span><span class="cmd-perm">slenchant.admin</span></div>
@@ -141,22 +143,20 @@
     <div class="api-card">
       <h3>Events</h3>
       <ul class="api-list">
-        <li><code>EnchantApplyEvent</code> &mdash; Before enchant applied</li>
-        <li><code>EnchantFailEvent</code> &mdash; After failure roll</li>
-        <li><code>EnchantActivateEvent</code> &mdash; When enchant activates</li>
-        <li><code>EnchantRemoveEvent</code> &mdash; Before enchant removed</li>
+        <li><code>OmniEnchantApplyEvent</code> &mdash; Committed application, including prior level and logical slot</li>
+        <li><code>OmniEnchantRemoveEvent</code> &mdash; Committed removal, including the prior logical slot when known</li>
+        <li><code>OmniEnchantSlotFilledEvent</code> &mdash; An empty logical slot became occupied</li>
+        <li><code>OmniEnchantSlotEmptiedEvent</code> &mdash; An occupied logical slot became empty</li>
+        <li><code>OmniEnchantSignalEvent</code> &mdash; Cancellable typed signal before equipped abilities are scanned</li>
       </ul>
     </div>
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
-<script>
-document.getElementById('mobileToggle').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  this.classList.toggle('active');
-});
-</script>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
 </body>
 </html>

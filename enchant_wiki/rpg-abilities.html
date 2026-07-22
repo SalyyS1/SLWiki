@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPG Abilities | OmniEnchant Wiki</title>
+  <meta name="description" content="Stateful RPG ability conditions and effect targeting for OmniEnchant.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span></div></div></div>
+  <nav class="sidebar-nav">
+    <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
+    <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
+    <a href="enchants.html" class="nav-link"><span class="nav-icon">&#9733;</span>Enchant System</a>
+    <a href="features.html" class="nav-link"><span class="nav-icon">&#9654;</span>Features</a>
+    <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items &amp; Systems</a>
+    <a href="commands.html" class="nav-link"><span class="nav-icon">&gt;</span>Commands &amp; API</a>
+    <a href="lore-format.html" class="nav-link"><span class="nav-icon">&#9776;</span>Lore Format</a>
+    <a href="rpg-abilities.html" class="nav-link active"><span class="nav-icon">&#10022;</span>RPG Abilities</a>
+    <a href="changelog.html" class="nav-link"><span class="nav-icon">&#9998;</span>Changelog</a>
+  </nav>
+  <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
+</div>
+<div class="content">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">MythicMobs + MMOItems</span>
+      <h1 class="hero-title">RPG Abilities</h1>
+      <p class="hero-subtitle">Build enchants around progression, combat state, exact MythicMob targets, and deliberate multi-enchant synergies.</p>
+    </div>
+  </section>
+  <section class="section" id="mythic-signal-bridge">
+    <h2 class="section-title">Mythic Skill Signals</h2>
+    <p>MythicMobs skills can now emit a typed signal into abilities installed on a player's live equipment. This enables boss phases, class skills, quests, and dungeon scripts to orchestrate enchant combinations without inventing a fake attack or apply event.</p>
+    <pre><code># MythicMobs skill
+RaidFinisher:
+  Skills:
+    - omniEnchantSignal{signal=raid_finisher;slots=HAND,OFF_HAND;source=raid_boss} @target
+
+# OmniEnchant ability
+ability:
+  raid_finisher:
+    type: LIGHTNING
+    mode: MYTHIC_SIGNAL:raid_finisher
+    damage:
+      formula: "2+{level}*1.5"</code></pre>
+    <div class="arch-grid">
+      <div class="arch-card"><h3>Real Equipment</h3><p>The bridge reads enchant ids and levels from hand, off-hand, and armor at dispatch time. A skill cannot forge detached enchant state.</p></div>
+      <div class="arch-card"><h3>Two Owner Paths</h3><p>A player caster owns the scan. Otherwise, a targeted player owns it, which lets a MythicMob signal every player selected by its targeter.</p></div>
+      <div class="arch-card"><h3>Canonical Pipeline</h3><p>Chance, soul cost, Mythic/RPG conditions, activation history, CHAIN effects, and redacted trace output remain active.</p></div>
+      <div class="arch-card"><h3>Bounded Casts</h3><p>Nested signals stop at depth four. Signal and ability cycles are rejected for one synchronous root cast.</p></div>
+    </div>
+    <p>Aliases are <code>omniSignal</code>/<code>omiSignal</code> and <code>SIGNAL:&lt;id&gt;</code>. <code>slots</code> defaults to <code>ALL</code>; use <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, or <code>FEET</code>. Signal abilities receive <code>omi_trigger: MYTHIC_SIGNAL</code>, <code>omi_signal</code>, and <code>omi_signal_source</code>. Other plugins can cancel <code>OmniEnchantSignalEvent</code> before any item is scanned.</p>
+  </section>
+  <section class="section" id="equipped-item-toolkit">
+    <h2 class="section-title">Equipped Item Toolkit</h2>
+    <p>MythicMobs skills can inspect and mutate only the player's current equipment. The bridge never accepts a detached item variable as authority, and every enchant change goes through OmniEnchant slot, applicability, conflict, lore, and lifecycle validation.</p>
+    <div class="perm-table-wrap">
+      <table class="perm-table">
+        <thead><tr><th>Type</th><th>Components</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Mechanics</td><td><code>omniEnchantItem</code>, <code>omniItemDurability</code>, <code>omniItemSouls</code>, <code>omniCompactSlots</code>, <code>omniGiveEnchantBook</code></td><td>Quest rewards, upgrades, repairs, soul economies, and gear preparation</td></tr>
+          <tr><td>Conditions</td><td><code>omniHasEnchant</code>, <code>omniEnchantCount</code>, <code>omniEmptyEnchantSlots</code>, <code>omniItemDurability</code>, <code>omniItemSouls</code></td><td>Branch skills from exact live equipped item state</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code>UpgradeReward:
+  Conditions:
+    - omniEmptyEnchantSlots{amount=&gt;0;slots=HAND} true
+  Skills:
+    - omniEnchantItem{id=ember_brand;level=1;mode=ADD;slot=HAND;clamp=true} @trigger
+    - omniItemSouls{mode=ADD;amount=5;pool=PVE;slot=HAND} @trigger</code></pre>
+    <p>Selectors are <code>TRIGGER</code>, <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, <code>FEET</code>, and condition/compaction-only <code>ALL</code>. Mutations are synchronous, cancellable through <code>OmniEnchantMythicItemMutationEvent</code>, and protected by a depth-four cycle guard. See <a href="reference.html#mythic-mechanic-omnienchantitem">Mythic Mechanics</a> and <a href="reference.html#mythic-condition-omnihasenchant">Mythic Conditions</a> for every parameter and failure rule.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Effect Target</h2>
+    <p><code>effect-target</code> chooses who receives a Mythic or native mechanic. It is separate from <code>condition-target</code>, so an ability can inspect an enemy while healing its caster.</p>
+    <pre><code>ability:
+  blood_rite:
+    type: HEAL
+    mode: ATTACK
+    effect-target: CASTER
+    rpg-conditions:
+      - "LETHAL"
+    amount:
+      formula: "1+{level}*0.5"</code></pre>
+    <p><code>EVENT_TARGET</code> is the backward-compatible default. Use <code>CASTER</code> for self-heal, self-buff, and defensive procs.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Stateful Conditions</h2>
+    <div class="arch-grid">
+      <div class="arch-card"><h3>Mythic Progress</h3><p><code>MYTHIC_KILLS:crypt_wraith:20:3600</code> requires 20 named MythicMob kills in the last hour.</p></div>
+      <div class="arch-card"><h3>Exact Target</h3><p><code>TARGET_MYTHIC:crypt_wraith</code> only passes while the current target is that active MythicMob.</p></div>
+      <div class="arch-card"><h3>Focused Combo</h3><p><code>COMBO_HITS:3:5</code> requires three direct hits on the same target within five seconds.</p></div>
+      <div class="arch-card"><h3>Lethal Strike</h3><p><code>LETHAL</code> only passes when current damage depletes target health and absorption.</p></div>
+      <div class="arch-card"><h3>Ordered Synergy</h3><p><code>ENCHANT_SEQUENCE:ember_brand&gt;void_mark:12:SAME_TARGET:CONSUME</code> rewards that exact one-target proc order once.</p></div>
+      <div class="arch-card"><h3>Shared Roll</h3><p><code>BATCHED_CHANCE:convergence:30:2</code> gives two linked checks the same 30% result for five seconds.</p></div>
+    </div>
+    <p><code>TRIGGER:ATTACK</code> and <code>ITEM_SLOT:HAND</code> can be combined with any of these. Unknown, malformed, unavailable, and invalid RPG conditions fail closed.</p>
+  </section>
+  <section class="section" id="activation-conditions">
+    <h2 class="section-title">Activation Conditions</h2>
+    <p>Use these gates on <code>mode: CHAIN</code> abilities. All state is isolated per player, retained only for the configured window, and hard bounded.</p>
+    <div class="perm-table-wrap">
+      <table class="perm-table">
+        <thead><tr><th>Condition</th><th>Purpose</th><th>Defaults and limits</th></tr></thead>
+        <tbody>
+          <tr><td><code>ENCHANT_SEQUENCE:a&gt;b:12</code></td><td>Ordered subsequence; unrelated procs may occur between required entries.</td><td>2-8 entries, <code>ANY</code>, <code>CONSUME</code>, 1-3600 seconds</td></tr>
+          <tr><td><code>ENCHANT_SEQUENCE:a&gt;b:12:SAME_TARGET:REUSABLE</code></td><td>Ordered recipe where every entry belongs to the current target.</td><td><code>ANY</code>/<code>SAME_TARGET</code>; <code>CONSUME</code>/<code>REUSABLE</code></td></tr>
+          <tr><td><code>ENCHANT_ACTIVATIONS:a:3:10:SAME_TARGET</code></td><td>Requires a minimum number of one enchant's successful procs.</td><td>1-128 activations, 1-3600 seconds</td></tr>
+          <tr><td><code>RECENT_ENCHANTS:a,b:12</code></td><td>Legacy unordered presence check retained for compatibility.</td><td>Reusable until the window expires</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A consuming sequence is only committed after every non-random RPG gate, shared chance, and CHAIN soul admission succeeds. One ability may contain one consuming sequence; malformed or ambiguous recipes disable that ability at reload.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Convergence Example</h2>
+    <p>Proc Ember Brand and then Void Mark on the same target within 12 seconds. These branches share one chance result, independently consume that completed recipe, and use bounded recursion to prevent loops.</p>
+    <pre><code>ability:
+  convergence_heal:
+    type: HEAL
+    mode: CHAIN
+    effect-target: CASTER
+    rpg-conditions:
+      - "ENCHANT_SEQUENCE:ember_brand&gt;void_mark:12:SAME_TARGET:CONSUME"
+      - "BATCHED_CHANCE:convergence:30:2"
+    amount:
+      formula: "1+{level}*0.75"
+  convergence_chill:
+    type: FREEZE
+    mode: CHAIN
+    rpg-conditions:
+      - "ENCHANT_SEQUENCE:ember_brand&gt;void_mark:12:SAME_TARGET:CONSUME"
+      - "BATCHED_CHANCE:convergence:30:2"
+    ticks:
+      formula: "20+{level}*10"</code></pre>
+  </section>
+  <section class="section" id="chain-context">
+    <h2 class="section-title">Chain Context and Diagnostics</h2>
+    <p>MythicMobs skills can inspect <code>omi_chain_depth</code>, <code>omi_chain_root_enchant</code>, and <code>omi_chain_source_enchant</code>. Every underscore key also has a kebab-case alias. Root casts use depth <code>0</code>; each nested CHAIN cast increments it.</p>
+    <p>Enable <code>debug-skill-trace</code> and run <code>/sle debug skill</code> to inspect <code>RPG_CONDITION_REJECTED</code>, <code>CHAIN_CYCLE_BLOCKED</code>, and <code>CHAIN_DEPTH_LIMIT</code>. Traces remain redacted: no player identity, NBT, mechanic parameters, or exception text is stored.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">XP Repair</h2>
+    <p><code>MENDING_REPAIR</code> turns part of a positive XP gain into durability for the enchanted item. It works with XP from every normal <code>PlayerExpChangeEvent</code>, so mob rewards, mining, smelting, and configured server rewards follow one predictable rule.</p>
+    <pre><code>mechanics:
+  - type: MENDING_REPAIR
+    mode: XP_GAIN
+    chance: "17+{level}*2"
+    cooldown: "20"
+    repair-per-xp: "1+{level}*0.35"</code></pre>
+    <p>Only one damaged Omni-enchanted item is repaired per XP event. Priority is main hand, off hand, helmet, chestplate, leggings, then boots. The mechanic spends only the XP required for the completed repair and never repairs beyond the item's damage. Use a cooldown to keep large XP bursts intentional. <code>MENDING</code>, <code>REPAIR_WITH_XP</code>, and <code>XP_REPAIR</code> are accepted aliases.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Soulbound Recovery</h2>
+    <p><code>SOULBOUND</code> protects only its enchanted item from a player's death drops and returns it after respawn. It never enables global <code>keepInventory</code>, so the rest of the death, dungeon, and economy loop remains intact.</p>
+    <pre><code>mechanics:
+  - type: SOULBOUND
+    mode: DEATH
+    chance: "100"
+    uses: "{level}"</code></pre>
+    <p>Positive <code>uses</code> are initialized on first recovery and then stored per enchant on the item. Each successful recovery consumes one charge; <code>uses: "-1"</code> is unlimited. If the respawn inventory is full, the returned item drops at the respawn location. <code>KEEP_ON_DEATH</code>, <code>RECOVER_ITEM</code>, and <code>SOUL_BIND</code> are accepted aliases.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Item-State Gates</h2>
+    <p>RPG conditions can now inspect the exact item that owns the ability. This makes low-durability clutch effects and same-item enchant builds possible without depending on temporary player state.</p>
+    <pre><code>rpg-conditions:
+  - "ITEM_DURABILITY:&lt;=25"
+  - "ITEM_ENCHANTS:vitality,bulwark"</code></pre>
+    <p><code>ITEM_DURABILITY</code> compares remaining durability from 0 to 100 using <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, or <code>=</code>. <code>ITEM_ENCHANTS</code> requires every listed OmniEnchant to be installed on the same item. Non-damageable items, malformed comparisons, absent enchants, and unknown condition names fail closed.</p>
+  </section>
+  <section class="section">
+    <h2 class="section-title">Reload Safely</h2>
+    <p>Put one YAML definition in <code>plugins/OmniEnchant/enchants/</code>, add its ID to <code>_index.txt</code>, then run <code>/sle reload</code>. Verify a new ability through <code>/sle debug skill</code> before building a longer chain. Default YAML files are never overwritten, so merge a revised default definition into an existing server's customized file deliberately.</p>
+  </section>
+  <div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p><p class="footer-tech">Kotlin &bull; Paper 1.21+ &bull; MMOItems &bull; MythicMobs &bull; FoliaLib</p></div></div>
+</div>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
+</body>
+</html>

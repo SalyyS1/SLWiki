@@ -19,7 +19,7 @@
     <div class="sidebar-header">
       <div class="logo"><span class="logo-icon">OE</span>
         <div>
-          <h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span>
+          <h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span>
         </div>
       </div>
     </div>
@@ -31,6 +31,7 @@
       <a href="items.html" class="nav-link"><span class="nav-icon">&#9632;</span>Items & Systems</a>
       <a href="commands.html" class="nav-link"><span class="nav-icon">&#62;</span>Commands & API</a>
       <a href="lore-format.html" class="nav-link"><span class="nav-icon">&#9776;</span>Lore Format</a>
+      <a href="rpg-abilities.html" class="nav-link"><span class="nav-icon">&#10022;</span>RPG Abilities</a>
       <a href="changelog.html" class="nav-link active"><span class="nav-icon">&#9998;</span>Changelog</a>
     </nav>
     <div class="sidebar-footer"><span>by <strong>SalyVn</strong></span><span>Paper 1.21+ &bull; Folia Ready</span></div>
@@ -42,7 +43,7 @@
       <div class="hero-content">
         <span class="hero-badge">Update History</span>
         <h1 class="hero-title">Changelog</h1>
-        <p class="hero-subtitle">Complete version history for OmniEnchant (formerly SLMMOEnchant) &mdash; from v1.0.0 to v3.1.1.</p>
+        <p class="hero-subtitle">Complete version history for OmniEnchant (formerly SLMMOEnchant) &mdash; from v1.0.0 to v3.17.0.</p>
       </div>
     </section>
 
@@ -51,6 +52,24 @@
       <div class="cl-timeline">
         <h3>Version Timeline</h3>
         <div class="cl-timeline-grid">
+          <a href="#v3-17-0" class="cl-timeline-item"><strong>v3.17.0</strong> &mdash; Equipment RPG Toolkit</a>
+          <a href="#v3-16-0" class="cl-timeline-item"><strong>v3.16.0</strong> &mdash; Mythic Signal Bridge</a>
+          <a href="#v3-15-0" class="cl-timeline-item"><strong>v3.15.0</strong> &mdash; Interactive Runtime Wiki</a>
+          <a href="#v3-14-0" class="cl-timeline-item"><strong>v3.14.0</strong> &mdash; Ordered Activation Combos</a>
+          <a href="#v3-13-1" class="cl-timeline-item"><strong>v3.13.1</strong> &mdash; Explicit Slot Lore Compaction</a>
+          <a href="#v3-13-0" class="cl-timeline-item"><strong>v3.13.0</strong> &mdash; Configurable Block Mechanics</a>
+          <a href="#v3-12-1" class="cl-timeline-item"><strong>v3.12.1</strong> &mdash; RPG Item-State Mechanics</a>
+          <a href="#v3-12-0" class="cl-timeline-item"><strong>v3.12.0</strong> &mdash; Mythic Skill Context</a>
+          <a href="#v3-11-0" class="cl-timeline-item"><strong>v3.11.0</strong> &mdash; Reagent-Gated Enchants</a>
+          <a href="#v3-10-0" class="cl-timeline-item"><strong>v3.10.0</strong> &mdash; Bonus Enchant Rolls</a>
+          <a href="#v3-9-0" class="cl-timeline-item"><strong>v3.9.0</strong> &mdash; RPG Reagent Profiles</a>
+          <a href="#v3-8-0" class="cl-timeline-item"><strong>v3.8.0</strong> &mdash; Deterministic Table Power</a>
+          <a href="#v3-7-0" class="cl-timeline-item"><strong>v3.7.0</strong> &mdash; Active Interaction Abilities</a>
+          <a href="#v3-6-0" class="cl-timeline-item"><strong>v3.6.0</strong> &mdash; Passive Timer Abilities</a>
+          <a href="#v3-5-0" class="cl-timeline-item"><strong>v3.5.0</strong> &mdash; Item Enchantability Profiles</a>
+          <a href="#v3-4-0" class="cl-timeline-item"><strong>v3.4.0</strong> &mdash; RPG Table Offers</a>
+          <a href="#v3-3-0" class="cl-timeline-item"><strong>v3.3.0</strong> &mdash; Mythic Ability Conditions</a>
+          <a href="#v3-2-0" class="cl-timeline-item"><strong>v3.2.0</strong> &mdash; Virtual Slot Lifecycle</a>
           <a href="#v3-1-1" class="cl-timeline-item"><strong>v3.1.1</strong> &mdash; Mythic Skill Diagnostics</a>
           <a href="#v3-1-0" class="cl-timeline-item"><strong>v3.1.0</strong> &mdash; Equipment Lifecycle Skills</a>
           <a href="#v3-0-9" class="cl-timeline-item"><strong>v3.0.9</strong> &mdash; Projectile and Lifecycle Skills</a>
@@ -89,9 +108,383 @@
         </div>
       </div>
 
+      <!-- ==================== v3.17.0 ==================== -->
+      <div class="cl-entry" id="v3-17-0">
+        <div class="cl-header"><span class="cl-ver">v3.17.0</span><span class="cl-date">2026-07-22</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> 20 Mechanics and 20 Conditions</h4>
+          <ul>
+            <li>Five MythicMobs item mechanics and five live-equipment Mythic conditions provide validated enchant, durability, soul, compaction, reward, count, slot, and item-state operations.</li>
+            <li>Weapons gain <code>CLEAVE</code>, <code>EXECUTE</code>, <code>LIFESTEAL</code>, <code>KNOCKBACK</code>, and <code>CRITICAL_STRIKE</code> plus five target-aware conditions.</li>
+            <li>Armor gains <code>DAMAGE_REDUCTION</code>, <code>DODGE</code>, <code>THORNS</code>, <code>PROJECTILE_WARD</code>, and <code>SECOND_WIND</code> plus five incoming-hit conditions.</li>
+            <li>Tools gain <code>DURABILITY_SHIELD</code>, <code>TOOL_REPAIR</code>, <code>MINING_HASTE</code>, <code>AUTO_TORCH</code>, and <code>MINING_XP</code> plus five block/tool conditions.</li>
+            <li>Vanilla enchant profiles can now grant any MythicLib offense, defense, resistance, recovery, or utility stat with level formulas, slot filters, conditions, and bounded values.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Canonical Runtime and Complete Wiki</h4>
+          <ul>
+            <li>Mythic item mutation uses live equipment and the OmniEnchant API, retaining MMOItems applicability, conflicts, ordered slots, lore, and lifecycle events.</li>
+            <li>The runtime reference now has seven searchable categories covering 29 native mechanics, five Mythic mechanics, 45 conditions, and all 32 triggers.</li>
+            <li>Weapon damage modifiers run before armor while lifesteal, knockback, and cleave use final post-armor damage.</li>
+            <li>Wiki accents are calmer and the expanded tab strip remains usable at desktop and mobile widths.</li>
+            <li>The sidebar now opens a keyword-oriented topic tree for every guide, config file, runtime reference group, command area, and recent release.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Bounded Event Effects</h4>
+          <ul>
+            <li>Secondary damage cannot recursively enter the new or legacy enchant combat pipelines.</li>
+            <li>Auto Torch fires a cancellable place event and consumes inventory only after protection approval.</li>
+            <li>Damage, healing, reduction, knockback, repair, XP, soul, depth, and target counts have formula-independent hard caps.</li>
+            <li>Negative build heights work in <code>BLOCK_Y_RANGE</code>; invalid values and missing event contexts fail closed.</li>
+            <li>Vanilla direct melee bonuses can be registry-compensated when MythicLib is selected as damage authority, and per-slot modifier keys prevent armor stat collisions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.16.0 ==================== -->
+      <div class="cl-entry" id="v3-16-0">
+        <div class="cl-header"><span class="cl-ver">v3.16.0</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Bidirectional MythicMobs Bridge</h4>
+          <ul>
+            <li><code>omniEnchantSignal</code>, <code>omniSignal</code>, and <code>omiSignal</code> let a Mythic skill activate matching abilities on genuinely equipped items.</li>
+            <li><code>MYTHIC_SIGNAL:&lt;id&gt;</code> and <code>SIGNAL:&lt;id&gt;</code> modes support six-slot filtering and a living event target.</li>
+            <li>Signal casts expose <code>omi_signal</code>, <code>omi_signal_source</code>, and <code>omi_trigger: MYTHIC_SIGNAL</code>.</li>
+            <li><code>OmniEnchantSignalEvent</code> gives protection, class, and combat plugins a cancellable pre-dispatch hook.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Authoritative Equipment State</h4>
+          <ul>
+            <li>Scripts choose a typed signal and equipment slots; enchant id, level, source item, chance, soul gate, conditions, activation history, and chains remain owned by OmniEnchant.</li>
+            <li>A player caster owns the equipment scan; otherwise a targeted player becomes the owner for MythicMob-driven boss and dungeon skills.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Bounded Skill Orchestration</h4>
+          <ul>
+            <li>Nested signals stop at depth four and repeated signal/ability cycles are blocked within one root cast.</li>
+            <li>Malformed signals, invalid slots, async casts, missing player ownership, and cancelled events fail closed.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.15.0 ==================== -->
+      <div class="cl-entry" id="v3-15-0">
+        <div class="cl-header"><span class="cl-ver">v3.15.0</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Documentation Application</h4>
+          <ul>
+            <li>Global search now covers pages, all ten config files, mechanics, conditions, aliases, and triggers with keyboard navigation.</li>
+            <li>A folder-style config explorer presents focused, runtime-valid examples without pretending to replace a customized production file.</li>
+            <li>The runtime reference catalogs all 14 custom mechanics, 12 RPG condition families, 13 environment forms, and nine triggers with deep links and copy-ready YAML.</li>
+            <li>A reduced-motion-aware WebGL enchant lattice gives the wiki a distinct RPG identity while retaining a static fallback.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Information Architecture</h4>
+          <ul>
+            <li>All ten pages now share one responsive navigation shell, context bar, search surface, version state, code-copy behavior, and back-to-top control.</li>
+            <li>The overview follows real server tasks; the feature page separates application, acquisition, mutation, progression, mechanics, and conditions.</li>
+            <li>Visual hierarchy now uses a dense arcane-industrial system designed for repeated admin and content-author work.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Wiki Accuracy and UX</h4>
+          <ul>
+            <li>Source-verified counts, aliases, keys, examples, defaults, and hard limits replace stale or speculative documentation.</li>
+            <li>Inconsistent navigation, stale versions, broken encoding, and internal links were repaired.</li>
+            <li>Search closes on the first Escape press; every control has a keyboard path and accessible label.</li>
+            <li>All pages avoid horizontal overflow at 1440px, 768px, and 375px and continue to run directly through <code>file://</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.14.0 ==================== -->
+      <div class="cl-entry" id="v3-14-0">
+        <div class="cl-header"><span class="cl-ver">v3.14.0</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Ordered Combo Engine</h4>
+          <ul>
+            <li><code>ENCHANT_SEQUENCE</code> adds ordered, same-target, one-shot or reusable recipes; <code>ENCHANT_ACTIVATIONS</code> adds repeated-proc thresholds.</li>
+            <li>Mythic skills receive chain depth, root enchant, and source enchant variables with underscore and kebab-case aliases.</li>
+            <li>Skill diagnostics now identify RPG rejection, blocked cycles, and depth-limit skips without retaining player or item secrets.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Transactional Combo State</h4>
+          <ul>
+            <li>Sequences are consumed only after all other RPG gates and shared chance checks pass.</li>
+            <li>CHAIN soul admission now participates in the same transaction, so rejected recipes do not spend sequence progress.</li>
+            <li>Monotonic serials keep same-millisecond procs ordered; bounded player-owned watermarks prevent replay and unbounded growth.</li>
+            <li>Convergence now demonstrates Ember Brand followed by Void Mark on the same target within 12 seconds.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.13.1 ==================== -->
+      <div class="cl-entry" id="v3-13-1">
+        <div class="cl-header"><span class="cl-ver">v3.13.1</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Explicit Compact Mode</h4>
+          <ul>
+            <li>MMOItems slot lore stays detailed at every enchant count until compact mode is explicitly enabled; <code>detail-limit</code> remains available for non-slot lore.</li>
+            <li><code>/sle compact [on|off|toggle|auto]</code> is available to all members. The physical slot-packing operation moved to admin command <code>/sle compact slots</code>.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Slot Descriptions</h4>
+          <ul>
+            <li>Occupied slots now render their configured descriptions before compact mode, even above the generic detail limit.</li>
+            <li>Compact mode removes descriptions but preserves every enchant name, including ten-or-more-enchant items.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.13.0 ==================== -->
+      <div class="cl-entry" id="v3-13-0">
+        <div class="cl-header"><span class="cl-ver">v3.13.0</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Configurable Block Mechanics</h4>
+          <ul>
+            <li>Blast Mine, Vein Mine, Tree Feller, and Harvest Area now support formula limits, material/tag selectors, deny rules, and cumulative material unlocks by enchant level.</li>
+            <li>Blast Mine adds per-axis radii and cube, ellipsoid, or plane shapes; Vein Mine adds 6/18/26-way connectivity and optional mixed-material traversal.</li>
+            <li>Smelter Relic 12 combines level-gated Vein Mine with Auto Smelt; Tree Feller demonstrates Minecraft log tags.</li>
+            <li>A console-safe startup banner reports version, catalog size, runtime, integrations, update status, Folia readiness, and the help command.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> OmniEnchant Branding</h4>
+          <ul>
+            <li>Console-facing SLEnchant/OminiEnchant labels in startup and config migration now use OmniEnchant; compatibility IDs remain unchanged.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Multi-Block Safety</h4>
+          <ul>
+            <li>Absolute radius/block caps contain unsafe formulas, tile entities are protected, and synthetic event cancellation plus <code>isDropItems</code> are respected.</li>
+            <li>Unknown legacy mechanic conditions fail closed instead of bypassing a misspelled gate.</li>
+            <li>Startup and config-migration status lines now render with console-safe ASCII text.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.12.1 ==================== -->
+      <div class="cl-entry" id="v3-12-1">
+        <div class="cl-header"><span class="cl-ver">v3.12.1</span><span class="cl-date">2026-07-22</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> RPG Item-State Mechanics</h4>
+          <ul>
+            <li><code>MENDING_REPAIR</code> converts positive XP gains into bounded durability repair for exactly one deterministic equipped item.</li>
+            <li><code>SOULBOUND</code> returns only the enchanted item after respawn, supports finite per-item charges, and leaves the rest of the death-drop system untouched.</li>
+            <li>Added <code>XP_GAIN</code> and <code>DEATH</code> mechanic triggers with practical aliases for content packs.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> RPG Default Families</h4>
+          <ul>
+            <li>The Mender family now uses deterministic XP repair; the Soul family now provides level-scaled Soulbound recovery instead of repeated freeze effects.</li>
+            <li>Documented effect targets, shared rolls, focused combos, MythicMob targeting, XP repair, and Soulbound recovery in the RPG Abilities guide.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.12.0 ==================== -->
+      <div class="cl-entry" id="v3-12-0">
+        <div class="cl-header"><span class="cl-ver">v3.12.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Mythic Skill Context</h4>
+          <ul>
+            <li>MythicMobs mechanics now receive immutable caster, target, combat, item, and enchant context variables for every OmniEnchant cast.</li>
+            <li>Variables support underscore and kebab-case aliases, including common MythicEnchant-style names such as <code>player-health</code>, <code>damage</code>, and <code>enchant-level</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.11.0 ==================== -->
+      <div class="cl-entry" id="v3-11-0">
+        <div class="cl-header"><span class="cl-ver">v3.11.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Reagent-Gated Enchants</h4>
+          <ul>
+            <li>Enchant definitions can now use <code>table-reagents</code> to appear only for named reagent profiles, normal lapis, or every reagent.</li>
+            <li>Definitions without the field retain all-reagent compatibility for existing server packs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.10.0 ==================== -->
+      <div class="cl-entry" id="v3-10-0">
+        <div class="cl-header"><span class="cl-ver">v3.10.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Bounded Bonus Enchants</h4>
+          <ul>
+            <li>Opt-in RPG table item offers can roll additional weighted custom enchants within the configured maximum and remaining virtual slots.</li>
+            <li>Books remain single-enchant; the primary preview stays vanilla-compatible and bonus rewards are announced after a successful transaction.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Conflict-Safe Rewards</h4>
+          <ul>
+            <li>Bonus selection excludes pairwise conflicts before item state changes and every committed bonus emits its usual lifecycle event.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.9.0 ==================== -->
+      <div class="cl-entry" id="v3-9-0">
+        <div class="cl-header"><span class="cl-ver">v3.9.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> RPG Reagent Profiles</h4>
+          <ul>
+            <li>Custom lapis can match MMOItems type/id, Mythic item id, model strings, legacy model data, or material with deterministic priority.</li>
+            <li>Profiles add to or override table power while vanilla retains ownership of lapis stack consumption.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Reagent Swap Safety</h4>
+          <ul>
+            <li>The selected reagent profile is part of the preview fingerprint and is revalidated before an offer commits.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.8.0 ==================== -->
+      <div class="cl-entry" id="v3-8-0">
+        <div class="cl-header"><span class="cl-ver">v3.8.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Deterministic Table Power</h4>
+          <ul>
+            <li>RPG table offers now combine item enchantability with configurable nearby material power, weighted values, radius, vertical range, and line-of-sight.</li>
+            <li>Power changes only the custom-enchant level unlock calculation; vanilla XP and lapis prices remain untouched.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Live Preview Validation</h4>
+          <ul>
+            <li>Room power is included in the offer fingerprint and checked again at click time, so changing the shelf layout cancels stale previews before NBT changes.</li>
+            <li>Paper 1.21.11 no longer logs Kotlin <code>Unit</code> listener-return warnings for lifecycle and passive timer events.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.7.0 ==================== -->
+      <div class="cl-entry" id="v3-7-0">
+        <div class="cl-header"><span class="cl-ver">v3.7.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Active Interaction Abilities</h4>
+          <ul>
+            <li>Added main/off-hand MythicMobs casts for <code>RIGHT_CLICK</code>/<code>RIGHTCLICK</code>/<code>USE</code>, <code>LEFT_CLICK</code>/<code>LEFTCLICK</code>/<code>SWING</code>, shared <code>INTERACT</code>, and shift-only click modes.</li>
+            <li>Interaction casts expose the Bukkit action, clicked block material, and clicked location through the OmniEnchant context variables.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Protected Interaction Safety</h4>
+          <ul>
+            <li>Cancelled interactions no longer proc active enchant skills or consume per-item soul resources.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.6.0 ==================== -->
+      <div class="cl-entry" id="v3-6-0">
+        <div class="cl-header"><span class="cl-ver">v3.6.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Passive Timer Abilities</h4>
+          <ul>
+            <li>Added equipment-scoped <code>TIMER</code> abilities with level-aware interval formulas and static <code>TIMER:&lt;ticks&gt;</code> migration syntax.</li>
+            <li>Timer casts retain the normal RPG skill context, including <code>omi_trigger: TIMER</code>, chance, soul cost, and Mythic conditions.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Safe Passive State</h4>
+          <ul>
+            <li>Timer cache is refreshed after equipment and enchant changes, but each cast independently rechecks the live equipped item NBT before dispatching.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.5.0 ==================== -->
+      <div class="cl-entry" id="v3-5-0">
+        <div class="cl-header"><span class="cl-ver">v3.5.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Item Enchantability Profiles</h4>
+          <ul>
+            <li>RPG table offers can now use MMOItems type/id, Mythic item id, material, and default quality profiles.</li>
+            <li>Higher item enchantability unlocks stronger OmniEnchant levels without changing the visible vanilla XP price.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Stable Item Identity</h4>
+          <ul>
+            <li>MMOItems identity is read through its public API; Mythic identity is optional and guarded when MythicMobs is absent.</li>
+            <li>Profile resolution is deterministic: MMOItems type/id, Mythic item id, material, then default.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.4.0 ==================== -->
+      <div class="cl-entry" id="v3-4-0">
+        <div class="cl-header"><span class="cl-ver">v3.4.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Deterministic RPG Table Offers</h4>
+          <ul>
+            <li>Added an opt-in table mode that previews the real registered OmniEnchant, level, and XP cost before payment.</li>
+            <li>Offer sessions are stable for the same player, item slot state, and configuration generation until selection or expiry.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Safe Table Commit</h4>
+          <ul>
+            <li>A stale offer is cancelled before OmniEnchant NBT mutates; a valid click rechecks logical slot capacity and advances the next offer seed.</li>
+            <li>The RPG table engine is disabled by default. Reagents and multi-enchant bonus rolls remain separate future phases.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.3.0 ==================== -->
+      <div class="cl-entry" id="v3-3-0">
+        <div class="cl-header"><span class="cl-ver">v3.3.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Mythic Ability Conditions</h4>
+          <ul>
+            <li>Abilities now support MythicMobs <code>conditions:</code> with <code>CASTER</code>, <code>TARGET</code>, and <code>ORIGIN</code> evaluation policies.</li>
+            <li>Added a curated runtime example pack for melee, defense, projectile, kill, apply, and slot-lifecycle skills.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-changed">CHANGED</span> Fail-Closed Skill Gates</h4>
+          <ul>
+            <li>Invalid conditions disable only the affected ability during reload and report a stable error code.</li>
+            <li>Rejected, invalid, errored, or unavailable conditions cannot bypass the configured gate through native fallback.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== v3.2.0 ==================== -->
+      <div class="cl-entry" id="v3-2-0">
+        <div class="cl-header"><span class="cl-ver">v3.2.0</span><span class="cl-date">2026-07-19</span></div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-added">ADDED</span> Virtual Slot Lifecycle</h4>
+          <ul>
+            <li>Added <code>SLOT_FILLED</code>/<code>ON_SLOT_FILLED</code> and <code>SLOT_EMPTIED</code>/<code>ON_SLOT_EMPTIED</code> ability modes for committed MMOItems enchant-slot transitions.</li>
+            <li>Added <code>omi_enchant_slot</code>, <code>OmniEnchantSlotFilledEvent</code>, and <code>OmniEnchantSlotEmptiedEvent</code> so addon authors receive the exact configured slot label.</li>
+          </ul>
+        </div>
+        <div class="cl-section">
+          <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Slot Proc Integrity</h4>
+          <ul>
+            <li>Enchant upgrades preserve their logical slot and do not emit a false slot-filled proc.</li>
+            <li>Grindstone removal now preserves each original logical slot while producing lifecycle transitions.</li>
+          </ul>
+        </div>
+      </div>
+
       <!-- ==================== v3.1.1 ==================== -->
       <div class="cl-entry" id="v3-1-1">
-        <div class="cl-header"><span class="cl-ver">v3.1.1</span><span class="cl-date">2026-07-19</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-header"><span class="cl-ver">v3.1.1</span><span class="cl-date">2026-07-19</span></div>
         <div class="cl-section">
           <h4><span class="cl-tag cl-tag-added">ADDED</span> Mythic Skill Diagnostics</h4>
           <ul>
@@ -167,7 +560,7 @@
 
       <!-- ==================== v3.0.7 ==================== -->
       <div class="cl-entry" id="v3-0-7">
-        <div class="cl-header"><span class="cl-ver">v3.0.7</span><span class="cl-date">2026-07-18</span><span class="cl-latest">LATEST</span></div>
+        <div class="cl-header"><span class="cl-ver">v3.0.7</span><span class="cl-date">2026-07-18</span></div>
         <div class="cl-section">
           <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Deterministic Slot Placement</h4>
           <ul>
@@ -400,7 +793,7 @@
     </div>
 
     <!-- ==================== v1.2.6 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-6">
       <div class="cl-header"><span class="cl-ver">v1.2.6</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -435,7 +828,7 @@
     </div>
 
     <!-- ==================== v1.2.5 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-5">
       <div class="cl-header"><span class="cl-ver">v1.2.5</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -499,7 +892,7 @@
     </div>
 
     <!-- ==================== v1.2.4 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-4">
       <div class="cl-header"><span class="cl-ver">v1.2.4</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -535,7 +928,7 @@
     </div>
 
     <!-- ==================== v1.2.3 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-3">
       <div class="cl-header"><span class="cl-ver">v1.2.3</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -576,7 +969,7 @@
     </div>
 
     <!-- ==================== v1.2.2 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-2">
       <div class="cl-header"><span class="cl-ver">v1.2.2</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span> <span class="lang-vi">Tính Năng Mới</span><span
@@ -645,7 +1038,7 @@
     </div>
 
     <!-- ==================== v1.2.1 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-1">
       <div class="cl-header"><span class="cl-ver">v1.2.1</span><span class="cl-date">2026-03-04</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span> <span class="lang-vi">Tính Năng Mới</span><span
@@ -701,7 +1094,7 @@
     </div>
 
     <!-- ==================== v1.2.0 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-2-0">
       <div class="cl-header"><span class="cl-ver">v1.2.0</span><span class="cl-date">2026-03-03</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -750,7 +1143,7 @@
     </div>
 
     <!-- ==================== v1.1.5 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-5">
       <div class="cl-header"><span class="cl-ver">v1.1.5</span><span class="cl-date">2026-03-03</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Critical</h4>
@@ -790,7 +1183,7 @@
     </div>
 
     <!-- ==================== v1.1.4 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-4">
       <div class="cl-header"><span class="cl-ver">v1.1.4</span><span class="cl-date">2026-03-03</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Critical</h4>
@@ -823,7 +1216,7 @@
     </div>
 
     <!-- ==================== v1.1.3 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-3">
       <div class="cl-header"><span class="cl-ver">v1.1.3</span><span class="cl-date">2026-03-02</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span> Major Features</h4>
@@ -852,7 +1245,7 @@
     </div>
 
     <!-- ==================== v1.1.2 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-2">
       <div class="cl-header"><span class="cl-ver">v1.1.2</span><span class="cl-date">2026-03-02</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -876,7 +1269,7 @@
     </div>
 
     <!-- ==================== v1.1.1 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-1">
       <div class="cl-header"><span class="cl-ver">v1.1.1</span><span class="cl-date">2026-03-02</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -903,7 +1296,7 @@
     </div>
 
     <!-- ==================== v1.1.0 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-1-0">
       <div class="cl-header"><span class="cl-ver">v1.1.0</span><span class="cl-date">2026-03-02</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -937,7 +1330,7 @@
     </div>
 
     <!-- ==================== v1.0.8 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-8">
       <div class="cl-header"><span class="cl-ver">v1.0.8</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Code Review</h4>
@@ -974,7 +1367,7 @@
     </div>
 
     <!-- ==================== v1.0.7 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-7">
       <div class="cl-header"><span class="cl-ver">v1.0.7</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -1002,7 +1395,7 @@
     </div>
 
     <!-- ==================== v1.0.6 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-6">
       <div class="cl-header"><span class="cl-ver">v1.0.6</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -1021,7 +1414,7 @@
     </div>
 
     <!-- ==================== v1.0.5 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-5">
       <div class="cl-header"><span class="cl-ver">v1.0.5</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span> Security &amp; Thread Safety</h4>
@@ -1039,7 +1432,7 @@
     </div>
 
     <!-- ==================== v1.0.4 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-4">
       <div class="cl-header"><span class="cl-ver">v1.0.4</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span></h4>
@@ -1061,7 +1454,7 @@
     </div>
 
     <!-- ==================== v1.0.3 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-3">
       <div class="cl-header"><span class="cl-ver">v1.0.3</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -1086,7 +1479,7 @@
     </div>
 
     <!-- ==================== v1.0.2 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-2">
       <div class="cl-header"><span class="cl-ver">v1.0.2</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -1099,7 +1492,7 @@
     </div>
 
     <!-- ==================== v1.0.1 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-1">
       <div class="cl-header"><span class="cl-ver">v1.0.1</span><span class="cl-date">2026-03-01</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-fixed">FIXED</span></h4>
@@ -1112,7 +1505,7 @@
     </div>
 
     <!-- ==================== v1.0.0 ==================== -->
-    <div class="cl-entry">
+    <div class="cl-entry" id="v1-0-0">
       <div class="cl-header"><span class="cl-ver">v1.0.0</span><span class="cl-date">2026-02-28</span></div>
       <div class="cl-section">
         <h4><span class="cl-tag cl-tag-added">ADDED</span> Initial Release</h4>
@@ -1139,15 +1532,12 @@
 
     <div class="footer">
       <div class="footer-content">
-      <p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p>
+<p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p>
       </div>
     </div>
   </div>
-<script>
-document.getElementById('mobileToggle').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  this.classList.toggle('active');
-});
-</script>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
 </body>
 </html>

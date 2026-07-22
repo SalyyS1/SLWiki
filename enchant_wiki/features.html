@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Features â€” OmniEnchant Wiki</title>
+<title>Features &mdash; OmniEnchant Wiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
 <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
 <div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.1.1</span></div></div></div>
+<div class="sidebar-header"><div class="logo"><span class="logo-icon">OE</span><div><h1>OmniEnchant</h1><span class="version-badge">v3.17.0</span></div></div></div>
   <nav class="sidebar-nav">
     <a href="index.html" class="nav-link"><span class="nav-icon">&#9670;</span>Overview</a>
     <a href="configuration.html" class="nav-link"><span class="nav-icon">&#9881;</span>Configuration</a>
@@ -34,6 +34,60 @@
     <h1 class="hero-title">Feature Setup &amp; Mechanics</h1>
     <p class="hero-subtitle">Setup guide for each feature &mdash; from drag-drop enchanting to soul tracking and set bonuses.</p>
   </div>
+</section>
+
+<section class="section" id="feature-map">
+  <span class="eyebrow">Feature map</span>
+  <h2 class="section-title">Open the system you are operating</h2>
+  <p class="section-desc">Feature guides explain player flow and server policy. Runtime primitives stay in their own searchable catalog so every mechanic and condition has one authoritative example.</p>
+  <div class="arch-grid">
+    <a class="arch-card" href="#dragdrop"><h3>Application</h3><p>Drag-drop, validation, success rolls, protection, and slot admission.</p></a>
+    <a class="arch-card" href="#tiershop"><h3>Acquisition</h3><p>Tier shop, browser, dust crafting, orbs, and enchant tables.</p></a>
+    <a class="arch-card" href="#extraction"><h3>Item mutation</h3><p>Extraction, fusion, slot increasers, and safe item updates.</p></a>
+    <a class="arch-card" href="#soul-system"><h3>RPG progression</h3><p>Souls, Trak counters, set bonuses, and activity systems.</p></a>
+    <a class="arch-card" href="#vanilla-stat-bridge"><h3>Vanilla stat bridge</h3><p>Route vanilla enchant levels into MythicLib offense, defense, resistance, recovery, and utility stats.</p></a>
+    <a class="arch-card" href="reference.html"><h3>Mechanics reference</h3><p>All 34 native and Mythic mechanics with modes, parameters, limits, and YAML examples.</p></a>
+    <a class="arch-card" href="reference.html#condition-enchant-sequence"><h3>Conditions reference</h3><p>RPG state gates, environment checks, aliases, and ordered combo grammar.</p></a>
+  </div>
+</section>
+
+<section class="section" id="vanilla-stat-bridge">
+  <span class="eyebrow">MythicLib / MMOItems</span>
+  <h2 class="section-title">Vanilla Enchant Stat Bridge</h2>
+  <p class="section-desc">Turn any vanilla enchant level into one or more MythicLib stats while the enchanted item is genuinely equipped. Profiles cover offense, defense, resistance, recovery, utility, and custom stats registered by other MythicLib addons.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><h3>Any stat ID</h3><p>Use <code>ATTACK_DAMAGE</code>, <code>HEALTH_REGENERATION</code>, <code>DAMAGE_REDUCTION</code>, elemental defenses, lifesteal, or another registered MythicLib stat.</p></div>
+    <div class="feature-card"><h3>Level formulas</h3><p>Each value supports <code>{level}</code>, <code>FLAT</code>/<code>RELATIVE</code>, a global absolute cap, and the same environment conditions as custom enchant stats.</p></div>
+    <div class="feature-card"><h3>Equipment ownership</h3><p><code>slots: [AUTO]</code> follows the vanilla enchant's active slot groups. Explicit main hand, off-hand, and armor slots are also supported.</p></div>
+    <div class="feature-card"><h3>Damage authority</h3><p><code>VANILLA</code> preserves native damage. <code>MYTHICLIB</code> removes the registry-reported direct melee bonus so the configured MythicLib stat can own that contribution.</p></div>
+  </div>
+  <div class="config-block" style="margin-top:0.75rem">
+    <div class="config-header"><span class="config-file">settings/vanilla-enchants.yml</span></div>
+    <pre class="code-block">mythiclib-bridge:
+  enabled: true
+  mmoitems-only: true
+
+protection:
+  mythiclib:
+    slots: [AUTO]
+    stats:
+      DAMAGE_REDUCTION:
+        type: RELATIVE
+        formula: "{level}"
+      HEALTH_REGENERATION:
+        type: FLAT
+        formula: "0.15 * {level}"
+
+sharpness:
+  mythiclib:
+    slots: [MAIN_HAND]
+    damage-source: MYTHICLIB
+    stats:
+      ATTACK_DAMAGE:
+        type: FLAT
+        formula: "0.5 * {level} + 0.5"</pre>
+  </div>
+  <div class="info-box"><div class="info-icon">i</div><p>The bridge is disabled by default for upgrade safety. Enabling it activates every configured profile. Vanilla behaviors that are not player stats, including item repair, loot rules, movement effects, curses, and block transformation, remain active unless another plugin changes them.</p></div>
 </section>
 
 <!-- ==================== DRAG & DROP ==================== -->
@@ -258,6 +312,44 @@
       <h4>Whitelist Mode</h4>
       <p>Only listed enchants appear from table. Set <code>weight</code> per enchant.</p>
     </div>
+    <div class="feature-card">
+      <h4>RPG Offer Engine <span style="color:var(--text-dim);font-weight:400">(opt-in)</span></h4>
+      <p>Preview deterministic custom enchant rewards before spending XP; quality profiles, live table power, custom lapis reagents, reagent-exclusive pools, and bounded bonus rolls unlock stronger RPG rewards.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Mythic Skill Context</h4>
+      <p>Every RPG skill receives immutable caster, target, combat, item, and enchant variables, with underscore and kebab-case aliases for portable MythicMobs packs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PASSIVE ABILITIES ==================== -->
+<section class="section" id="passive-abilities">
+  <h2 class="section-title">Passive RPG Abilities</h2>
+  <p class="section-desc">MythicMobs abilities can now pulse while an enchanted item is equipped. Use <code>mode: TIMER</code> with an <code>interval</code> formula for regeneration, auras, resource flow, or conditional effects.</p>
+  <div class="feature-box">
+    <h4>Runtime Safety</h4>
+    <ul class="step-list">
+      <li>Runs only for the main hand, off-hand, and armor slots</li>
+      <li>Intervals are bounded from 20 ticks to 72,000 ticks; default is 100 ticks</li>
+      <li>Each proc rechecks the current item and enchant data, so removed or swapped gear cannot keep a passive effect alive</li>
+      <li>Timer abilities honor ability <strong>chance</strong>, item <strong>soul-cost</strong>, Mythic conditions, and <code>omi_trigger: TIMER</code></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== ACTIVE INTERACTION ABILITIES ==================== -->
+<section class="section" id="interaction-abilities">
+  <h2 class="section-title">Active Interaction Abilities</h2>
+  <p class="section-desc">Turn an enchanted main-hand or off-hand item into an explicit RPG action through MythicMobs mechanics.</p>
+  <div class="feature-box">
+    <h4>Click Runtime</h4>
+    <ul class="step-list">
+      <li>Right click: <code>RIGHT_CLICK</code>, <code>RIGHTCLICK</code>, <code>USE</code>; left click: <code>LEFT_CLICK</code>, <code>LEFTCLICK</code>, <code>SWING</code></li>
+      <li><code>INTERACT</code> accepts either click; shift modes require the player to be sneaking</li>
+      <li>Cancelled interactions are skipped, so protection plugins cannot accidentally consume a soul or trigger a skill</li>
+      <li>Mythic casts receive <code>omi_interact_action</code>, <code>omi_interact_block</code>, and <code>omi_interaction_location</code></li>
+    </ul>
   </div>
 </section>
 
@@ -351,13 +443,10 @@
   </div>
 </section>
 
-<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.1.1 &mdash; by <strong>SalyVn</strong></p></div></div>
+<div class="footer"><div class="footer-content"><p><strong>OmniEnchant</strong> v3.17.0 &mdash; by <strong>SalyVn</strong></p></div></div>
 </div>
-<script>
-document.getElementById('mobileToggle').addEventListener('click', function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  this.classList.toggle('active');
-});
-</script>
+<script src="wiki-data.js"></script>
+<script src="wiki.js"></script>
+<script src="shader.js"></script>
 </body>
 </html>
