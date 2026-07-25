@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b11">
+  <meta name="description" content="OmniCodex — persistent discovery library, bundles, milestones, and safe rewards for Minecraft RPG servers.">
+  <title>OmniCodex — RPG Discovery Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/wiki.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Bỏ qua điều hướng</a>
+
+  <header class="topbar" id="top">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="OmniCodex home">
+        <span class="brand-mark" aria-hidden="true"><i></i><b></b></span>
+        <span><small>SALYVN / RPG SYSTEM</small>OMNICODEX</span>
+      </a>
+      <label class="search" for="wiki-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"></circle><path d="m16 16 4.4 4.4"></path></svg>
+        <input id="wiki-search" type="search" placeholder="Tìm command, reward, MMOItems..." autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Mở điều hướng">
+        <span></span><span></span>
+      </button>
+    </div>
+    <nav class="shell nav" id="nav-links" aria-label="Điều hướng wiki">
+      <a href="#start">Bắt đầu</a>
+      <a href="#discovery">Discovery</a>
+      <a href="#authoring">Authoring</a>
+      <a href="#rewards">Rewards</a>
+      <a href="#reference">Reference</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="hero search-item" data-search="overview rpg discovery library collection bundle milestone">
+      <div class="hero-art" role="img" aria-label="Ancient Minecraft archive with a floating codex, red portal, and constellation dragon">
+        <img src="assets/omnicodex-archive-hero.png" alt="">
+        <div class="hero-vignette"></div>
+        <div class="hero-grid"></div>
+      </div>
+      <div class="shell hero-content">
+        <p class="eyebrow"><span></span> PAPER RPG COLLECTION SYSTEM</p>
+        <h1>Every relic has<br><em>a place in the archive.</em></h1>
+        <p class="hero-copy">OmniCodex biến item, quái, boss và dungeon completion thành tiến trình sưu tầm có chủ đích: discover một lần, hoàn thành bundle, nhận reward an toàn.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Mở quick start <span aria-hidden="true">→</span></a>
+          <a class="button button-ghost" href="#discovery">Xem discovery flow</a>
+        </div>
+      </div>
+      <div class="shell hero-ledger" aria-label="Plugin facts">
+        <div><small>CORE LOOP</small><strong>Discover → Collect → Claim</strong></div>
+        <div><small>STORAGE</small><strong>SQLite / WAL / Idempotent</strong></div>
+        <div><small>RUNTIME</small><strong>Paper 1.21 · Java 21</strong></div>
+        <div><small>OPTIONAL HOOKS</small><strong>MMOItems · Mythic · OmniDungeon</strong></div>
+      </div>
+    </section>
+
+    <section class="band band-ink search-item" id="start" data-search="install setup jar java paper quick start validate reload">
+      <div class="shell section-intro">
+        <div>
+          <p class="section-index">01 / INITIALIZE</p>
+          <h2>Cho archive<br>một nguồn sự thật.</h2>
+        </div>
+        <p>Codex không tự đoán lore hoặc display name. Server owner khai báo những identity bền vững trong catalog; player chỉ thấy tiến trình, không thấy logic rối phía sau.</p>
+      </div>
+      <ol class="shell install-grid">
+        <li><span>01</span><h3>Drop the jar</h3><p>Đặt <code>OmniCodex-0.1.0.jar</code> vào <code>plugins/</code>, khởi động server bằng Java 21.</p></li>
+        <li><span>02</span><h3>Author catalog</h3><p>Viết entry, bundle và milestone trong ba YAML file được tạo sẵn.</p></li>
+        <li><span>03</span><h3>Validate first</h3><p>Chạy <code>/oc validate</code>. Config sai không thay registry đang hoạt động.</p></li>
+        <li><span>04</span><h3>Reload safely</h3><p>Dùng <code>/oc reload</code>; progress cũ và reward đã claim không bị thu hồi.</p></li>
+      </ol>
+    </section>
+
+    <section class="band search-item" id="discovery" data-search="discovery event item mob dungeon canonical entry key mmoitems mythicmobs">
+      <div class="shell section-intro">
+        <div>
+          <p class="section-index">02 / DISCOVERY ENGINE</p>
+          <h2>Một identity.<br>Một discovery.</h2>
+        </div>
+        <p>Event chỉ là tín hiệu. Identity canonical mới là thứ được lưu: không amount, không lore, không random stats. Cùng một item đi qua pickup và inventory scan vẫn chỉ unlock một lần.</p>
+      </div>
+
+      <div class="shell archive-flow" role="img" aria-label="Discovery data flow from game event to library reward">
+        <div class="flow-node node-event"><span class="node-icon icon-spark"></span><small>GAME EVENT</small><b>Pickup / Kill / Complete</b></div>
+        <span class="flow-line"></span>
+        <div class="flow-node node-key"><span class="node-icon icon-key"></span><small>CANONICAL KEY</small><b>ITEM:MMOITEMS:SWORD:DRAGON_BLADE</b></div>
+        <span class="flow-line"></span>
+        <div class="flow-node node-ledger"><span class="node-icon icon-book"></span><small>SQLITE LEDGER</small><b>INSERT OR IGNORE</b></div>
+        <span class="flow-line"></span>
+        <div class="flow-node node-reward"><span class="node-icon icon-gem"></span><small>PLAYER LOOP</small><b>Bundle + Reward Inbox</b></div>
+      </div>
+
+      <div class="shell source-grid">
+        <article><span class="source-count">I</span><h3>Items</h3><p>Vanilla pickup/craft/inventory và MMOItems identity qua type + ID reflection.</p><code>ITEM:VANILLA:MINECRAFT:DIAMOND</code></article>
+        <article><span class="source-count">II</span><h3>Mobs & bosses</h3><p>Vanilla death và MythicMob death có dedupe entity UUID để không double-count.</p><code>MOB:MYTHICMOBS:ANCIENT_DRAGON</code></article>
+        <article><span class="source-count">III</span><h3>Dungeons</h3><p>Nhận event public của OmniDungeon; toàn bộ UUID trong party được unlock.</p><code>CONTENT:OMNIDUNGE:DRAGON_NEST:S</code></article>
+      </div>
+    </section>
+
+    <section class="band band-ink search-item" id="authoring" data-search="entries bundles milestones yaml config tier sword tags selector generated entries sync">
+      <div class="shell section-intro">
+        <div>
+          <p class="section-index">03 / CATALOG AUTHORING</p>
+          <h2>Admin viết luật.<br>Codex tính phần còn lại.</h2>
+        </div>
+        <p>Bundle có thể union exact entries với selector. Hand-authored <code>entries.yml</code> luôn override generated entry cùng canonical key — thuận tiện để sync MMOItems rồi chỉnh tier, icon, display name theo lore server.</p>
+      </div>
+      <div class="shell authoring-layout">
+        <article class="code-card">
+          <header><span class="file-dot"></span><span>entries.yml</span><button class="copy-button" type="button" data-copy="entry-code">Copy</button></header>
+          <pre id="entry-code"><code><i>entries:</i>
+  dragon-blade:
+    <b>key:</b> ITEM:MMOITEMS:SWORD:DRAGON_BLADE
+    <b>display-name:</b> "Dragon Blade"
+    <b>icon:</b> DIAMOND_SWORD
+    <b>category:</b> weapons
+    <b>tier:</b> S
+    <b>tags:</b> [sword, dragon, tier-s]</code></pre>
+        </article>
+        <div class="authoring-notes">
+          <div><span>01</span><h3>Sync suggestions</h3><p><code>/oc sync items</code> hoặc <code>/oc sync mobs</code> ghi <code>generated-entries.yml</code>, không ghi đè config của owner.</p></div>
+          <div><span>02</span><h3>Explicit metadata wins</h3><p>Tier S là metadata catalog. Không cần phụ thuộc native tier API của MMOItems để selector chạy ổn định.</p></div>
+          <div><span>03</span><h3>Validate before swap</h3><p>Reference sai, bundle rỗng, threshold vượt giới hạn hoặc placeholder nguy hiểm đều bị chặn trước reload.</p></div>
+        </div>
+      </div>
+      <div class="shell code-pair">
+        <article class="code-card compact">
+          <header><span class="file-dot gold"></span><span>bundles.yml</span><button class="copy-button" type="button" data-copy="bundle-code">Copy</button></header>
+          <pre id="bundle-code"><code><i>bundles:</i>
+  tier-s-swords:
+    <b>completion:</b> ALL
+    <b>selector:</b>
+      all:
+        - field: type
+          equals: SWORD
+        - field: tags
+          contains: tier-s</code></pre>
+        </article>
+        <article class="code-card compact">
+          <header><span class="file-dot ruby"></span><span>milestones.yml</span><button class="copy-button" type="button" data-copy="milestone-code">Copy</button></header>
+          <pre id="milestone-code"><code><i>milestones:</i>
+  items-50:
+    <b>scope:</b> ITEM
+    <b>threshold:</b> 50
+    <b>rewards:</b>
+      - id: title
+        type: COMMAND
+        value: "... {player} ..."</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="band search-item" id="rewards" data-search="reward safe inventory full pending claim vault command mmoitem permission">
+      <div class="shell section-intro">
+        <div>
+          <p class="section-index">04 / SAFE REWARDS</p>
+          <h2>Completion is permanent.<br>Delivery is careful.</h2>
+        </div>
+        <p>Reward không bị “fire-and-forget”. Mỗi reward có key ổn định, state rõ ràng và một inbox để player tự claim lại khi inventory có chỗ hoặc optional provider online.</p>
+      </div>
+      <div class="shell reward-state-machine" aria-label="Reward delivery state machine">
+        <div class="state done"><small>01</small><b>PENDING</b><span>bundle/milestone crossed</span></div>
+        <div class="state-arrow">→</div>
+        <div class="state active"><small>02</small><b>DELIVERING</b><span>per-player claim lock</span></div>
+        <div class="state-arrow">→</div>
+        <div class="state delivered"><small>03</small><b>DELIVERED</b><span>immutable claim time</span></div>
+        <div class="state retry"><small>↺</small><b>RETRYABLE</b><span>full inventory / provider missing</span></div>
+      </div>
+      <div class="shell reward-list">
+        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="m7 9 3 3-3 3M13 15h4"></path></svg><h3>Command</h3><p>Chỉ template trong config được chạy; placeholder hợp lệ: player, uuid, bundle, milestone.</p></div>
+        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg><h3>Items</h3><p>Vanilla item kiểm tra capacity trước; MMOItem missing sẽ giữ reward retryable.</p></div>
+        <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V7z"></path><path d="m9 12 2 2 4-4"></path></svg><h3>Permission</h3><p>Permission reward dùng Vault provider nếu có; không có provider thì không đánh dấu claim sai.</p></div>
+      </div>
+    </section>
+
+    <section class="band band-ink search-item" id="reference" data-search="commands permissions placeholders debug reload validate sync grant reset">
+      <div class="shell section-intro">
+        <div>
+          <p class="section-index">05 / OPERATOR REFERENCE</p>
+          <h2>Không cần mở database<br>để vận hành Codex.</h2>
+        </div>
+        <p>Command admin được giữ nhỏ, audit grant/reset, và config reload chỉ activate registry hợp lệ. Dùng debug để thấy player load state, discovery count và reward pending.</p>
+      </div>
+      <div class="shell reference-grid">
+        <article class="reference-panel"><h3>Player commands</h3><dl><div><dt>/oc</dt><dd>Mở library</dd></div><div><dt>/oc library [category]</dt><dd>Duyệt category</dd></div><div><dt>/oc bundle &lt;id&gt;</dt><dd>Xem bundle progress</dd></div><div><dt>/oc rewards</dt><dd>Claim reward pending</dd></div><div><dt>/oc stats</dt><dd>Unique count</dd></div></dl></article>
+        <article class="reference-panel"><h3>Admin commands</h3><dl><div><dt>/oc validate</dt><dd>Report catalog issue</dd></div><div><dt>/oc reload</dt><dd>Swap valid registry</dd></div><div><dt>/oc sync items|mobs</dt><dd>Generate suggestions</dd></div><div><dt>/oc grant &lt;player&gt; &lt;entry&gt;</dt><dd>Audited unlock</dd></div><div><dt>/oc reset ... confirm</dt><dd>Remove one discovery</dd></div></dl></article>
+        <article class="reference-panel"><h3>Placeholders</h3><dl><div><dt>%omnicodex_discovered_total%</dt><dd>Total unique</dd></div><div><dt>%omnicodex_bundle_&lt;id&gt;_progress%</dt><dd>found/total</dd></div><div><dt>%omnicodex_bundle_&lt;id&gt;_complete%</dt><dd>true / false</dd></div><div><dt>%omnicodex_pending_rewards%</dt><dd>Inbox count</dd></div><div><dt>%omnicodex_milestone_&lt;id&gt;_progress%</dt><dd>progress / threshold</dd></div></dl></article>
+      </div>
+    </section>
+
+    <section class="band faq search-item" id="faq" data-search="faq troubleshooting reload invalid config reward inventory creative folia mysql">
+      <div class="shell faq-grid">
+        <div><p class="section-index">06 / FAQ</p><h2>Known boundaries,<br>stated plainly.</h2></div>
+        <div class="faq-list">
+          <details open><summary>Config invalid thì sao?</summary><p>Registry đang chạy được giữ nguyên. <code>/oc validate</code> và server log chỉ ra path bị lỗi, sau đó owner sửa rồi reload lại.</p></details>
+          <details><summary>Item stack 64 có unlock 64 lần không?</summary><p>Không. Đây là unique discovery. Một canonical entry chỉ được ghi một lần cho mỗi UUID.</p></details>
+          <details><summary>Full inventory có mất reward không?</summary><p>Không. Vanilla item reward được giữ retryable trong inbox; player mở lại <code>/oc rewards</code> sau khi có slot trống.</p></details>
+          <details><summary>Folia, MySQL và quantity collection?</summary><p>Chưa thuộc release target. Bản hiện tại verified cho Paper 1.21 / Java 21, SQLite và unique discovery.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><b></b></span><span>OMNICODEX</span></a><p>Built for persistent RPG worlds. <span>Paper 1.21 · Java 21 · SalyVn</span></p></div>
+  </footer>
+  <script src="assets/wiki.js"></script>
+</body>
+</html>
